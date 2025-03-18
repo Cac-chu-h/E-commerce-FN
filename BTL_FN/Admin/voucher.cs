@@ -52,7 +52,6 @@ namespace BTL_FN
             Dictionary<int, object> result = logic.ListVouchers();
             listVoucher = result[1] as List<Voucher>; // Ép kiểu về List<Product>
             dt = result[2] as DataTable;              // Ép kiểu về DataTable
-            this.total = Convert.ToInt32(result[3]);
 
             if (listVoucher == null || dt == null)
             {
@@ -89,11 +88,13 @@ namespace BTL_FN
             Dictionary<int, string> categoryNames = ListCategory.ToDictionary(c => c.Id, c => c.Name);
             DataTable displayTable = new DataTable();
             displayTable.Columns.Add("Chọn", typeof(bool));
-            displayTable.Columns.Add("STT", typeof(int));
+            displayTable.Columns.Add("Mã Voucher", typeof(string)); // Thêm cột mã
             displayTable.Columns.Add("Loại voucher", typeof(string));
-            displayTable.Columns.Add("Mã voucher", typeof(string));
-            displayTable.Columns.Add("Danh mục", typeof(string));
             displayTable.Columns.Add("Giá trị", typeof(decimal));
+            displayTable.Columns.Add("Ngày bắt đầu", typeof(DateTime)); // Thêm cột ngày
+            displayTable.Columns.Add("Ngày kết thúc", typeof(DateTime)); // Thêm cột ngày
+            displayTable.Columns.Add("Danh mục áp dụng", typeof(string)); // Lấy từ view
+            displayTable.Columns.Add("Mô tả", typeof(string)); // Thêm cột mô tả
             displayTable.Columns.Add("Trạng thái", typeof(string));
             displayTable.Columns.Add("Sửa", typeof(string));
             displayTable.Columns.Add("Xóa", typeof(string));
@@ -107,10 +108,20 @@ namespace BTL_FN
                     try
                     {
                         Voucher voucher = vouchers[i];
-                        string categoryName = categoryNames.ContainsKey(voucher.categoryId) ? categoryNames[voucher.categoryId] : "Không xác định";
-                        string status = voucher.Status;
 
-                        displayTable.Rows.Add(false, i + 1, voucher.TypeOf, voucher.voucherCode, categoryName, voucher.ValueOfVoucher, status, "Chỉnh sửa", "Xóa");
+                        displayTable.Rows.Add(
+                            false,
+                            "#" + voucher.voucherCode, // Lấy mã voucher
+                            voucher.TypeOf,
+                            voucher.ValueOfVoucher,
+                            voucher.StartDate, // Ngày bắt đầu
+                            voucher.EndDate, // Ngày kết thúc
+                            voucher.categoryName, // Tên danh mục từ view
+                            voucher.Description, // Mô tả
+                            voucher.Status,
+                            "Chỉnh sửa",
+                            "Xóa"
+                        );
                     }
                     catch (Exception ex)
                     {
@@ -128,6 +139,25 @@ namespace BTL_FN
                     ReadOnly = true
                 };
 
+
+                dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+                dgv.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                // Chỉ tạo ToolTip một lần bên ngoài event (để tránh tạo mới liên tục)
+                ToolTip toolTip1 = new ToolTip();
+                dgv.CellMouseEnter += (sender, e) =>
+                {
+
+
+                    if (e.RowIndex >= 0 && e.RowIndex < dgv.Rows.Count && e.ColumnIndex == 8) // Kiểm tra chỉ số hàng & cột hợp lệ
+                    {
+                        var cellValue = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+                        string tooltipText = cellValue?.ToString() ?? "";
+                        toolTip1.SetToolTip(dgv, tooltipText);
+                    }
+                };
+
+
+
                 dgv.CellClick += (sender, e) =>
                 {
                     try
@@ -135,7 +165,7 @@ namespace BTL_FN
                         if (e.RowIndex >= 0)
                         {
                             Voucher voucher = vouchers[e.RowIndex];
-                            if (e.ColumnIndex == 7)
+                            if (e.ColumnIndex == 9)
                             {
                                 add_v p = new add_v(voucher, ListCategory);
                                 if (p.ShowDialog() == DialogResult.OK)
@@ -161,7 +191,7 @@ namespace BTL_FN
                                     
                                 }
                             }
-                            else if (e.ColumnIndex == 8)
+                            else if (e.ColumnIndex == 10)
                             {
                                 if (MessageBox.Show($"Bạn có chắc chắn muốn xóa voucher {voucher.TypeOf}?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                                 {
@@ -291,11 +321,9 @@ namespace BTL_FN
         {
             try
             {
-                string voucherId = id.Text;
-                string nameVoucher = name.Text;
-                string nameCategory = categoryName.Text;
-
-                
+                string voucherId = id.Text; // mã 
+                string nameVoucher = name.Text; // loại
+                string nameCategory = categoryName.Text; // danh mục 
 
                 int categoryId = 0;
                 foreach(Category ca in ListCategory)
@@ -327,5 +355,19 @@ namespace BTL_FN
             }
         }
 
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void id_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

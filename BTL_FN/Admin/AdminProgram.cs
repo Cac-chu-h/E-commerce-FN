@@ -12,7 +12,6 @@ namespace BTL_FN.Admin
 {
     public partial class AdminProgram : Form
     {
-        private DAL data = new DAL();
         // tổng số lượng đơn hàng
         int tongSoDonHang = 0;
         // tổng số doanh thu
@@ -42,6 +41,8 @@ namespace BTL_FN.Admin
 
         private void AdminProgram_Load(object sender, EventArgs e)
         {
+            logo.Image = Image.FromFile(logic.logo);
+            logo.SizeMode = PictureBoxSizeMode.Zoom;
             LoadData();
             LoadAdminData();
         }
@@ -343,6 +344,11 @@ namespace BTL_FN.Admin
             {
                 MessageBox.Show($"[Error] {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 

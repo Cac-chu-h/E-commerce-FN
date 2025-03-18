@@ -116,11 +116,12 @@ namespace BTL_FN
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(332, 36);
+            this.label4.Location = new System.Drawing.Point(300, 35);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(96, 17);
             this.label4.TabIndex = 71;
             this.label4.Text = "Tìm kiếm theo";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label3
             // 
@@ -134,20 +135,21 @@ namespace BTL_FN
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(488, 69);
+            this.label2.Location = new System.Drawing.Point(530, 69);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 17);
+            this.label2.Size = new System.Drawing.Size(39, 17);
             this.label2.TabIndex = 69;
-            this.label2.Text = "Mã Voucher";
+            this.label2.Text = "Loại:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(332, 70);
+            this.label1.Location = new System.Drawing.Point(300, 69);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(25, 17);
+            this.label1.Size = new System.Drawing.Size(88, 17);
             this.label1.TabIndex = 68;
-            this.label1.Text = "ID:";
+            this.label1.Text = "Mã Voucher:";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // name
             // 
@@ -160,12 +162,13 @@ namespace BTL_FN
             // 
             // id
             // 
-            this.id.Location = new System.Drawing.Point(360, 58);
+            this.id.Location = new System.Drawing.Point(399, 58);
             this.id.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.id.Multiline = true;
             this.id.Name = "id";
             this.id.Size = new System.Drawing.Size(120, 32);
             this.id.TabIndex = 66;
+            this.id.TextChanged += new System.EventHandler(this.id_TextChanged);
             // 
             // button6
             // 

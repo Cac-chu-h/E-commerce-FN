@@ -18,6 +18,11 @@ namespace BTL_FN
         {
             this.id = id;
             InitializeComponent();
+            comboBox1.SelectedIndex = 0;
+            foreach (int i in id)
+            {
+                comboBox1.Items.Add(i);
+            }
         }
 
         public add_cs(Category c, List<int> id)
@@ -25,21 +30,23 @@ namespace BTL_FN
             this.id = id;
             this.category = c;
             InitializeComponent();
-        }
-
-        private void add_cs_Load(object sender, EventArgs e)
-        {
             comboBox1.SelectedIndex = 0;
             foreach (int i in id)
             {
                 comboBox1.Items.Add(i);
             }
+        }
+
+        private void add_cs_Load(object sender, EventArgs e)
+        {
+            
 
             if(category != null)
             {
+                button2.Text = "Sửa";
                 textBox1.Text = category.Name;
                 textBox2.Text = category.Description;
-                comboBox1.SelectedIndex = category.ParentId != 0 ? category.ParentId : 1;
+                comboBox1.Text = category.ParentId != 0 ? category.ParentId + "" : 0 + "";
             }
             else
             {
@@ -70,13 +77,12 @@ namespace BTL_FN
 
             if (comboBox1.SelectedIndex >= 0)
             {
-                this.category.ParentId = Convert.ToInt32(comboBox1.SelectedItem);
+                this.category.ParentId = Convert.ToInt32(comboBox1.SelectedItem) ;
             }
             else
             {
                 this.category.ParentId = 0; // Gán giá trị mặc định nếu không chọn
             }
-
             this.DialogResult = DialogResult.OK;
             this.Close();
 

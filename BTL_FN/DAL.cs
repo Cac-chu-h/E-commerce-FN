@@ -81,6 +81,7 @@ namespace BTL_FN
         public string TypeOf { get; set; }         // Mã danh mục (tham chiếu category)
         public decimal ValueOfVoucher { get; set; } // Giá trị voucher
         public int categoryId { get; set; }
+        public string categoryName { get; set; }
         public string voucherCode { get; set; }
         public string Status { get; set; }
         public string Description { get; set; }
@@ -399,10 +400,9 @@ namespace BTL_FN
         // lấy ra tất cả danh mục 
         // tìm kiếm 
         public bool AddCategory(Category category) =>
-           ExecuteNonQuery("INSERT INTO category (i_id, categoryName, mota, danhMucCha) VALUES (@id, @categoryName, @mota, @ParentId)",
+           ExecuteNonQuery("INSERT INTO dm (tenDanhMuc, moTa, danhMucCha) VALUES (@categoryName, @mota, @ParentId)",
            new Dictionary<string, object>
            {
-                {"@id", category.Id },
                 { "@categoryName", category.Name },
                 { "@mota", category.Description },
                 { "@ParentId", category.ParentId }
@@ -410,10 +410,13 @@ namespace BTL_FN
 
 
 
-        public bool DeleteCategory(int id) => ExecuteNonQuery("DELETE FROM category WHERE Id = @Id", new Dictionary<string, object> { { "@Id", id } });
+        public bool DeleteCategory(int id) => ExecuteNonQuery(
+                "UPDATE dm SET trangThai = N'Ẩn' WHERE id = @Id",
+                new Dictionary<string, object> { { "@Id", id } }
+            );
 
         public bool UpdateCategory(Category category) => ExecuteNonQuery(
-            "UPDATE category SET categoryName = @valueA, mota = @valueB, danhMucCha = @valueC WHERE i_id = @Id",
+            "UPDATE dm SET tenDanhMuc = @valueA, moTa = @valueB, danhMucCha = @valueC WHERE id = @Id",
             new Dictionary<string, object>
             {
                 { "@Id", category.Id },
@@ -428,7 +431,7 @@ namespace BTL_FN
             try
             {
                 OpenConnection();
-                string query = "SELECT id, tenDanhMuc, moTa, danhMucCha FROM dm";
+                string query = "SELECT id, tenDanhMuc, moTa, danhMucCha FROM dm WHERE trangThai != N'Ẩn'";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -456,31 +459,6 @@ namespace BTL_FN
         }
 
 
-        public int GetMaxCategoryId()
-        {
-            int maxId = 0;
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    string query = "SELECT ISNULL(MAX(i_id), 0) FROM category";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        object result = cmd.ExecuteScalar();
-                        if (result != DBNull.Value)
-                        {
-                            maxId = Convert.ToInt32(result);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi: {ex.Message}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            return maxId;
-        }
 
         // quản lý sản phẩm 
         // thêm sản phẩm 
@@ -489,10 +467,9 @@ namespace BTL_FN
         // xóa 
         // tìm kiếm 
         public bool AddProduct(Product product) => ExecuteNonQuery(
-            "INSERT INTO product (i_Id, s_ProductName, s_Description, s_ProductImage, i_Totals, i_Status, i_Rating, d_CreatedDate, d_UpdatedDate, f_Price, i_TotalPay, i_CategoryID) " +
-            "VALUES (@id, @Name, @Description, @ProductImage, @Totals, @Status, @Rating, @CreatedDate, @UpdatedDate, @Price, @TotalPay, @CategoryID)",
+            "INSERT INTO sp (tenSP, moTa, hinh, khoiLuong, TrangThai, danh_gia, ngay_tao, ngay_cap_nhat, gia, da_ban, dm) " +
+            "VALUES (@Name, @Description, @ProductImage, @Totals, @Status, @Rating, @CreatedDate, @UpdatedDate, @Price, @TotalPay, @CategoryID)",
             new Dictionary<string, object> {
-                { "@id",  product.Id},
                 { "@Name", product.Name },
                 { "@Description", product.Description ?? string.Empty}, // Xử lý null
                 { "@ProductImage", product.Image ?? string.Empty}, // Xử lý null
@@ -516,20 +493,25 @@ namespace BTL_FN
                 { "@Stock", product.Total },
                 { "@Status", product.Status },
                 { "@Rating", product.Rating },
-                { "@UpdatedDate", product.dateAdd },
+                { "@UpdatedDate", DateTime.Now },
                 { "@Price", product.Price },
                 { "@TotalPay", product.TotalPay },
                 { "@CategoryID", product.CategoryId }
             });
 
-        public bool DeleteProduct(int id) => ExecuteNonQuery("DELETE FROM product WHERE i_Id = @Id", new Dictionary<string, object> { { "@Id", id } });
+        public bool DeleteProduct(int id) =>
+            ExecuteNonQuery(
+                "UPDATE sp SET trangThaiXoa = N'Đã xóa' WHERE id = @Id",
+                new Dictionary<string, object> { { "@Id", id } }
+            );
+
 
         public DataTable GetAllProducts()
         {
             try
             {
                 OpenConnection();
-                string query = "SELECT * FROM product";
+                string query = "SELECT * FROM sp WHERE trangThaiXoa != N'Đã xóa' ORDER BY id DESC";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                 {
@@ -576,17 +558,17 @@ namespace BTL_FN
                         {
                             Product product = new Product()
                             {
-                                Id = Convert.ToInt32(reader["i_Id"]),
-                                Name = reader["s_ProductName"].ToString(),
-                                Description = reader["s_Description"]?.ToString() ?? string.Empty,
-                                Image = reader["s_ProductImage"]?.ToString() ?? string.Empty,
-                                Total = Convert.ToInt32(reader["i_Totals"] ?? 0),
-                                Status = Convert.ToString(reader["i_Status"]),
-                                Rating = Convert.ToInt32(reader["i_Rating"]),
-                                dateAdd = Convert.ToDateTime(reader["d_CreatedDate"]),
-                                Price = Convert.ToDecimal(reader["f_Price"]),
-                                TotalPay = Convert.ToInt32(reader["i_TotalPay"]),
-                                CategoryId = Convert.ToInt32(reader["i_CategoryID"])
+                                Id = Convert.ToInt32(reader["id"]),
+                                Name = reader["tenSP"].ToString(),
+                                Description = reader["moTa"]?.ToString() ?? string.Empty,
+                                Image = reader["hinh"]?.ToString() ?? string.Empty,
+                                Total = Convert.ToInt32(reader["khoiLuong"] ?? 0),
+                                Status = Convert.ToString(reader["TrangThai"]),
+                                Rating = Convert.ToInt32(reader["danh_gia"]),
+                                dateAdd = Convert.ToDateTime(reader["ngay_tao"]),
+                                Price = Convert.ToDecimal(reader["gia"]),
+                                TotalPay = Convert.ToInt32(reader["da_ban"]),
+                                CategoryId = Convert.ToInt32(reader["dm"])
                             };
                             productList.Add(product);
                         }
@@ -614,7 +596,7 @@ namespace BTL_FN
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT ISNULL(MAX(i_id), 0) FROM product";
+                    string query = "SELECT ISNULL(MAX(id), 0) FROM sp";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         object result = cmd.ExecuteScalar();
@@ -635,42 +617,41 @@ namespace BTL_FN
 
         // quản lý vấn đề voucher 
         public bool AddVoucher(Voucher voucher) => ExecuteNonQuery(
-            "INSERT INTO voucherModule (id, startDate, endDate, typeOf, valueOfVoucher, categoryId, i_Status, VoucherCode, Description) " +
-            "VALUES (@Id, @StartDate, @EndDate, @TypeOf, @ValueOfVoucher, @CategoryId, @Status, @VoucherCode, @Description)",
+            "INSERT INTO voucher (NgayBatDau, NgayKetThuc, Loai, GiaTri, DanhMucApDung, TrangThai, maVoucher, MoTa) " +
+            "VALUES (@NgayBatDau, @NgayKetThuc, @Loai, @GiaTri, @DanhMucApDung, @TrangThai, @maVoucher, @MoTa)",
             new Dictionary<string, object> {
-                { "@Id", voucher.Id },
-                { "@StartDate", voucher.StartDate },
-                { "@EndDate", voucher.EndDate },
-                { "@TypeOf", voucher.TypeOf },
-                { "@ValueOfVoucher", voucher.ValueOfVoucher },
-                { "@VoucherCode" , voucher.voucherCode},
-                { "@CategoryId", voucher.categoryId },
-                { "@Status", voucher.Status },
-                { "@Description", voucher.Description }
+                { "@NgayBatDau", voucher.StartDate },
+                { "@NgayKetThuc", voucher.EndDate },
+                { "@Loai", voucher.TypeOf },
+                { "@GiaTri", voucher.ValueOfVoucher },
+                { "@DanhMucApDung", voucher.categoryId },
+                { "@TrangThai", voucher.Status },
+                { "@maVoucher", voucher.voucherCode },
+                { "@MoTa", voucher.Description }
             });
 
         public bool UpdateVoucher(Voucher voucher) => ExecuteNonQuery(
-            "UPDATE voucherModule SET startDate = @StartDate, endDate = @EndDate, typeOf = @TypeOf, valueOfVoucher = @ValueOfVoucher, categoryId = @CategoryId, i_Status = @Status, VoucherCode = @VoucherCode, Description =  @Description WHERE id = @Id",
+            "UPDATE voucher SET NgayBatDau = @NgayBatDau, NgayKetThuc = @NgayKetThuc, Loai = @Loai, GiaTri = @GiaTri, DanhMucApDung = @DanhMucApDung, TrangThai = @TrangThai, maVoucher = @maVoucher, MoTa = @MoTa WHERE id = @Id",
             new Dictionary<string, object> {
                 { "@Id", voucher.Id },
-                { "@StartDate", voucher.StartDate },
-                { "@EndDate", voucher.EndDate },
-                { "@TypeOf", voucher.TypeOf },
-                { "@ValueOfVoucher", voucher.ValueOfVoucher },
-                { "@CategoryId", voucher.categoryId },
-                { "@Status", voucher.Status },
-                { "@VoucherCode" , voucher.voucherCode},
-                { "@Description", voucher.Description }
+                { "@NgayBatDau", voucher.StartDate },
+                { "@NgayKetThuc", voucher.EndDate },
+                { "@Loai", voucher.TypeOf },
+                { "@GiaTri", voucher.ValueOfVoucher },
+                { "@DanhMucApDung", voucher.categoryId },
+                { "@TrangThai", voucher.Status },
+                { "@maVoucher", voucher.voucherCode },
+                { "@MoTa", voucher.Description }
             });
 
-        public bool DeleteVoucher(int id) => ExecuteNonQuery("DELETE FROM voucherModule WHERE id = @Id", new Dictionary<string, object> { { "@Id", id } });
+        public bool DeleteVoucher(int id) => ExecuteNonQuery("UPDATE voucher SET trangThaiXoa = N'Đã xóa' WHERE id = @Id", new Dictionary<string, object> { { "@Id", id } });
 
         public DataTable GetAllVouchers()
         {
             try
             {
                 OpenConnection();
-                string query = "SELECT * FROM voucherModule";
+                string query = "SELECT * FROM vw_VoucherWithCategory WHERE trangThaiXoa != N'Đã xóa'";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                 {
@@ -690,7 +671,8 @@ namespace BTL_FN
             }
         }
 
-        public List<Voucher> FindVoucher(string query, string id, string name, int? categoryId)
+        // Trong lớp DAL
+        public List<Voucher> FindVoucher(string query, string maVoucher, string loai, int? danhMucId)
         {
             List<Voucher> voucherList = new List<Voucher>();
             try
@@ -698,34 +680,37 @@ namespace BTL_FN
                 OpenConnection();
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
-                    if (!string.IsNullOrEmpty(id))
+                    // Thêm các tham số tìm kiếm
+                    if (!string.IsNullOrEmpty(maVoucher))
                     {
-                        cmd.Parameters.AddWithValue("@Id", id);
+                        cmd.Parameters.AddWithValue("@maVoucher", $"%{maVoucher}%");
                     }
-                    if (!string.IsNullOrEmpty(name))
+                    if (!string.IsNullOrEmpty(loai))
                     {
-                        cmd.Parameters.AddWithValue("@Name", $"%{name}%");
+                        cmd.Parameters.AddWithValue("@loai", $"%{loai}%");
                     }
-                    if (categoryId.HasValue && categoryId != 0)
+                    if (danhMucId.HasValue && danhMucId != 0)
                     {
-                        cmd.Parameters.AddWithValue("@CategoryId", categoryId);
+                        cmd.Parameters.AddWithValue("@DanhMucApDung", danhMucId);
                     }
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            Voucher voucher = new Voucher()
+                            voucherList.Add(new Voucher()
                             {
-                                Id = Convert.ToInt32(reader["[VoucherCode]"]),
-                                StartDate = Convert.ToDateTime(reader["startDate"]),
-                                EndDate = Convert.ToDateTime(reader["endDate"]),
-                                TypeOf = reader["typeOf"].ToString(),
-                                ValueOfVoucher = Convert.ToDecimal(reader["valueOfVoucher"]),
-                                categoryId = Convert.ToInt32(reader["categoryId"]),
-                                Status = reader["i_Status"].ToString()
-                            };
-                            voucherList.Add(voucher);
+                                Id = reader["VoucherID"] != DBNull.Value ? Convert.ToInt32(reader["VoucherID"]) : 0,
+                                voucherCode = reader["maVoucher"]?.ToString(),
+                                StartDate = reader["NgayBatDau"] != DBNull.Value ? Convert.ToDateTime(reader["NgayBatDau"]) : DateTime.MinValue,
+                                EndDate = reader["NgayKetThuc"] != DBNull.Value ? Convert.ToDateTime(reader["NgayKetThuc"]) : DateTime.MinValue,
+                                TypeOf = reader["Loai"]?.ToString(),
+                                ValueOfVoucher = reader["GiaTri"] != DBNull.Value ? Convert.ToDecimal(reader["GiaTri"]) : 0,
+                                categoryId = reader["DanhMucApDung"] != DBNull.Value ? Convert.ToInt32(reader["DanhMucApDung"]) : 0,
+                                categoryName = reader["TenDanhMucApDung"]?.ToString(),
+                                Status = reader["TrangThai"]?.ToString(),
+                                Description = reader["MoTa"]?.ToString()
+                            });
                         }
                     }
                 }
@@ -733,7 +718,7 @@ namespace BTL_FN
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"[Error] {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"[DAL Error] {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
             finally
@@ -742,31 +727,7 @@ namespace BTL_FN
             }
         }
 
-        public int GetMaxVoucherId()
-        {
-            int maxId = 0;
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    string query = "SELECT ISNULL(MAX(id), 0) FROM voucherModule";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        object result = cmd.ExecuteScalar();
-                        if (result != DBNull.Value)
-                        {
-                            maxId = Convert.ToInt32(result);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi 1: {ex.Message}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            return maxId;
-        }
+
 
 
         // quản lý vấn đề mua hàng 

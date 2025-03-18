@@ -78,40 +78,10 @@ namespace BTL_FN
                 Dock = DockStyle.Fill,
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
                 AllowUserToAddRows = false,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                ReadOnly = true,
             };
 
-
-            bool isChanged = false;
-            dgv.CellEndEdit += (sender, e) =>
-            {
-                if (e.RowIndex >= 0)
-                {
-                    string columnName = dgv.Columns[e.ColumnIndex].Name;
-                    Category category = categories[e.RowIndex];
-                    string newValue = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString();
-
-
-
-                    if (columnName == "Tên danh mục" && newValue != category.Name)
-                    {
-                        category.Name = newValue;
-                        isChanged = true;
-                    }
-                    else if (columnName == "Mô tả" && newValue != category.Description)
-                    {
-                        category.Description = newValue;
-                        isChanged = true;
-                    }
-                    else if (columnName == "ParentId" && int.TryParse(newValue, out int parentId) && parentId != category.ParentId)
-                    {
-                        category.ParentId = parentId;
-                        isChanged = true;
-                    }
-
-
-                }
-            };
             dgv.CellClick += (sender, e) =>
             {
                 if (e.RowIndex >= 0)
@@ -120,29 +90,24 @@ namespace BTL_FN
 
                     if (e.ColumnIndex == 5) // Chỉnh sửa
                     {
-                        if (MessageBox.Show($"Bạn có chắc chắn muốn chỉnh sửa danh mục {category.Name}?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes || isChanged)
+                        add_cs view = new add_cs(category, id);
+                        if (view.ShowDialog() == DialogResult.OK)
                         {
-
-                            add_cs view = new add_cs(category, id);
-                            view.Show();
-                            if(view.DialogResult == DialogResult.OK)
+                            category = view.category;
+                            if (id.Contains(category.ParentId))
                             {
-                                category = view.category;
-                                if (id.Contains(category.ParentId))
+                                if (logic.UpdateCategory(category))
                                 {
-                                    if (logic.UpdateCategory(category))
-                                    {
-                                        MessageBox.Show("Cập nhật thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                        LoadData();
-                                        LoadAccountData();
-                                    }
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Không tồn tại giá trị danh mục cha!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    MessageBox.Show("Cập nhật thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     LoadData();
                                     LoadAccountData();
                                 }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Không tồn tại giá trị danh mục cha!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                LoadData();
+                                LoadAccountData();
                             }
                         }
                     }

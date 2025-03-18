@@ -185,7 +185,7 @@ namespace BTL_FN
             
             if (UserRole == "Admin" && UserActive == "Active")
             {
-                return dataAccess.ExecuteNonQuery("DELETE FROM category WHERE i_id = @Id", new Dictionary<string, object> { { "@Id", id } });
+                return dataAccess.DeleteCategory(id);
             }
             else
             {
@@ -233,17 +233,17 @@ namespace BTL_FN
                 {
                     Product product = new Product()
                     {
-                        Id = Convert.ToInt32(row["i_Id"]),
-                        Name = row["s_ProductName"].ToString(),
-                        Description = row["s_Description"]?.ToString() ?? string.Empty,
-                        Image = row["s_ProductImage"]?.ToString() ?? string.Empty,
-                        Total = Convert.ToInt32(row["i_Totals"] ?? 0),
-                        Status = Convert.ToString(row["i_Status"]),
-                        Rating = Convert.ToInt32(row["i_Rating"]),
-                        dateAdd = Convert.ToDateTime(row["d_CreatedDate"]),
-                        Price = Convert.ToDecimal(row["f_Price"]),
-                        TotalPay = Convert.ToInt32(row["i_TotalPay"]),
-                        CategoryId = Convert.ToInt32(row["i_CategoryID"])
+                        Id = Convert.ToInt32(row["id"]),
+                        Name = row["tenSP"].ToString(),
+                        Description = row["moTa"]?.ToString() ?? string.Empty,
+                        Image = row["hinh"]?.ToString() ?? string.Empty,
+                        Total = Convert.ToInt32(row["khoiLuong"] ?? 0),
+                        Status = Convert.ToString(row["TrangThai"]),
+                        Rating = Convert.ToInt32(row["danh_gia"]),
+                        dateAdd = Convert.ToDateTime(row["ngay_tao"]),
+                        Price = Convert.ToDecimal(row["gia"]),
+                        TotalPay = Convert.ToInt32(row["da_ban"]),
+                        CategoryId = Convert.ToInt32(row["dm"])
                     };
                     products.Add(product);
                 }
@@ -269,7 +269,6 @@ namespace BTL_FN
             
             if (UserRole == "Admin" && UserActive == "Active")
             {
-                value.Id = dataAccess.GetMaxProductId() + 1;
                 return dataAccess.AddProduct(value);
             }
             else
@@ -309,19 +308,19 @@ namespace BTL_FN
 
         public List<Product> findProduct(string id, string name, int? categoryId)
         {
-            StringBuilder queryBuilder = new StringBuilder("SELECT * FROM product WHERE 1=1");
+            StringBuilder queryBuilder = new StringBuilder("SELECT * FROM sp WHERE 1=1");
 
             if (!string.IsNullOrEmpty(id))
             {
-                queryBuilder.Append(" AND [i_id] = @Id");
+                queryBuilder.Append(" AND [id] = @Id");
             }
             if (!string.IsNullOrEmpty(name))
             {
-                queryBuilder.Append(" AND [s_ProductName] LIKE @Name");
+                queryBuilder.Append(" AND [tenSP] LIKE @Name");
             }
             if (categoryId.HasValue && categoryId != -1)
             {
-                queryBuilder.Append(" AND [i_CategoryID] = @CategoryId");
+                queryBuilder.Append(" AND [dm] = @CategoryId");
             }
 
             return dataAccess.FindProduct(queryBuilder.ToString(), id, name, categoryId);
@@ -339,30 +338,33 @@ namespace BTL_FN
                 {
                     Voucher voucher = new Voucher()
                     {
-                        Id = Convert.ToInt32(row["id"]),
-                        voucherCode = Convert.ToString(row["VoucherCode"]),
-                        StartDate = Convert.ToDateTime(row["startDate"]),
-                        EndDate = Convert.ToDateTime(row["endDate"]),
-                        TypeOf = Convert.ToString(row["typeOf"]),
-                        ValueOfVoucher = Convert.ToDecimal(row["valueOfVoucher"]),
-                        categoryId = Convert.ToInt32(row["categoryId"]),
-                        Status = Convert.ToString(row["i_Status"])
+                        Id = row["VoucherID"] != DBNull.Value ? Convert.ToInt32(row["VoucherID"]) : 0,
+                        voucherCode = row["maVoucher"]?.ToString(),
+                        StartDate = row["NgayBatDau"] != DBNull.Value ? Convert.ToDateTime(row["NgayBatDau"]) : DateTime.MinValue,
+                        EndDate = row["NgayKetThuc"] != DBNull.Value ? Convert.ToDateTime(row["NgayKetThuc"]) : DateTime.MinValue,
+                        TypeOf = row["Loai"]?.ToString(),
+                        ValueOfVoucher = row["GiaTri"] != DBNull.Value ? Convert.ToDecimal(row["GiaTri"]) : 0,
+                        categoryId = row["DanhMucApDung"] != DBNull.Value ? Convert.ToInt32(row["DanhMucApDung"]) : 0,
+                        categoryName = row["TenDanhMucApDung"]?.ToString(),
+                        Status = row["TrangThai"]?.ToString(),
+                        Description = row["MoTa"]?.ToString()
                     };
+
                     vouchers.Add(voucher);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Lỗi chuyển đổi dòng: {ex.Message}");
+                    MessageBox.Show($"Lỗi chuyển đổi dòng 1: {ex.Message}");
                 }
             }
 
             Dictionary<int, object> result = new Dictionary<int, object>();
             result.Add(1, vouchers);
             result.Add(2, dt);
-            result.Add(3, dataAccess.GetMaxVoucherId());
 
             return result;
         }
+
 
         public bool AddVoucher(Voucher value)
         {
@@ -403,24 +405,34 @@ namespace BTL_FN
             }
         }
 
-        public List<Voucher> FindVoucher(string id, string name, int? cId)
+        public List<Voucher> FindVoucher(string maVoucher, string loai, int? danhMucId)
         {
-            StringBuilder queryBuilder = new StringBuilder("SELECT * FROM voucherModule WHERE 1=1");
+            StringBuilder queryBuilder = new StringBuilder(@"
+                SELECT * 
+                FROM vw_VoucherWithCategory 
+                WHERE trangThaiXoa != N'Đã xóa' 
+            ");
 
-            if (!string.IsNullOrEmpty(id))
+            // Thêm điều kiện tìm kiếm
+            if (!string.IsNullOrEmpty(maVoucher))
             {
-                queryBuilder.Append(" AND [VoucherCode] LIKE @Id");
+                queryBuilder.Append(" AND maVoucher LIKE @maVoucher");
             }
-            if (!string.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(loai))
             {
-                queryBuilder.Append(" AND [typeof] LIKE @Name");
+                queryBuilder.Append(" AND Loai LIKE @loai");
             }
-            if (cId.HasValue && cId != 0)
+            if (danhMucId.HasValue && danhMucId != 0)
             {
-                queryBuilder.Append(" AND [categoryId] = @CategoryId");
+                queryBuilder.Append(" AND DanhMucApDung = @DanhMucApDung");
             }
 
-            return dataAccess.FindVoucher(queryBuilder.ToString(), id.Trim(), name, cId);
+            return dataAccess.FindVoucher(
+                queryBuilder.ToString(),
+                maVoucher?.Trim(),
+                loai?.Trim(),
+                danhMucId
+            );
         }
 
         // thêm xóa sửa

@@ -117,17 +117,22 @@ namespace BTL_FN
                 }
                 this.value.ValueOfVoucher = price;
 
-                if (dateTimePicker1.Value >= DateTime.Now && dateTimePicker2.Value >= DateTime.Now && dateTimePicker1.Value <= dateTimePicker2.Value)
+                DateTime startDate = dateTimePicker1.Value.Date; // lấy phần ngày
+                DateTime endDate = dateTimePicker2.Value.Date;
+                DateTime today = DateTime.Now.Date;
+
+                if (startDate >= today && endDate >= today && startDate <= endDate)
                 {
-                    this.value.StartDate = dateTimePicker1.Value;
-                    this.value.EndDate = dateTimePicker2.Value;
+                    this.value.StartDate = startDate;
+                    this.value.EndDate = endDate;
                 }
                 else
                 {
-                    MessageBox.Show("Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc và không được nhỏ hơn ngày hiện tại!");
+                    MessageBox.Show("Ngày bắt đầu và kết thúc phải từ hôm nay trở đi, và ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     dateTimePicker1.Focus();
                     return;
                 }
+
 
 
 

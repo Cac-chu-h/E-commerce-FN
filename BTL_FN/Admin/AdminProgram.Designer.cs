@@ -53,17 +53,20 @@ namespace BTL_FN.Admin
             this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.logo = new System.Windows.Forms.PictureBox();
             this.panel2.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
             this.SuspendLayout();
             // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.SystemColors.Control;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.logo);
             this.panel2.Controls.Add(this.label18);
             this.panel2.Controls.Add(this.panel9);
             this.panel2.Controls.Add(this.label17);
@@ -79,6 +82,7 @@ namespace BTL_FN.Admin
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1231, 757);
             this.panel2.TabIndex = 2;
+            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
             // label18
             // 
@@ -257,7 +261,7 @@ namespace BTL_FN.Admin
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(64, 23);
+            this.label2.Location = new System.Drawing.Point(136, 19);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(172, 35);
             this.label2.TabIndex = 27;
@@ -327,6 +331,15 @@ namespace BTL_FN.Admin
             this.panel3.Size = new System.Drawing.Size(536, 192);
             this.panel3.TabIndex = 6;
             // 
+            // logo
+            // 
+            this.logo.Location = new System.Drawing.Point(70, 7);
+            this.logo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.logo.Name = "logo";
+            this.logo.Size = new System.Drawing.Size(60, 57);
+            this.logo.TabIndex = 65;
+            this.logo.TabStop = false;
+            // 
             // AdminProgram
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -346,6 +359,7 @@ namespace BTL_FN.Admin
             this.panel5.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -376,5 +390,6 @@ namespace BTL_FN.Admin
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.PictureBox logo;
     }
 }
