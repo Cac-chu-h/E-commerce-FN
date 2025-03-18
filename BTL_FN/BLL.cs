@@ -6,6 +6,10 @@ using System.Text;
 
 namespace BTL_FN
 {
+ 
+    
+    
+
     public class BLL
     {
         private DAL dataAccess = new DAL();
@@ -24,6 +28,11 @@ namespace BTL_FN
             UserRole = "Admin";
         }
         // những vấn đề liên quan đến tài khoản 
+
+        public int getMaxID()
+        {
+            return dataAccess.getMaxID();
+        }
 
         public bool Login(string username, string password)
         {
@@ -44,28 +53,32 @@ namespace BTL_FN
             return false;
         }
 
-        public bool AddAccount(string username, string email, string password)
+        public bool AddAccount(Account a)
         {
-            
-            Dictionary<string, object> parameters = new Dictionary<string, object>
+            if(dataAccess.CheckExistence("account", "s_Email", a.Email) == 0)
             {
-                {"@Username", username},
-                {"@Email", email},
-                {"@Password", password},
-                {"@Role", "User"},
-                {"@Active", "1"},
-                {"@Avatar", "default.jpg"},
-                {"@DateCreated", DateTime.Now}
-            };
-
-            return dataAccess.ExecuteNonQuery("INSERT INTO account (s_Username, s_Email, s_Password, s_Role, s_Active, s_Avatar, d_DateCreated) VALUES (@Username, @Email, @Password, @Role, @Active, @Avatar, @DateCreated)", parameters);
+                return dataAccess.AddUser(a);
+            }
+            else
+            {
+                return false;
+            }
+            
         }
 
-        public bool BanAccount(int id, string status)
+        public bool BanAccount(int id, string status, string role)
         {
             if (UserRole == "Admin" && UserActive == "Active")
             {
-                return dataAccess.ExecuteNonQuery($"UPDATE account SET s_Active = '{status}' WHERE i_Id = @Id", new Dictionary<string, object> { { "@Id", id } });
+                if(role != "Admin" && id != UserID)
+                {
+                    return dataAccess.ExecuteNonQuery($"UPDATE account SET s_Active = '{status}' WHERE i_Id = @Id", new Dictionary<string, object> { { "@Id", id } });
+                }
+                else
+                {
+                    MessageBox.Show("Bạn không đủ quyền hạn truy cập mục này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
             }
             else
             {
@@ -74,11 +87,20 @@ namespace BTL_FN
             }
         }
 
-        public bool DeleteAccount(int id)
+        public bool DeleteAccount(int id, string role)
         {
             if (UserRole == "Admin" && UserActive == "Active")
             {
-                return dataAccess.ExecuteNonQuery("DELETE FROM account WHERE i_Id = @Id", new Dictionary<string, object> { { "@Id", id } });
+                if (role != "Admin" && id != UserID)
+                {
+                    return dataAccess.ExecuteNonQuery("DELETE FROM account WHERE i_Id = @Id", new Dictionary<string, object> { { "@Id", id } });
+                }
+                else
+                {
+                    MessageBox.Show("Bạn không đủ quyền hạn truy cập mục này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+                
             }
             else
             {
@@ -91,7 +113,16 @@ namespace BTL_FN
         {
             if (UserRole == "Admin" && UserActive == "Active")
             {
-                return dataAccess.ExecuteNonQuery($"UPDATE account SET s_Role = '{role}' WHERE i_Id = @Id", new Dictionary<string, object> { { "@Id", id } });
+                if (role != "Admin" && id != UserID)
+                {
+                    return dataAccess.ExecuteNonQuery($"UPDATE account SET s_Role = '{role}' WHERE i_Id = @Id", new Dictionary<string, object> { { "@Id", id } });
+                }
+                else
+                {
+                    MessageBox.Show("Bạn không đủ quyền hạn truy cập mục này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+                
             }
             else
             {
@@ -139,7 +170,7 @@ namespace BTL_FN
         public List<Category> ListCategory()
         {
             
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (true)
             {
                 return dataAccess.GetAllCategories();
             }
@@ -238,6 +269,7 @@ namespace BTL_FN
             
             if (UserRole == "Admin" && UserActive == "Active")
             {
+                value.Id = dataAccess.GetMaxProductId() + 1;
                 return dataAccess.AddProduct(value);
             }
             else
@@ -308,6 +340,7 @@ namespace BTL_FN
                     Voucher voucher = new Voucher()
                     {
                         Id = Convert.ToInt32(row["id"]),
+                        voucherCode = Convert.ToString(row["VoucherCode"]),
                         StartDate = Convert.ToDateTime(row["startDate"]),
                         EndDate = Convert.ToDateTime(row["endDate"]),
                         TypeOf = Convert.ToString(row["typeOf"]),
@@ -376,7 +409,7 @@ namespace BTL_FN
 
             if (!string.IsNullOrEmpty(id))
             {
-                queryBuilder.Append(" AND [id] = @Id");
+                queryBuilder.Append(" AND [VoucherCode] LIKE @Id");
             }
             if (!string.IsNullOrEmpty(name))
             {
@@ -397,7 +430,109 @@ namespace BTL_FN
 
 
         // những vấn đề liên quan đến mua hàng 
+        public void GetAllOrders(ref List<Order> orders, string query = null)
+        {
+            // lấy ra 6 giá trị cốt yếu 
+            
+        }
 
-        // những vấn đề liên quan đến 
+        
+
+        public bool UpdateOrders(int OrdersId, string status)
+            {
+                return dataAccess.ApproveOrder(OrdersId, status);
+           }
+
+            public bool UpdateOrders(Order value)
+            {
+                if(value.Status == "Đang chờ" || value.Status == "Đã duyệt")
+                {
+                    return dataAccess.UpdateOrders(value);
+                }
+
+                return false;
+            }
+        public bool DeleteOrders(int OrdersId)
+            {
+                return dataAccess.DeleteOrder(OrdersId);
+            }
+
+        // những vấn đề liên quan đến thanh toán 
+        public bool AddPayMethod(PaymentMethod p)
+        {
+            if (UserRole == "Admin" && UserActive == "Active")
+            {
+                return dataAccess.AddPaymentMethod(p);
+            }
+            else
+            {
+                MessageBox.Show("Bạn không đủ quyền hạn truy cập mục này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+        }
+
+        public void getAllPaymentMothod(ref List<PaymentMethod> pay)
+        {
+            
+        }
+
+        public bool DeletePaymentMethod(int pay)
+        {
+            if (UserRole == "Admin" && UserActive == "Active")
+            {
+                return dataAccess.DeletePaymentMethod(pay);
+            }
+            else
+            {
+                MessageBox.Show("Bạn không đủ quyền hạn truy cập mục này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+        }
+
+        
+        public bool UpdatePayMethod(PaymentMethod pay)
+        {
+            if (UserRole == "Admin" && UserActive == "Active")
+            {
+                return dataAccess.UpdatePaymentMethod(pay);
+            }
+            else
+            {
+                MessageBox.Show("Bạn không đủ quyền hạn truy cập mục này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+        }
+        // trangg chủ 
+
+        public void loadAdminDashboard(
+            ref float tongDoanhThu, ref int tongDonHang, ref int tongSanPham, ref int tongKhachHang,
+            ref List<Order> listNewOrder,
+            ref List<Product> listNewProduct,
+            ref List<Reprots> listNewReprots)
+        {
+            if (UserRole == "Admin" && UserActive == "Active")
+            {
+                dataAccess.loadAdminDashboard(ref tongDoanhThu, ref tongDonHang, ref tongSanPham, ref tongKhachHang, ref listNewOrder,ref listNewProduct, ref listNewReprots);
+            }
+            else
+            {
+                MessageBox.Show("Bạn không đủ quyền hạn truy cập mục này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

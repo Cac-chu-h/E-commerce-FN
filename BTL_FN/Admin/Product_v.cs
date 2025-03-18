@@ -11,6 +11,7 @@ using System.Windows.Forms;
 
 namespace BTL_FN
 {
+
     public partial class Product_v : Form
     {
         public BLL logic;

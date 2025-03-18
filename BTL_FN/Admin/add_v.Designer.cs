@@ -43,11 +43,15 @@ namespace BTL_FN
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(333, 360);
+            this.button1.Location = new System.Drawing.Point(344, 486);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(187, 35);
             this.button1.TabIndex = 34;
@@ -57,7 +61,7 @@ namespace BTL_FN
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(117, 360);
+            this.button2.Location = new System.Drawing.Point(128, 486);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(182, 35);
             this.button2.TabIndex = 35;
@@ -84,7 +88,7 @@ namespace BTL_FN
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(50, 123);
+            this.label3.Location = new System.Drawing.Point(50, 161);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(76, 17);
             this.label3.TabIndex = 39;
@@ -95,7 +99,7 @@ namespace BTL_FN
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "Chọn danh mục"});
-            this.comboBox1.Location = new System.Drawing.Point(194, 120);
+            this.comboBox1.Location = new System.Drawing.Point(194, 158);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(382, 24);
             this.comboBox1.TabIndex = 40;
@@ -119,7 +123,7 @@ namespace BTL_FN
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(50, 174);
+            this.label6.Location = new System.Drawing.Point(50, 212);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(73, 17);
             this.label6.TabIndex = 46;
@@ -130,21 +134,21 @@ namespace BTL_FN
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
             "Chọn danh mục"});
-            this.comboBox2.Location = new System.Drawing.Point(194, 174);
+            this.comboBox2.Location = new System.Drawing.Point(194, 212);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(382, 24);
             this.comboBox2.TabIndex = 49;
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(286, 232);
+            this.dateTimePicker1.Location = new System.Drawing.Point(294, 371);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 22);
             this.dateTimePicker1.TabIndex = 50;
             // 
             // dateTimePicker2
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(286, 290);
+            this.dateTimePicker2.Location = new System.Drawing.Point(294, 429);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(200, 22);
             this.dateTimePicker2.TabIndex = 51;
@@ -152,7 +156,7 @@ namespace BTL_FN
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(173, 236);
+            this.label2.Location = new System.Drawing.Point(181, 375);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(97, 17);
             this.label2.TabIndex = 52;
@@ -161,17 +165,54 @@ namespace BTL_FN
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(173, 292);
+            this.label5.Location = new System.Drawing.Point(181, 431);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(93, 17);
             this.label5.TabIndex = 53;
             this.label5.Text = "Ngày hết hạn";
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(194, 118);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(382, 22);
+            this.textBox1.TabIndex = 55;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(50, 123);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(92, 17);
+            this.label7.TabIndex = 54;
+            this.label7.Text = "Loại Voucher";
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(194, 263);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(382, 87);
+            this.richTextBox1.TabIndex = 56;
+            this.richTextBox1.Text = "";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(53, 263);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(43, 17);
+            this.label8.TabIndex = 57;
+            this.label8.Text = "Mô tả";
+            // 
             // add_v
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(640, 447);
+            this.ClientSize = new System.Drawing.Size(640, 551);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dateTimePicker2);
@@ -186,7 +227,7 @@ namespace BTL_FN
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-           // this.Name.Text = "add_v";
+            this.Name.Text = "add_voucher";
             this.Text = "add_v";
             this.Load += new System.EventHandler(this.add_v_Load);
             this.ResumeLayout(false);
@@ -210,5 +251,9 @@ namespace BTL_FN
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Label label8;
     }
 }

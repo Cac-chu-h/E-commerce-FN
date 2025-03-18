@@ -14,25 +14,6 @@ namespace BTL_FN
         public string logo = @"E:\C#\logo.jpg";
     }
 
-    public class Account
-    {
-        public int Id { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Role { get; set; }
-        public string Status { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public string password { get; set; }
-    }
-
-
-    public class Category
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int ParentId { get; set; } // Thiết lập quan hệ
-    }
 
     public class Product
     {
@@ -49,31 +30,49 @@ namespace BTL_FN
         public string Description { get; set; }
         public int Stock { get; set; }
     }
-
-    public class Order
-    {
-        public int Id { get; set; }
-        public int UserId { get; set; }
-        public DateTime OrderDate { get; set; }
-        public string Status { get; set; }
-        public decimal TotalAmount { get; set; }
-    }
-
     public class PaymentMethod
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Status { get; set; }
         public string Description { get; set; }
     }
-
-    public class PlatformConfig
+    public class Category
     {
-        public string Logo { get; set; }
-        public string Banner { get; set; }
-        public string SystemConfig { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int ParentId { get; set; } // Thiết lập quan hệ
     }
+    public class Account
+    {
+        public int Id { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Role { get; set; }
+        public string Status { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string password { get; set; }
+    }
+    public class Order
+    {
+        public int OrderID { get; set; }
+        public DateTime OrderDate { get; set; }
+        public decimal TotalAmount { get; set; }
+        public string Status { get; set; }
+        public string Notes { get; set; }
+        public int AccountId { get; set; }
+        public int UserID { get; set; }
+        public int PaymentMethodID { get; set; }
+        public DateTime ExpectedDeliveryDate { get; set; }
+        public string ShippingProvider { get; set; }
+        public string TrackingNumber { get; set; }
+        public int? VoucherId { get; set; }
+        public DateTime LastUpdated { get; set; }
+        public int AddressId { get; set; }
 
-
+        public string tenNguoiDat { get; set; }
+    }
     public class Voucher
     {
         public int Id { get; set; }             // Mã voucher
@@ -82,12 +81,40 @@ namespace BTL_FN
         public string TypeOf { get; set; }         // Mã danh mục (tham chiếu category)
         public decimal ValueOfVoucher { get; set; } // Giá trị voucher
         public int categoryId { get; set; }
+        public string voucherCode { get; set; }
         public string Status { get; set; }
+        public string Description { get; set; }
     }
+
+    public class Reprots
+    {
+        public int Id { get; set; }
+        public int IdNguoiDung { get; set; }
+        public int IdSanPham { get; set; }
+        public string NoiDung { get; set; }
+        public int TongPhanHoi { get; set; }
+        public string LoaiPhanHoi { get; set; }   // VD: "Đánh giá", "Phản hồi", "Khiếu nại"
+        public string TrangThai { get; set; }     // VD: "Đã giải quyết", "Đang xử lý"
+        public string ChuDe { get; set; }         // Chủ đề của phản hồi
+        public DateTime NgayDang { get; set; }
+        public int IdNguoiGiaiQuyet { get; set; }
+    }
+
+    // Cập nhật class Order để khớp với cấu trúc bảng Orders
+
+
+
+
+
+
+
+
+
+
 
     class DAL
     {
-        private static readonly string connectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=APPDB;Integrated Security=True";
+        private static readonly string connectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=BTL;Integrated Security=True";
         private SqlConnection connection;
 
         public DAL()
@@ -131,6 +158,34 @@ namespace BTL_FN
             }
         }
 
+        // Cập nhật phương thức ExecuteScalar
+        public void AmdinDefault(ref int soLuongDonHangDangCho, ref int soLuongDonHangDangChuanBi, ref int soLuongDonHangDangGiao, ref int soLuongDonHangHoanThanh, ref int soLuongDonHangBiHuy, ref int soLuongMatHangSapHetHang)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command1 = new SqlCommand("SELECT COUNT(Status) FROM Orders WHERE Status = 'Đang chờ'", connection);
+                 soLuongDonHangDangCho = (int)command1.ExecuteScalar();
+
+                SqlCommand command2 = new SqlCommand("SELECT COUNT(Status) FROM Orders WHERE Status = 'Đang chuẩn bị'", connection);
+                 soLuongDonHangDangChuanBi = (int)command2.ExecuteScalar();
+
+                SqlCommand command3 = new SqlCommand("SELECT COUNT(Status) FROM Orders WHERE Status = 'Đang giao'", connection);
+                 soLuongDonHangDangGiao = (int)command3.ExecuteScalar();
+
+                SqlCommand command4 = new SqlCommand("SELECT COUNT(Status) FROM Orders WHERE Status = 'Hoàn thành'", connection);
+                 soLuongDonHangHoanThanh = (int)command4.ExecuteScalar();
+
+                SqlCommand command5 = new SqlCommand("SELECT COUNT(Status) FROM Orders WHERE Status = 'Đơn hủy'", connection);
+                 soLuongDonHangBiHuy = (int)command5.ExecuteScalar();
+
+                SqlCommand command6 = new SqlCommand("SELECT COUNT(*) FROM product WHERE i_Totals < 10", connection);
+                 soLuongMatHangSapHetHang = (int)command6.ExecuteScalar();
+            }
+        }
+
+
 
         // quản lý vấn đề tài khoản
 
@@ -140,7 +195,7 @@ namespace BTL_FN
             try
             {
                 OpenConnection();
-                string query = "SELECT * FROM account";
+                string query = "SELECT * FROM tk";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -149,11 +204,11 @@ namespace BTL_FN
                         {
                             Account user = new Account()
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("i_Id")),
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
                                 Username = reader.GetString(reader.GetOrdinal("s_UserName")),
                                 Email = reader.GetString(reader.GetOrdinal("s_Email")),
                                 Role = reader.GetString(reader.GetOrdinal("s_Role")),
-                                Status = reader.GetInt32(reader.GetOrdinal("i_isActive")) == 1 ? "Active" : "Inactive",
+                                Status = reader.GetString(reader.GetOrdinal("s_Active")),
                                 CreatedDate = reader.GetDateTime(reader.GetOrdinal("d_CreateDate"))
                             };
                             userList.Add(user);
@@ -164,7 +219,7 @@ namespace BTL_FN
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"[Error] {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"[Error] 4 {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
             finally
@@ -195,7 +250,7 @@ namespace BTL_FN
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"[Error] {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"[Error] 3 {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
             finally
@@ -203,6 +258,50 @@ namespace BTL_FN
                 CloseConnection();
             }
         }
+
+        public bool AddUser(Account a)
+        {
+            int newID = getMaxID() + 1; // Lấy ID mới
+            string query = @"INSERT INTO [account]
+            (i_Id, s_UserName, s_PassWord, s_Email, s_Image, s_Role, s_Active, d_CreateDate)
+            VALUES (@id, @Username, @Password, @Email, @image, @Role, @Status, @CreatedDate)";
+
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    { "@id", newID }, // Gán ID mới
+                    { "@Username", a.Username },
+                    { "@Password", a.password },
+                    { "@Email", a.Email },
+                    { "@image", new BLL().logo },
+                    { "@Role", "User" },
+                    { "@Status", "Active" },
+                    { "@CreatedDate", DateTime.Now }
+                };
+
+            return ExecuteNonQuery(query, parameters);
+        }
+
+
+        public int getMaxID()
+        {
+            string query = "SELECT MAX(i_Id) AS MaxID FROM [account]";
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                connection.Open();
+                object result = cmd.ExecuteScalar();
+                connection.Close();
+
+                if (result != DBNull.Value && result != null)
+                {
+                    return Convert.ToInt32(result);
+                }
+                else
+                {
+                    return 0; // Trả về 0 nếu không có bản ghi nào
+                }
+            }
+        }
+
 
         public bool BanUser(int userId) => ExecuteNonQuery("UPDATE account SET i_isActive = 0 WHERE i_Id = @UserId", new Dictionary<string, object> { { "@UserId", userId } });
 
@@ -227,13 +326,14 @@ namespace BTL_FN
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"[Error] {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return 0;
+                MessageBox.Show($"[Error] 2 {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                
             }
             finally
             {
                 CloseConnection();
             }
+            return 0;
         }
 
         public List<Account> FindUser(string query, string ids, string uname, string uemail)
@@ -267,7 +367,7 @@ namespace BTL_FN
                                 Username = reader.GetString(reader.GetOrdinal("s_UserName")),
                                 Email = reader.GetString(reader.GetOrdinal("s_Email")),
                                 Role = reader.GetString(reader.GetOrdinal("s_Role")),
-                                Status = reader.GetInt32(reader.GetOrdinal("i_isActive")) == 1 ? "Active" : "Inactive",
+                                Status = reader.GetString(reader.GetOrdinal("s_Active")),
                                 CreatedDate = reader.GetDateTime(reader.GetOrdinal("d_CreateDate"))
                             };
                             userList.Add(user);
@@ -278,7 +378,7 @@ namespace BTL_FN
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"[Error] {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"[Error] 1 {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
             finally
@@ -328,7 +428,7 @@ namespace BTL_FN
             try
             {
                 OpenConnection();
-                string query = "SELECT i_id, categoryName, mota, danhMucCha FROM category";
+                string query = "SELECT id, tenDanhMuc, moTa, danhMucCha FROM dm";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -407,7 +507,7 @@ namespace BTL_FN
             });
 
         public bool UpdateProduct(Product product) => ExecuteNonQuery(
-            "UPDATE product SET s_ProductName = @Name, s_Description = @Description, s_ProductImage = @ProductImage, i_Totals = @Stock, i_Status = @Status, i_Rating = @Rating, d_UpdatedDate = @UpdatedDate, f_Price = @Price, i_TotalPay = @TotalPay, i_CategoryID = @CategoryID WHERE i_Id = @Id",
+            "UPDATE sp SET tenSP = @Name, moTa = @Description, hinh = @ProductImage, khoiLuong = @Stock, TrangThai = @Status, danh_gia = @Rating, ngay_cap_nhat = @UpdatedDate, gia = @Price, da_ban = @TotalPay, dm = @CategoryID WHERE id = @Id",
             new Dictionary<string, object> {
                 { "@Id", product.Id },
                 { "@Name", product.Name },
@@ -535,20 +635,22 @@ namespace BTL_FN
 
         // quản lý vấn đề voucher 
         public bool AddVoucher(Voucher voucher) => ExecuteNonQuery(
-            "INSERT INTO voucherModule (id, startDate, endDate, typeOf, valueOfVoucher, categoryId, i_Status) " +
-            "VALUES (@Id, @StartDate, @EndDate, @TypeOf, @ValueOfVoucher, @CategoryId, @Status)",
+            "INSERT INTO voucherModule (id, startDate, endDate, typeOf, valueOfVoucher, categoryId, i_Status, VoucherCode, Description) " +
+            "VALUES (@Id, @StartDate, @EndDate, @TypeOf, @ValueOfVoucher, @CategoryId, @Status, @VoucherCode, @Description)",
             new Dictionary<string, object> {
                 { "@Id", voucher.Id },
                 { "@StartDate", voucher.StartDate },
                 { "@EndDate", voucher.EndDate },
                 { "@TypeOf", voucher.TypeOf },
                 { "@ValueOfVoucher", voucher.ValueOfVoucher },
+                { "@VoucherCode" , voucher.voucherCode},
                 { "@CategoryId", voucher.categoryId },
-                { "@Status", voucher.Status }
+                { "@Status", voucher.Status },
+                { "@Description", voucher.Description }
             });
 
         public bool UpdateVoucher(Voucher voucher) => ExecuteNonQuery(
-            "UPDATE voucherModule SET startDate = @StartDate, endDate = @EndDate, typeOf = @TypeOf, valueOfVoucher = @ValueOfVoucher, categoryId = @CategoryId, i_Status = @Status WHERE id = @Id",
+            "UPDATE voucherModule SET startDate = @StartDate, endDate = @EndDate, typeOf = @TypeOf, valueOfVoucher = @ValueOfVoucher, categoryId = @CategoryId, i_Status = @Status, VoucherCode = @VoucherCode, Description =  @Description WHERE id = @Id",
             new Dictionary<string, object> {
                 { "@Id", voucher.Id },
                 { "@StartDate", voucher.StartDate },
@@ -556,7 +658,9 @@ namespace BTL_FN
                 { "@TypeOf", voucher.TypeOf },
                 { "@ValueOfVoucher", voucher.ValueOfVoucher },
                 { "@CategoryId", voucher.categoryId },
-                { "@Status", voucher.Status }
+                { "@Status", voucher.Status },
+                { "@VoucherCode" , voucher.voucherCode},
+                { "@Description", voucher.Description }
             });
 
         public bool DeleteVoucher(int id) => ExecuteNonQuery("DELETE FROM voucherModule WHERE id = @Id", new Dictionary<string, object> { { "@Id", id } });
@@ -613,7 +717,7 @@ namespace BTL_FN
                         {
                             Voucher voucher = new Voucher()
                             {
-                                Id = Convert.ToInt32(reader["id"]),
+                                Id = Convert.ToInt32(reader["[VoucherCode]"]),
                                 StartDate = Convert.ToDateTime(reader["startDate"]),
                                 EndDate = Convert.ToDateTime(reader["endDate"]),
                                 TypeOf = reader["typeOf"].ToString(),
@@ -670,61 +774,110 @@ namespace BTL_FN
         // phê duyệt 
         // xóa
         // tìm kiểm 
-        public DataTable GetAllOrders()
+        // Hàm trả về List<Order>
+        public List<Order> GetAllOrders(string query)
         {
+            List<Order> orders = new List<Order>();
+
             try
             {
-                OpenConnection();
-                string query = "SELECT * FROM Orders";
-                using (SqlCommand cmd = new SqlCommand(query, connection))
-                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    return dt;
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                orders.Add(new Order
+                                {
+                                    OrderID = reader.GetInt32(0),
+                                    OrderDate = reader.GetDateTime(1),
+                                    TotalAmount = reader.GetDecimal(2),
+                                    Status = reader.GetString(3),
+                                    Notes = reader.IsDBNull(4) ? null : reader.GetString(4),
+                                    AccountId = reader.GetInt32(5),
+                                    UserID = reader.GetInt32(6),
+                                    PaymentMethodID = reader.GetInt32(7),
+                                    ExpectedDeliveryDate = reader.GetDateTime(8),
+                                    ShippingProvider = reader.GetString(9),
+                                    TrackingNumber = reader.GetString(10),
+                                    VoucherId = reader.IsDBNull(11) ? (int?)null : reader.GetInt32(11),
+                                    LastUpdated = reader.GetDateTime(12),
+                                    AddressId = reader.GetInt32(13)
+                                });
+                            }
+                        }
+                    }
                 }
+                return orders;
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"[Error] {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
-            finally
-            {
-                CloseConnection();
-            }
         }
 
-        public bool ApproveOrder(int orderId) => ExecuteNonQuery("UPDATE Orders SET Status = 'Approved' WHERE Id = @OrderId", new Dictionary<string, object> { { "@OrderId", orderId } });
+        public bool ApproveOrder(int orderId, string status) => ExecuteNonQuery($"UPDATE Orders SET Status = '{status}' WHERE Id = @OrderId", new Dictionary<string, object> { { "@OrderId", orderId } });
+
+        public bool UpdateOrders(Order va) => ExecuteNonQuery($"UPDATE Orders SET Status = '' WHERE Id = @OrderId", new Dictionary<string, object> { { "@OrderId", va.OrderID } });
 
         public bool DeleteOrder(int orderId) => ExecuteNonQuery("DELETE FROM Orders WHERE Id = @OrderId", new Dictionary<string, object> { { "@OrderId", orderId } });
 
-        public DataTable SearchOrders(string keyword)
+        public List<Order> SearchOrders(string customerName = null, string voucherId = null)
         {
+            List<Order> orders = new List<Order>();
             try
             {
                 OpenConnection();
-                string query = "SELECT * FROM Orders WHERE Status LIKE @Keyword";
-                using (SqlCommand cmd = new SqlCommand(query, connection))
+
+                using (SqlCommand cmd = new SqlCommand("sp_SearchOrders", connection))
                 {
-                    cmd.Parameters.AddWithValue("@Keyword", $"%{keyword}%");
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Add parameters - passing NULL if empty
+                    cmd.Parameters.AddWithValue("@CustomerName", string.IsNullOrWhiteSpace(customerName) ? DBNull.Value : (object)customerName);
+                    cmd.Parameters.AddWithValue("@VoucherID", string.IsNullOrWhiteSpace(voucherId) ? DBNull.Value : (object)voucherId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        DataTable dt = new DataTable();
-                        adapter.Fill(dt);
-                        return dt;
+                        while (reader.Read())
+                        {
+                            Order order = new Order
+                            {
+                                OrderID = reader.GetInt32(0),
+                                OrderDate = reader.GetDateTime(1),
+                                TotalAmount = reader.GetDecimal(2),
+                                Status = reader.GetString(3),
+                                Notes = reader.IsDBNull(4) ? null : reader.GetString(4),
+                                AccountId = reader.GetInt32(5),
+                                UserID = reader.GetInt32(6),
+                                PaymentMethodID = reader.GetInt32(7),
+                                ExpectedDeliveryDate = reader.GetDateTime(8),
+                                ShippingProvider = reader.GetString(9),
+                                TrackingNumber = reader.GetString(10),
+                                VoucherId = reader.IsDBNull(11) ? (int?)null : reader.GetInt32(11),
+                                LastUpdated = reader.GetDateTime(12),
+                                AddressId = reader.GetInt32(13)
+                            };
+
+                            orders.Add(order);
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"[Error] {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
             }
             finally
             {
                 CloseConnection();
             }
+
+            return orders;
         }
 
         // quản lý vấn đề thanh toán 
@@ -732,26 +885,35 @@ namespace BTL_FN
         // lấy ra các phương thức thanh toàn hiện có 
         // chỉnh sửa 
         // xóa 
-        public bool AddPaymentMethod(PaymentMethod paymentMethod) => ExecuteNonQuery("INSERT INTO PaymentMethods (Name, Description) VALUES (@Name, @Description)", new Dictionary<string, object> { { "@Name", paymentMethod.Name }, { "@Description", paymentMethod.Description } });
+        public bool AddPaymentMethod(PaymentMethod paymentMethod) => ExecuteNonQuery("INSERT INTO PaymentMethods (MethodName, Status, Description) VALUES (@Name, @Status, @Description)", new Dictionary<string, object> { { "@Name", paymentMethod.Name }, { "@Status", paymentMethod.Status}, { "@Description", paymentMethod.Description } });
 
-        public DataTable GetAllPaymentMethods()
+        public List<PaymentMethod> GetAllPaymentMethods()
         {
             try
             {
                 OpenConnection();
                 string query = "SELECT * FROM PaymentMethods";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
-                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    return dt;
+                    List<PaymentMethod> paymentMethods = new List<PaymentMethod>();
+                    while (reader.Read())
+                    {
+                        PaymentMethod method = new PaymentMethod
+                        {
+                            Name = reader["MethodName"].ToString(),
+                            Status = Convert.ToString(reader["Status"]),
+                            Description = reader["Description"].ToString()
+                        };
+                        paymentMethods.Add(method);
+                    }
+                    return paymentMethods;
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"[Error] {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
+                return new List<PaymentMethod>();
             }
             finally
             {
@@ -759,14 +921,15 @@ namespace BTL_FN
             }
         }
 
-        public bool UpdatePaymentMethod(PaymentMethod paymentMethod) => ExecuteNonQuery("UPDATE PaymentMethods SET Name = @Name, Description = @Description WHERE Id = @Id", new Dictionary<string, object> { { "@Id", paymentMethod.Id }, { "@Name", paymentMethod.Name }, { "@Description", paymentMethod.Description } });
 
-        public bool DeletePaymentMethod(int paymentMethodId) => ExecuteNonQuery("DELETE FROM PaymentMethods WHERE Id = @Id", new Dictionary<string, object> { { "@Id", paymentMethodId } });
+        public bool UpdatePaymentMethod(PaymentMethod paymentMethod) => ExecuteNonQuery("UPDATE PaymentMethods SET MethodName = @Name, Status = @Status, Description = @Description WHERE PaymentMethodID = @Id", new Dictionary<string, object> { { "@Id", paymentMethod.Id }, { "@Name", paymentMethod.Name }, { "@Status", paymentMethod.Status }, { "@Description", paymentMethod.Description } });
+
+        public bool DeletePaymentMethod(int paymentMethodId) => ExecuteNonQuery("DELETE FROM PaymentMethods WHERE PaymentMethodID = @Id", new Dictionary<string, object> { { "@Id", paymentMethodId } });
         // quản lý vấn đề liên quan đến nền tảng 
         // thay thế logo
         // thay thế banner 
         // cấu hình hệ thống
-        public bool UpdatePlatformConfig(PlatformConfig config) => ExecuteNonQuery("UPDATE PlatformConfig SET Logo = @Logo, Banner = @Banner, SystemConfig = @SystemConfig", new Dictionary<string, object> { { "@Logo", config.Logo }, { "@Banner", config.Banner }, { "@SystemConfig", config.SystemConfig } });
+        //public bool UpdatePlatformConfig(Admin.PlatformConfig config) => ExecuteNonQuery("UPDATE PlatformConfig SET Logo = @Logo, Banner = @Banner, SystemConfig = @SystemConfig", new Dictionary<string, object> { { "@Logo", config.Logo }, { "@Banner", config.Banner }, { "@SystemConfig", config.SystemConfig } });
 
         public DataTable GetPlatformConfig()
         {
@@ -786,6 +949,117 @@ namespace BTL_FN
             {
                 MessageBox.Show($"[Error] {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
+            }
+            finally
+            {
+                CloseConnection();
+            }
+        }
+
+
+        public void loadAdminDashboard(
+            ref float tongDoanhThu, ref int tongDonHang, ref int tongSanPham, ref int tongKhachHang,
+            ref List<Order> listNewOrder,
+            ref List<Product> listNewProduct,
+            ref List<Reprots> listNewReprots)
+        {
+            try
+            {
+                OpenConnection();
+
+                using (SqlCommand cmd = new SqlCommand("SELECT SUM(Total) FROM OrderDetails", connection))
+                {
+                    object result = cmd.ExecuteScalar();
+                    tongDoanhThu = result != DBNull.Value ? Convert.ToInt32(result) : 0;
+                }
+
+                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Orders", connection))
+                {
+                    object result = cmd.ExecuteScalar();
+                    tongDonHang = result != DBNull.Value ? Convert.ToInt32(result) : 0;
+                }
+                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM sp", connection))
+                {
+                    object result = cmd.ExecuteScalar();
+                    tongSanPham = result != DBNull.Value ? Convert.ToInt32(result) : 0;
+                }
+                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM tk", connection))
+                {
+                    object result = cmd.ExecuteScalar();
+                    tongKhachHang = result != DBNull.Value ? Convert.ToInt32(result) : 0;
+                }
+
+                using(SqlCommand cmd = new SqlCommand("SELECT TOP 10 * FROM phanHoi WHERE [trangThaiXoa] != N'Đã xóa' ORDER BY id DESC", connection))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Reprots product = new Reprots()
+                            {
+                                Id = Convert.ToInt32(reader["id"]),
+                                IdNguoiDung = Convert.ToInt32(reader["idNguoiDung"]),
+                                IdSanPham = Convert.ToInt32(reader["idSanPham"]),
+                                ChuDe = reader["chuDe"]?.ToString(),
+                                NoiDung = reader["noiDung"].ToString(),
+                                TrangThai = Convert.ToString(reader["TrangThai"]),
+                                TongPhanHoi = Convert.ToInt32(reader["tongPhanHoi"]),
+                                NgayDang = Convert.ToDateTime(reader["ngayDang"]),
+                                IdNguoiGiaiQuyet = Convert.ToInt32(reader["idNguoiGiaiQuyet"])
+                            };
+                            listNewReprots.Add(product);
+                        }
+                    }
+                }
+
+                using (SqlCommand cmd = new SqlCommand("SELECT TOP 10 * FROM sp WHERE [trangThaiXoa] != N'Đã xóa' ORDER BY id DESC", connection))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Product product = new Product()
+                            {
+                                Id = Convert.ToInt32(reader["id"]),
+                                Name = reader["tenSP"].ToString(),
+                                Description = reader["moTa"]?.ToString() ?? string.Empty,
+                                Image = reader["hinh"]?.ToString() ?? string.Empty,
+                                Total = Convert.ToInt32(reader["khoiLuong"] ?? 0),
+                                Status = Convert.ToString(reader["TrangThai"]),
+                                Rating = Convert.ToInt32(reader["danh_gia"]),
+                                dateAdd = Convert.ToDateTime(reader["ngay_tao"]),
+                                Price = Convert.ToDecimal(reader["gia"]),
+                                TotalPay = Convert.ToInt32(reader["da_ban"]),
+                                CategoryId = Convert.ToInt32(reader["dm"])
+                            };
+                            listNewProduct.Add(product);
+                        }
+                    }
+                }
+
+
+                using (SqlCommand cmd = new SqlCommand("SELECT TOP 10 * FROM v_tongQuanDonHang ORDER BY MaDonHang DESC", connection))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Order product = new Order()
+                            {
+                                OrderID = Convert.ToInt32(reader["MaDonHang"]),
+                                tenNguoiDat = Convert.ToString(reader["TenNguoiDat"]),
+                                Status = reader["TrangThaiDonHang"].ToString(),
+                                TotalAmount = Convert.ToInt32(reader["TongTien"]),
+                                OrderDate = Convert.ToDateTime(reader["NgayDatHang"])
+                            };
+                            listNewOrder.Add(product);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -814,6 +1088,13 @@ namespace BTL_FN
         // thanh toán 
         // vấn đề về thanh chat 
         // vần đề liên quan đến bình luận về sản phẩm 
+
+
+
+
+
+
+        // load lại giá trị 
 
     }
 }

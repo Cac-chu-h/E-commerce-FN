@@ -44,7 +44,8 @@ namespace BTL_FN
             {
                 try
                 {
-                    Name.Text = value.TypeOf;
+                    Name.Text = value.voucherCode;
+                    textBox1.Text = value.TypeOf;
                     string categoryName = "";
                     Price.Text = value.ValueOfVoucher + "";
                     foreach (Category c in categories)
@@ -60,6 +61,8 @@ namespace BTL_FN
 
                     dateTimePicker1.Value = Convert.ToDateTime(value.StartDate);
                     dateTimePicker2.Value = Convert.ToDateTime(value.EndDate);
+
+                    richTextBox1.Text = value.Description;
                 }
                 catch(Exception ex)
                 {
@@ -94,7 +97,17 @@ namespace BTL_FN
                     return;
                 }
 
-                this.value.TypeOf = Name.Text;
+                if (string.IsNullOrEmpty(textBox1.Text))
+                {
+                    MessageBox.Show("Tên sản phẩm không được để trống!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    textBox1.Focus();
+                    return;
+                }
+
+                this.value.voucherCode = Name.Text;
+                this.value.TypeOf = textBox1.Text;
+
+                this.value.Description = richTextBox1.Text;
                 if (!decimal.TryParse(Price.Text, out decimal price))
                 {
                     MessageBox.Show("Giá sản phẩm phải là số hợp lệ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);

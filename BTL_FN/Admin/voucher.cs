@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 namespace BTL_FN
 {
+
     public partial class voucher : Form
     {
 
@@ -89,7 +90,8 @@ namespace BTL_FN
             DataTable displayTable = new DataTable();
             displayTable.Columns.Add("Chọn", typeof(bool));
             displayTable.Columns.Add("STT", typeof(int));
-            displayTable.Columns.Add("Tên voucher", typeof(string));
+            displayTable.Columns.Add("Loại voucher", typeof(string));
+            displayTable.Columns.Add("Mã voucher", typeof(string));
             displayTable.Columns.Add("Danh mục", typeof(string));
             displayTable.Columns.Add("Giá trị", typeof(decimal));
             displayTable.Columns.Add("Trạng thái", typeof(string));
@@ -108,7 +110,7 @@ namespace BTL_FN
                         string categoryName = categoryNames.ContainsKey(voucher.categoryId) ? categoryNames[voucher.categoryId] : "Không xác định";
                         string status = voucher.Status;
 
-                        displayTable.Rows.Add(false, i + 1, voucher.TypeOf, categoryName, voucher.ValueOfVoucher, status, "Chỉnh sửa", "Xóa");
+                        displayTable.Rows.Add(false, i + 1, voucher.TypeOf, voucher.voucherCode, categoryName, voucher.ValueOfVoucher, status, "Chỉnh sửa", "Xóa");
                     }
                     catch (Exception ex)
                     {
@@ -133,7 +135,7 @@ namespace BTL_FN
                         if (e.RowIndex >= 0)
                         {
                             Voucher voucher = vouchers[e.RowIndex];
-                            if (e.ColumnIndex == 6)
+                            if (e.ColumnIndex == 7)
                             {
                                 add_v p = new add_v(voucher, ListCategory);
                                 if (p.ShowDialog() == DialogResult.OK)
@@ -159,7 +161,7 @@ namespace BTL_FN
                                     
                                 }
                             }
-                            else if (e.ColumnIndex == 7)
+                            else if (e.ColumnIndex == 8)
                             {
                                 if (MessageBox.Show($"Bạn có chắc chắn muốn xóa voucher {voucher.TypeOf}?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                                 {
@@ -179,12 +181,13 @@ namespace BTL_FN
                             {
                                 try
                                 {
-                                    selected.Add(voucher.Id);
+                                    
                                     DataGridViewCheckBoxCell chk = (DataGridViewCheckBoxCell)dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
 
                                     if (chk.Value == null || (bool)chk.Value == false)
                                     {
                                         chk.Value = true;
+                                        selected.Add(voucher.Id);
                                     }
                                     else
                                     {

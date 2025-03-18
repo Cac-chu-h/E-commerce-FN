@@ -15,7 +15,13 @@ E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.add_cs.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.add_p.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.voucher.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.add_v.resources
-E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Product_v.resources
-E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.ProgramView.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.addAcount.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.loginView.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Product_u.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.OrdersDetail.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.AddPaymentMethods.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.Reprot.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.AdminProgram.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.Orders.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.PaymentMethods.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Product_v.resources

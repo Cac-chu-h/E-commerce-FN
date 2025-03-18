@@ -11,6 +11,8 @@ using System.Windows.Forms;
 
 namespace BTL_FN
 {
+
+
     public partial class account : Form
     {
         // Giá trị mặc định 
@@ -38,7 +40,7 @@ namespace BTL_FN
                     // Xóa tài khoản đã chọn
                     foreach (var acc in selectedAccounts)
                     {
-                        if (logic.DeleteAccount(acc.Id))
+                        if (logic.DeleteAccount(acc.Id, acc.Role))
                         {
                             MessageBox.Show("Thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             accountList.Remove(acc);
@@ -75,7 +77,7 @@ namespace BTL_FN
                         {
                             status = "Active";
                         }
-                        if (logic.BanAccount(acc.Id, status))
+                        if (logic.BanAccount(acc.Id, status, acc.Role))
                         {
                             MessageBox.Show("Thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             acc.Status = status;
@@ -308,13 +310,16 @@ namespace BTL_FN
                     };
 
                     string status;
+                    string value;
                     if (account.Status == "Active")
                     {
                         status = "Chặn";
+                        value = "InActive";
                     }
                     else
                     {
                         status = "Bỏ chặn";
+                        value = "Active";
                     }
 
                     // Thêm nút chỉnh sửa
@@ -332,8 +337,15 @@ namespace BTL_FN
                         Button btn = sender as Button;
                         Account acc = btn.Tag as Account;
                         // Mở form chỉnh sửa tài khoản
-                        MessageBox.Show($"{status} tài khoản: {acc.Username}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                        if(MessageBox.Show($"{status} tài khoản: {acc.Username}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information) == DialogResult.OK)
+                        {
+                            if(logic.BanAccount(acc.Id, value, acc.Role))
+                            {
+                                MessageBox.Show("Thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                LoadData();
+                                LoadAccountData();
+                            }
+                        }
                     };
 
                     // Thêm nút xóa
@@ -355,11 +367,12 @@ namespace BTL_FN
                                            "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
                             
-                            if (logic.DeleteAccount(acc.Id))
+                            if (logic.DeleteAccount(acc.Id, acc.Role))
                             {
                                 MessageBox.Show("Thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 accountList.Remove(acc);
                             }
+                            LoadData();
                             LoadAccountData();
                         }
                     };
@@ -463,6 +476,14 @@ namespace BTL_FN
             {
                 MessageBox.Show("Không tìm thấy tài khoản!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            button4.Visible = true;
+        }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            LoadData();
+            LoadAccountData();
+            button4.Visible = false;
         }
     }
 

@@ -46,49 +46,91 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="account.cs">
+    <Compile Include="Admin\account.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="account.Designer.cs">
+    <Compile Include="Admin\account.Designer.cs">
       <DependentUpon>account.cs</DependentUpon>
     </Compile>
-    <Compile Include="addAcount.cs">
+    <Compile Include="Admin\addAcount.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="addAcount.Designer.cs">
+    <Compile Include="Admin\addAcount.Designer.cs">
       <DependentUpon>addAcount.cs</DependentUpon>
     </Compile>
-    <Compile Include="add_cs.cs">
+    <Compile Include="Admin\AddPaymentMethods.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="add_cs.Designer.cs">
+    <Compile Include="Admin\AddPaymentMethods.Designer.cs">
+      <DependentUpon>AddPaymentMethods.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\add_cs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\add_cs.Designer.cs">
       <DependentUpon>add_cs.cs</DependentUpon>
     </Compile>
-    <Compile Include="add_p.cs">
+    <Compile Include="Admin\add_p.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="add_p.Designer.cs">
+    <Compile Include="Admin\add_p.Designer.cs">
       <DependentUpon>add_p.cs</DependentUpon>
     </Compile>
-    <Compile Include="add_v.cs">
+    <Compile Include="Admin\add_v.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="add_v.Designer.cs">
+    <Compile Include="Admin\add_v.Designer.cs">
       <DependentUpon>add_v.cs</DependentUpon>
     </Compile>
-    <Compile Include="admin.cs">
+    <Compile Include="Admin\admin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="admin.Designer.cs">
+    <Compile Include="Admin\admin.Designer.cs">
       <DependentUpon>admin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\AdminProgram.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\AdminProgram.Designer.cs">
+      <DependentUpon>AdminProgram.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Orders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\Orders.Designer.cs">
+      <DependentUpon>Orders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\OrdersDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\OrdersDetail.Designer.cs">
+      <DependentUpon>OrdersDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\PaymentMethods.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\PaymentMethods.Designer.cs">
+      <DependentUpon>PaymentMethods.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Reprot.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\Reprot.Designer.cs">
+      <DependentUpon>Reprot.cs</DependentUpon>
     </Compile>
     <Compile Include="BLL.cs" />
     <Compile Include="DAL.cs" />
-    <Compile Include="category.cs">
+    <Compile Include="Admin\category.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="category.Designer.cs">
+    <Compile Include="Admin\category.Designer.cs">
       <DependentUpon>category.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Product_u.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Product_u.Designer.cs">
+      <DependentUpon>Product_u.cs</DependentUpon>
     </Compile>
     <Compile Include="loginView.cs">
       <SubType>Form</SubType>
@@ -96,19 +138,13 @@
     <Compile Include="loginView.Designer.cs">
       <DependentUpon>loginView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Product_v.cs">
+    <Compile Include="Admin\Product_v.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Product_v.Designer.cs">
+    <Compile Include="Admin\Product_v.Designer.cs">
       <DependentUpon>Product_v.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="ProgramView.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProgramView.Designer.cs">
-      <DependentUpon>ProgramView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrangChu.cs">
       <SubType>Form</SubType>
@@ -116,41 +152,59 @@
     <Compile Include="TrangChu.Designer.cs">
       <DependentUpon>TrangChu.cs</DependentUpon>
     </Compile>
-    <Compile Include="voucher.cs">
+    <Compile Include="Admin\voucher.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="voucher.Designer.cs">
+    <Compile Include="Admin\voucher.Designer.cs">
       <DependentUpon>voucher.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="account.resx">
+    <EmbeddedResource Include="Admin\account.resx">
       <DependentUpon>account.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="addAcount.resx">
+    <EmbeddedResource Include="Admin\addAcount.resx">
       <DependentUpon>addAcount.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="add_cs.resx">
+    <EmbeddedResource Include="Admin\AddPaymentMethods.resx">
+      <DependentUpon>AddPaymentMethods.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\add_cs.resx">
       <DependentUpon>add_cs.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="add_p.resx">
+    <EmbeddedResource Include="Admin\add_p.resx">
       <DependentUpon>add_p.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="add_v.resx">
+    <EmbeddedResource Include="Admin\add_v.resx">
       <DependentUpon>add_v.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="admin.resx">
+    <EmbeddedResource Include="Admin\admin.resx">
       <DependentUpon>admin.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="category.resx">
+    <EmbeddedResource Include="Admin\AdminProgram.resx">
+      <DependentUpon>AdminProgram.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\category.resx">
       <DependentUpon>category.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\Orders.resx">
+      <DependentUpon>Orders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\OrdersDetail.resx">
+      <DependentUpon>OrdersDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\PaymentMethods.resx">
+      <DependentUpon>PaymentMethods.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\Reprot.resx">
+      <DependentUpon>Reprot.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="loginView.resx">
       <DependentUpon>loginView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Product_v.resx">
-      <DependentUpon>Product_v.cs</DependentUpon>
+    <EmbeddedResource Include="Product_u.resx">
+      <DependentUpon>Product_u.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProgramView.resx">
-      <DependentUpon>ProgramView.cs</DependentUpon>
+    <EmbeddedResource Include="Admin\Product_v.resx">
+      <DependentUpon>Product_v.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -164,7 +218,7 @@
     <EmbeddedResource Include="TrangChu.resx">
       <DependentUpon>TrangChu.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="voucher.resx">
+    <EmbeddedResource Include="Admin\voucher.resx">
       <DependentUpon>voucher.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">

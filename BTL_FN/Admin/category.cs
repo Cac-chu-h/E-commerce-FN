@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 namespace BTL_FN
 {
+
     public partial class category : Form
     {
         BLL logic;
@@ -121,22 +122,28 @@ namespace BTL_FN
                     {
                         if (MessageBox.Show($"Bạn có chắc chắn muốn chỉnh sửa danh mục {category.Name}?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes || isChanged)
                         {
-                            if (id.Contains(category.ParentId))
+
+                            add_cs view = new add_cs(category, id);
+                            view.Show();
+                            if(view.DialogResult == DialogResult.OK)
                             {
-                                if (logic.UpdateCategory(category))
+                                category = view.category;
+                                if (id.Contains(category.ParentId))
                                 {
-                                    MessageBox.Show("Cập nhật thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    if (logic.UpdateCategory(category))
+                                    {
+                                        MessageBox.Show("Cập nhật thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                        LoadData();
+                                        LoadAccountData();
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Không tồn tại giá trị danh mục cha!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     LoadData();
                                     LoadAccountData();
                                 }
                             }
-                            else
-                            {
-                                MessageBox.Show("Không tồn tại giá trị danh mục cha!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                LoadData();
-                                LoadAccountData();
-                            }
-                            
                         }
                     }
                     else if (e.ColumnIndex == 6) // Xóa

@@ -12,11 +12,18 @@ namespace BTL_FN
 {
     public partial class add_cs : Form
     {
-        public Category category = new Category();
+        public Category category = null;
         public List<int> id = new List<int>();
         public add_cs(List<int> id)
         {
             this.id = id;
+            InitializeComponent();
+        }
+
+        public add_cs(Category c, List<int> id)
+        {
+            this.id = id;
+            this.category = c;
             InitializeComponent();
         }
 
@@ -26,6 +33,18 @@ namespace BTL_FN
             foreach (int i in id)
             {
                 comboBox1.Items.Add(i);
+            }
+
+            if(category != null)
+            {
+                textBox1.Text = category.Name;
+                textBox2.Text = category.Description;
+                comboBox1.SelectedIndex = category.ParentId != 0 ? category.ParentId : 1;
+            }
+            else
+            {
+                category = new Category();
+                this.category.Id = id.Count > 0 ? id.Max() + 1 : 1;
             }
         }
 
@@ -45,7 +64,7 @@ namespace BTL_FN
                 return;
             }
 
-            this.category.Id = id.Count > 0 ? id.Max() + 1 : 1;
+            
             this.category.Name = textBox1.Text;
             this.category.Description = textBox2.Text;
 
