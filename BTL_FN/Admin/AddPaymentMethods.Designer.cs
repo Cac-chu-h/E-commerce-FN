@@ -97,8 +97,8 @@ namespace BTL_FN.Admin
             // 
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
-            "Đang hoạt động ",
-            "Hết hạn "});
+            "Hoạt động ",
+            "Bị khóa"});
             this.comboBox1.Location = new System.Drawing.Point(54, 118);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(445, 24);

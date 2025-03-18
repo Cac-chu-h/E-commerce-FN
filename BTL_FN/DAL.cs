@@ -46,14 +46,17 @@ namespace BTL_FN
     }
     public class Account
     {
-        public int Id { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Role { get; set; }
-        public string Status { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public string password { get; set; }
+        public int Id { get; set; }                // [id]
+        public string Username { get; set; }       // [ten_dn]
+        public string Password { get; set; }       // [mk]
+        public string Email { get; set; }          // [email]
+        public string Avatar { get; set; }         // [hinh]
+        public string Role { get; set; }           // [vaiTro]
+        public DateTime CreatedDate { get; set; }  // [ngayTao]
+        public DateTime LastUpdated { get; set; }  // [ngayCapNhatCuoi]
+        public string Status { get; set; }         // [trangThai]
     }
+
     public class Order
     {
         public int OrderID { get; set; }
@@ -159,35 +162,6 @@ namespace BTL_FN
             }
         }
 
-        // Cập nhật phương thức ExecuteScalar
-        public void AmdinDefault(ref int soLuongDonHangDangCho, ref int soLuongDonHangDangChuanBi, ref int soLuongDonHangDangGiao, ref int soLuongDonHangHoanThanh, ref int soLuongDonHangBiHuy, ref int soLuongMatHangSapHetHang)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                SqlCommand command1 = new SqlCommand("SELECT COUNT(Status) FROM Orders WHERE Status = 'Đang chờ'", connection);
-                 soLuongDonHangDangCho = (int)command1.ExecuteScalar();
-
-                SqlCommand command2 = new SqlCommand("SELECT COUNT(Status) FROM Orders WHERE Status = 'Đang chuẩn bị'", connection);
-                 soLuongDonHangDangChuanBi = (int)command2.ExecuteScalar();
-
-                SqlCommand command3 = new SqlCommand("SELECT COUNT(Status) FROM Orders WHERE Status = 'Đang giao'", connection);
-                 soLuongDonHangDangGiao = (int)command3.ExecuteScalar();
-
-                SqlCommand command4 = new SqlCommand("SELECT COUNT(Status) FROM Orders WHERE Status = 'Hoàn thành'", connection);
-                 soLuongDonHangHoanThanh = (int)command4.ExecuteScalar();
-
-                SqlCommand command5 = new SqlCommand("SELECT COUNT(Status) FROM Orders WHERE Status = 'Đơn hủy'", connection);
-                 soLuongDonHangBiHuy = (int)command5.ExecuteScalar();
-
-                SqlCommand command6 = new SqlCommand("SELECT COUNT(*) FROM product WHERE i_Totals < 10", connection);
-                 soLuongMatHangSapHetHang = (int)command6.ExecuteScalar();
-            }
-        }
-
-
-
         // quản lý vấn đề tài khoản
 
         public List<Account> GetAllUsers()
@@ -206,11 +180,11 @@ namespace BTL_FN
                             Account user = new Account()
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("id")),
-                                Username = reader.GetString(reader.GetOrdinal("s_UserName")),
-                                Email = reader.GetString(reader.GetOrdinal("s_Email")),
-                                Role = reader.GetString(reader.GetOrdinal("s_Role")),
-                                Status = reader.GetString(reader.GetOrdinal("s_Active")),
-                                CreatedDate = reader.GetDateTime(reader.GetOrdinal("d_CreateDate"))
+                                Username = reader.GetString(reader.GetOrdinal("ten_dn")),
+                                Email = reader.GetString(reader.GetOrdinal("email")),
+                                Role = reader.GetString(reader.GetOrdinal("vaiTro")),
+                                Status = reader.GetString(reader.GetOrdinal("trangThai")),
+                                CreatedDate = reader.GetDateTime(reader.GetOrdinal("ngayTao"))
                             };
                             userList.Add(user);
                         }
@@ -262,16 +236,14 @@ namespace BTL_FN
 
         public bool AddUser(Account a)
         {
-            int newID = getMaxID() + 1; // Lấy ID mới
-            string query = @"INSERT INTO [account]
-            (i_Id, s_UserName, s_PassWord, s_Email, s_Image, s_Role, s_Active, d_CreateDate)
-            VALUES (@id, @Username, @Password, @Email, @image, @Role, @Status, @CreatedDate)";
+            string query = @"INSERT INTO [tk]
+            (ten_dn, mk, email, hinh, vaiTro, trangThai, ngayTao)
+            VALUES (@Username, @Password, @Email, @image, @Role, @Status, @CreatedDate)";
 
             Dictionary<string, object> parameters = new Dictionary<string, object>
                 {
-                    { "@id", newID }, // Gán ID mới
                     { "@Username", a.Username },
-                    { "@Password", a.password },
+                    { "@Password", a.Password },
                     { "@Email", a.Email },
                     { "@image", new BLL().logo },
                     { "@Role", "User" },
@@ -283,34 +255,15 @@ namespace BTL_FN
         }
 
 
-        public int getMaxID()
-        {
-            string query = "SELECT MAX(i_Id) AS MaxID FROM [account]";
-            using (SqlCommand cmd = new SqlCommand(query, connection))
-            {
-                connection.Open();
-                object result = cmd.ExecuteScalar();
-                connection.Close();
-
-                if (result != DBNull.Value && result != null)
-                {
-                    return Convert.ToInt32(result);
-                }
-                else
-                {
-                    return 0; // Trả về 0 nếu không có bản ghi nào
-                }
-            }
-        }
 
 
-        public bool BanUser(int userId) => ExecuteNonQuery("UPDATE account SET i_isActive = 0 WHERE i_Id = @UserId", new Dictionary<string, object> { { "@UserId", userId } });
+        public bool BanUser(int userId) => ExecuteNonQuery("UPDATE tk SET trangThai = 0 WHERE i_Id = @UserId", new Dictionary<string, object> { { "@UserId", userId } });
 
-        public bool DeleteUser(int userId) => ExecuteNonQuery("DELETE FROM account WHERE i_Id = @UserId", new Dictionary<string, object> { { "@UserId", userId } });
+        public bool DeleteUser(int userId) => ExecuteNonQuery("DELETE FROM tk WHERE id = @UserId", new Dictionary<string, object> { { "@UserId", userId } });
 
-        public bool PromoteToAdmin(int userId) => ExecuteNonQuery("UPDATE account SET s_Role = 'Admin' WHERE i_Id = @UserId", new Dictionary<string, object> { { "@UserId", userId } });
+        public bool PromoteToAdmin(int userId) => ExecuteNonQuery("UPDATE tk SET s_Role = 'Admin' WHERE i_Id = @UserId", new Dictionary<string, object> { { "@UserId", userId } });
 
-        
+
 
 
         public int CheckExistence(string table, string column, string value)
@@ -328,7 +281,7 @@ namespace BTL_FN
             catch (Exception ex)
             {
                 MessageBox.Show($"[Error] 2 {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
+
             }
             finally
             {
@@ -364,12 +317,12 @@ namespace BTL_FN
                         {
                             Account user = new Account()
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("i_Id")),
-                                Username = reader.GetString(reader.GetOrdinal("s_UserName")),
-                                Email = reader.GetString(reader.GetOrdinal("s_Email")),
-                                Role = reader.GetString(reader.GetOrdinal("s_Role")),
-                                Status = reader.GetString(reader.GetOrdinal("s_Active")),
-                                CreatedDate = reader.GetDateTime(reader.GetOrdinal("d_CreateDate"))
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                Username = reader.GetString(reader.GetOrdinal("ten_dn")),
+                                Email = reader.GetString(reader.GetOrdinal("email")),
+                                Role = reader.GetString(reader.GetOrdinal("vaiTro")),
+                                Status = reader.GetString(reader.GetOrdinal("trangThai")),
+                                CreatedDate = reader.GetDateTime(reader.GetOrdinal("ngayTao"))
                             };
                             userList.Add(user);
                         }
@@ -387,7 +340,6 @@ namespace BTL_FN
                 CloseConnection();
             }
         }
-
 
 
 
@@ -846,14 +798,14 @@ namespace BTL_FN
         // lấy ra các phương thức thanh toàn hiện có 
         // chỉnh sửa 
         // xóa 
-        public bool AddPaymentMethod(PaymentMethod paymentMethod) => ExecuteNonQuery("INSERT INTO PaymentMethods (MethodName, Status, Description) VALUES (@Name, @Status, @Description)", new Dictionary<string, object> { { "@Name", paymentMethod.Name }, { "@Status", paymentMethod.Status}, { "@Description", paymentMethod.Description } });
+        public bool AddPaymentMethod(PaymentMethod paymentMethod) => ExecuteNonQuery("INSERT INTO ttThanhToan (tenPhuongThuc, trangThai, moTa) VALUES (@Name, @Status, @Description)", new Dictionary<string, object> { { "@Name", paymentMethod.Name }, { "@Status", paymentMethod.Status}, { "@Description", paymentMethod.Description } });
 
         public List<PaymentMethod> GetAllPaymentMethods()
         {
             try
             {
                 OpenConnection();
-                string query = "SELECT * FROM PaymentMethods";
+                string query = "SELECT * FROM ttThanhToan";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -862,9 +814,9 @@ namespace BTL_FN
                     {
                         PaymentMethod method = new PaymentMethod
                         {
-                            Name = reader["MethodName"].ToString(),
-                            Status = Convert.ToString(reader["Status"]),
-                            Description = reader["Description"].ToString()
+                            Name = reader["tenPhuongThuc"].ToString(),
+                            Status = Convert.ToString(reader["trangThai"]),
+                            Description = reader["moTa"].ToString()
                         };
                         paymentMethods.Add(method);
                     }
@@ -883,9 +835,9 @@ namespace BTL_FN
         }
 
 
-        public bool UpdatePaymentMethod(PaymentMethod paymentMethod) => ExecuteNonQuery("UPDATE PaymentMethods SET MethodName = @Name, Status = @Status, Description = @Description WHERE PaymentMethodID = @Id", new Dictionary<string, object> { { "@Id", paymentMethod.Id }, { "@Name", paymentMethod.Name }, { "@Status", paymentMethod.Status }, { "@Description", paymentMethod.Description } });
+        public bool UpdatePaymentMethod(PaymentMethod paymentMethod) => ExecuteNonQuery("UPDATE ttThanhToan SET tenPhuongThuc = @Name, trangThai = @Status, moTa = @Description WHERE id = @Id", new Dictionary<string, object> { { "@Id", paymentMethod.Id }, { "@Name", paymentMethod.Name }, { "@Status", paymentMethod.Status }, { "@Description", paymentMethod.Description } });
 
-        public bool DeletePaymentMethod(int paymentMethodId) => ExecuteNonQuery("DELETE FROM PaymentMethods WHERE PaymentMethodID = @Id", new Dictionary<string, object> { { "@Id", paymentMethodId } });
+        public bool DeletePaymentMethod(int paymentMethodId) => ExecuteNonQuery("UPDATE SET trangThai = N'Bị khóa' FROM ttThanhToan WHERE id = @Id", new Dictionary<string, object> { { "@Id", paymentMethodId } });
         // quản lý vấn đề liên quan đến nền tảng 
         // thay thế logo
         // thay thế banner 

@@ -94,6 +94,36 @@
     <Compile Include="Admin\AdminProgram.Designer.cs">
       <DependentUpon>AdminProgram.cs</DependentUpon>
     </Compile>
+    <Compile Include="Admin\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Form2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\Form2.Designer.cs">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Form3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\Form3.Designer.cs">
+      <DependentUpon>Form3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Form4.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\Form4.Designer.cs">
+      <DependentUpon>Form4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Form5.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\Form5.Designer.cs">
+      <DependentUpon>Form5.cs</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Orders.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,6 +147,12 @@
     </Compile>
     <Compile Include="Admin\Reprot.Designer.cs">
       <DependentUpon>Reprot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\setting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Admin\setting.Designer.cs">
+      <DependentUpon>setting.cs</DependentUpon>
     </Compile>
     <Compile Include="BLL.cs" />
     <Compile Include="DAL.cs" />
@@ -185,6 +221,21 @@
     <EmbeddedResource Include="Admin\category.resx">
       <DependentUpon>category.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Admin\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\Form2.resx">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\Form3.resx">
+      <DependentUpon>Form3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\Form4.resx">
+      <DependentUpon>Form4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\Form5.resx">
+      <DependentUpon>Form5.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Admin\Orders.resx">
       <DependentUpon>Orders.cs</DependentUpon>
     </EmbeddedResource>
@@ -196,6 +247,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Admin\Reprot.resx">
       <DependentUpon>Reprot.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\setting.resx">
+      <DependentUpon>setting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="loginView.resx">
       <DependentUpon>loginView.cs</DependentUpon>

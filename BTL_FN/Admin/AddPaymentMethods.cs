@@ -32,7 +32,7 @@ namespace BTL_FN.Admin
             {
                 textBox1.Text = pay.Name;
                 richTextBox1.Text = pay.Description;
-                if(pay.Status != "Đang hoạt động")
+                if(pay.Status != "Hoạt động")
                 {
                     comboBox1.SelectedIndex = 1;
                 }

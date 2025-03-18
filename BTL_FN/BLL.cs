@@ -24,19 +24,16 @@ namespace BTL_FN
         {
             App app = new App();
             logo = app.logo;
-            UserActive = "Active";
-            UserRole = "Admin";
+            UserActive = "Hoạt động";
+            UserRole = "Quản trị viên";
         }
         // những vấn đề liên quan đến tài khoản 
 
-        public int getMaxID()
-        {
-            return dataAccess.getMaxID();
-        }
+
 
         public bool Login(string username, string password)
         {
-            DataTable userTable = dataAccess.GetDataTable("SELECT * FROM account WHERE s_Username = @Username AND s_Password = @Password", new Dictionary<string, object>
+            DataTable userTable = dataAccess.GetDataTable("SELECT * FROM tk WHERE ten_dn = @Username AND mk = @Password", new Dictionary<string, object>
             {
                 {"@Username", username},
                 {"@Password", password}
@@ -45,9 +42,9 @@ namespace BTL_FN
             if (userTable.Rows.Count > 0)
             {
                 DataRow userRow = userTable.Rows[0];
-                UserID = Convert.ToInt32(userRow["i_Id"]);
-                UserActive = userRow["s_Active"].ToString();
-                UserRole = userRow["s_Role"].ToString();
+                UserID = Convert.ToInt32(userRow["id"]);
+                UserActive = userRow["TrangThai"].ToString();
+                UserRole = userRow["vaiTro"].ToString();
                 return true;
             }
             return false;
@@ -55,7 +52,7 @@ namespace BTL_FN
 
         public bool AddAccount(Account a)
         {
-            if(dataAccess.CheckExistence("account", "s_Email", a.Email) == 0)
+            if (dataAccess.CheckExistence("tk", "email", a.Email) == 0)
             {
                 return dataAccess.AddUser(a);
             }
@@ -63,16 +60,16 @@ namespace BTL_FN
             {
                 return false;
             }
-            
+
         }
 
         public bool BanAccount(int id, string status, string role)
         {
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
-                if(role != "Admin" && id != UserID)
+                if (role != "Quản trị viên" && id != UserID)
                 {
-                    return dataAccess.ExecuteNonQuery($"UPDATE account SET s_Active = '{status}' WHERE i_Id = @Id", new Dictionary<string, object> { { "@Id", id } });
+                    return dataAccess.ExecuteNonQuery($"UPDATE tk SET trangThai = N'Bị chặn' WHERE id = @Id", new Dictionary<string, object> { { "@Id", id } });
                 }
                 else
                 {
@@ -89,18 +86,18 @@ namespace BTL_FN
 
         public bool DeleteAccount(int id, string role)
         {
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
-                if (role != "Admin" && id != UserID)
+                if (role != "Quản trị viên" && id != UserID)
                 {
-                    return dataAccess.ExecuteNonQuery("DELETE FROM account WHERE i_Id = @Id", new Dictionary<string, object> { { "@Id", id } });
+                    return dataAccess.ExecuteNonQuery("DELETE FROM tk WHERE id = @Id", new Dictionary<string, object> { { "@Id", id } });
                 }
                 else
                 {
                     MessageBox.Show("Bạn không đủ quyền hạn truy cập mục này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
-                
+
             }
             else
             {
@@ -111,18 +108,18 @@ namespace BTL_FN
 
         public bool SetAdminAccount(int id, string role)
         {
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
-                if (role != "Admin" && id != UserID)
+                if (role != "Quản trị viên" && id != UserID)
                 {
-                    return dataAccess.ExecuteNonQuery($"UPDATE account SET s_Role = '{role}' WHERE i_Id = @Id", new Dictionary<string, object> { { "@Id", id } });
+                    return dataAccess.ExecuteNonQuery($"UPDATE account SET vaiTro = N'Quản trị viên' WHERE id = @Id", new Dictionary<string, object> { { "@Id", id } });
                 }
                 else
                 {
                     MessageBox.Show("Bạn không đủ quyền hạn truy cập mục này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
-                
+
             }
             else
             {
@@ -134,8 +131,8 @@ namespace BTL_FN
 
         public List<Account> ListAccounts()
         {
-            
-            if (UserRole == "Admin" && UserActive == "Active")
+
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
                 return dataAccess.GetAllUsers();
             }
@@ -147,23 +144,25 @@ namespace BTL_FN
         }
 
 
-        public List<Account> FindUser(string ids, string uname, string uemail, string tableName)
+        public List<Account> FindUser(string ids, string uname, string uemail)
         {
-            StringBuilder queryBuilder = new StringBuilder($"SELECT * FROM {tableName} WHERE 1=1");
+            StringBuilder queryBuilder = new StringBuilder($"SELECT * FROM tk WHERE 1=1");
             if (!string.IsNullOrEmpty(ids))
             {
-                queryBuilder.Append(" AND i_Id = @Id");
+                queryBuilder.Append(" AND id = @Id");
             }
             if (!string.IsNullOrEmpty(uname))
             {
-                queryBuilder.Append(" AND s_UserName LIKE @UserName");
+                queryBuilder.Append(" AND ten_dn LIKE @UserName");
             }
             if (!string.IsNullOrEmpty(uemail))
             {
-                queryBuilder.Append(" AND s_Email LIKE @Email");
+                queryBuilder.Append(" AND email LIKE @Email");
             }
             return dataAccess.FindUser(queryBuilder.ToString(), ids, uname, uemail);
         }
+
+
 
 
         // vấn đề liên quan đến danh mục 
@@ -183,7 +182,7 @@ namespace BTL_FN
         public bool DeleteCategory(int id)
         {
             
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
                 return dataAccess.DeleteCategory(id);
             }
@@ -198,7 +197,7 @@ namespace BTL_FN
         public bool UpdateCategory(Category value)
         {
             
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
                 return dataAccess.UpdateCategory(value);
             }
@@ -212,7 +211,7 @@ namespace BTL_FN
         public bool AddCategory(Category value)
         {
            
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
                 return dataAccess.AddCategory(value);
             }
@@ -267,7 +266,7 @@ namespace BTL_FN
         public bool addProduct(Product value)
         {
             
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
                 return dataAccess.AddProduct(value);
             }
@@ -281,7 +280,7 @@ namespace BTL_FN
         public bool deleteProduct(int id)
         {
             
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
                 return dataAccess.DeleteProduct(id);
             }
@@ -295,7 +294,7 @@ namespace BTL_FN
         public bool updateProduct(Product value)
         {
             
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
                 return dataAccess.UpdateProduct(value);
             }
@@ -368,7 +367,7 @@ namespace BTL_FN
 
         public bool AddVoucher(Voucher value)
         {
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
                 return dataAccess.AddVoucher(value);
             }
@@ -381,7 +380,7 @@ namespace BTL_FN
 
         public bool DeleteVoucher(int id)
         {
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
                 return dataAccess.DeleteVoucher(id);
             }
@@ -394,7 +393,7 @@ namespace BTL_FN
 
         public bool UpdateVoucher(Voucher value)
         {
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
                 return dataAccess.UpdateVoucher(value);
             }
@@ -444,7 +443,7 @@ namespace BTL_FN
         // những vấn đề liên quan đến mua hàng 
         public void GetAllOrders(ref List<Order> orders, string query = null)
         {
-            // lấy ra 6 giá trị cốt yếu 
+            
             
         }
 
@@ -472,7 +471,7 @@ namespace BTL_FN
         // những vấn đề liên quan đến thanh toán 
         public bool AddPayMethod(PaymentMethod p)
         {
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
                 return dataAccess.AddPaymentMethod(p);
             }
@@ -485,12 +484,12 @@ namespace BTL_FN
 
         public void getAllPaymentMothod(ref List<PaymentMethod> pay)
         {
-            
+            pay = dataAccess.GetAllPaymentMethods();
         }
 
         public bool DeletePaymentMethod(int pay)
         {
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
                 return dataAccess.DeletePaymentMethod(pay);
             }
@@ -504,7 +503,7 @@ namespace BTL_FN
         
         public bool UpdatePayMethod(PaymentMethod pay)
         {
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
                 return dataAccess.UpdatePaymentMethod(pay);
             }
@@ -522,7 +521,7 @@ namespace BTL_FN
             ref List<Product> listNewProduct,
             ref List<Reprots> listNewReprots)
         {
-            if (UserRole == "Admin" && UserActive == "Active")
+            if (UserRole == "Quản trị viên" && UserActive == "Hoạt động")
             {
                 dataAccess.loadAdminDashboard(ref tongDoanhThu, ref tongDonHang, ref tongSanPham, ref tongKhachHang, ref listNewOrder,ref listNewProduct, ref listNewReprots);
             }
@@ -532,19 +531,6 @@ namespace BTL_FN
                 return;
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 }

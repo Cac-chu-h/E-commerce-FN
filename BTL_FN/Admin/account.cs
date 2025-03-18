@@ -17,10 +17,10 @@ namespace BTL_FN
     {
         // Giá trị mặc định 
         public BLL logic;
-        public string roleSelected = "Admin";
+        public string roleSelected = "Quản trị viên";
         public int state = 0;
         private List<Account> accountList; // Danh sách tài khoản
-        
+
 
         public account()
         {
@@ -70,12 +70,13 @@ namespace BTL_FN
                     foreach (var acc in selectedAccounts)
                     {
                         string status;
-                        if(acc.Status == "Active")
+                        if (acc.Status == "Hoạt động")
                         {
-                            status = "Inactive";
-                        }else
+                            status = "Bị chặn";
+                        }
+                        else
                         {
-                            status = "Active";
+                            status = "Hoạt động";
                         }
                         if (logic.BanAccount(acc.Id, status, acc.Role))
                         {
@@ -147,7 +148,7 @@ namespace BTL_FN
 
         private void panel1_Click(object sender, EventArgs e)
         {
-            this.roleSelected = "Admin";
+            this.roleSelected = "Quản trị viên";
             LoadAccountData();
         }
 
@@ -158,7 +159,7 @@ namespace BTL_FN
 
         private void panel2_Click(object sender, EventArgs e)
         {
-            this.roleSelected = "User";
+            this.roleSelected = "Người dùng";
             LoadAccountData();
         }
 
@@ -180,9 +181,9 @@ namespace BTL_FN
                 case 0: // Tất cả
                     return filtered;
                 case 1: // Hoạt động
-                    return filtered.Where(a => a.Status == "Active").ToList();
+                    return filtered.Where(a => a.Status == "Hoạt động").ToList();
                 case 2: // Không hoạt động
-                    return filtered.Where(a => a.Status == "Inactive").ToList();
+                    return filtered.Where(a => a.Status == "Bị chặn").ToList();
                 default:
                     return filtered;
             }
@@ -297,7 +298,7 @@ namespace BTL_FN
                         Name = "labelStatus" + i,
                         Font = new Font("Arial", 10, FontStyle.Bold),
                         Text = "Trạng thái: " + account.Status,
-                        ForeColor = account.Status == "Active" ? Color.Green : Color.Red
+                        ForeColor = account.Status == "Hoạt động" ? Color.Green : Color.Red
                     };
 
                     Label labelCreatedDate = new Label
@@ -311,15 +312,15 @@ namespace BTL_FN
 
                     string status;
                     string value;
-                    if (account.Status == "Active")
+                    if (account.Status == "Hoạt động")
                     {
                         status = "Chặn";
-                        value = "InActive";
+                        value = "Bị chặn";
                     }
                     else
                     {
                         status = "Bỏ chặn";
-                        value = "Active";
+                        value = "Hoạt động";
                     }
 
                     // Thêm nút chỉnh sửa
@@ -337,9 +338,9 @@ namespace BTL_FN
                         Button btn = sender as Button;
                         Account acc = btn.Tag as Account;
                         // Mở form chỉnh sửa tài khoản
-                        if(MessageBox.Show($"{status} tài khoản: {acc.Username}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information) == DialogResult.OK)
+                        if (MessageBox.Show($"{status} tài khoản: {acc.Username}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information) == DialogResult.OK)
                         {
-                            if(logic.BanAccount(acc.Id, value, acc.Role))
+                            if (logic.BanAccount(acc.Id, value, acc.Role))
                             {
                                 MessageBox.Show("Thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 LoadData();
@@ -366,7 +367,7 @@ namespace BTL_FN
                         if (MessageBox.Show($"Bạn có chắc chắn muốn xóa tài khoản {acc.Username}?",
                                            "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
-                            
+
                             if (logic.DeleteAccount(acc.Id, acc.Role))
                             {
                                 MessageBox.Show("Thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -378,13 +379,13 @@ namespace BTL_FN
                     };
 
                     string role;
-                    if (roleSelected == "Admin")
+                    if (roleSelected == "Quản trị viên")
                     {
-                        role = "User";
+                        role = "Người dùng";
                     }
                     else
                     {
-                        role = "Admin";
+                        role = "Quản trị viên";
                     }
 
                     Button btnAdmin = new Button
@@ -453,13 +454,13 @@ namespace BTL_FN
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.roleSelected = "Admin";
+            this.roleSelected = "Quản trị viên";
             LoadAccountData();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.roleSelected = "User";
+            this.roleSelected = "Người dùng";
             LoadAccountData();
         }
 
@@ -470,7 +471,7 @@ namespace BTL_FN
             string uemail = string.IsNullOrEmpty(email.Text) ? null : email.Text;
             string tableName = "account"; // Tên bảng có thể thay đổi
 
-            accountList = logic.FindUser(ids, uname, uemail, tableName);
+            accountList = logic.FindUser(ids, uname, uemail);
             LoadAccountData();
             if (accountList == null || accountList.Count == 0)
             {

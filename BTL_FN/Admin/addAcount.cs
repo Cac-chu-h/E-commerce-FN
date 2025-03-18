@@ -38,9 +38,8 @@ namespace BTL_FN
             {
                 Account a = new Account()
                 {
-                    Id = logic.getMaxID() + 1,
                     Username = textBox1.Text,
-                    password = textBox2.Text,
+                    Password = textBox2.Text,
                     Email = textBox3.Text
                 };
                 if (logic.AddAccount(a))

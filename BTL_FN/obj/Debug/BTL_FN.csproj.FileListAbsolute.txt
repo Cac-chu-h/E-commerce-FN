@@ -25,3 +25,9 @@ E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.AdminProgram.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.Orders.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.PaymentMethods.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Product_v.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.Form1.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.Form2.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.Form3.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.Form4.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.Form5.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.setting.resources
