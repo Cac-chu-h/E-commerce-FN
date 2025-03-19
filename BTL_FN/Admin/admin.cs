@@ -34,6 +34,11 @@ namespace BTL_FN
 
         private void admin_Load(object sender, EventArgs e)
         {
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false; // Hoặc false nếu muốn tắt luôn nút thu nhỏ
+            this.ControlBox = true;
+
             comboBox1.Items.Add("Danh mục quản lý");
             comboBox1.SelectedIndex = 0;
             pictureBox2.Image = Image.FromFile(@"E:\C#\logo.jpg");

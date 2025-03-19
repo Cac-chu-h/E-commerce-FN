@@ -162,16 +162,52 @@
     <Compile Include="Admin\category.Designer.cs">
       <DependentUpon>category.cs</DependentUpon>
     </Compile>
-    <Compile Include="Product_u.cs">
+    <Compile Include="User\cuaHang.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Product_u.Designer.cs">
+    <Compile Include="User\cuaHang.Designer.cs">
+      <DependentUpon>cuaHang.cs</DependentUpon>
+    </Compile>
+    <Compile Include="User\danhMuc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="User\danhMuc.Designer.cs">
+      <DependentUpon>danhMuc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="User\gioHang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="User\gioHang.Designer.cs">
+      <DependentUpon>gioHang.cs</DependentUpon>
+    </Compile>
+    <Compile Include="User\taiKhoan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="User\taiKhoan.Designer.cs">
+      <DependentUpon>taiKhoan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="User\thanhToan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="User\thanhToan.Designer.cs">
+      <DependentUpon>thanhToan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="User\thongBao.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="User\thongBao.Designer.cs">
+      <DependentUpon>thongBao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="User\Product_u.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="User\Product_u.Designer.cs">
       <DependentUpon>Product_u.cs</DependentUpon>
     </Compile>
-    <Compile Include="loginView.cs">
+    <Compile Include="User\loginView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="loginView.Designer.cs">
+    <Compile Include="User\loginView.Designer.cs">
       <DependentUpon>loginView.cs</DependentUpon>
     </Compile>
     <Compile Include="Admin\Product_v.cs">
@@ -182,10 +218,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrangChu.cs">
+    <Compile Include="User\TrangChu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TrangChu.Designer.cs">
+    <Compile Include="User\TrangChu.Designer.cs">
       <DependentUpon>TrangChu.cs</DependentUpon>
     </Compile>
     <Compile Include="Admin\voucher.cs">
@@ -251,10 +287,28 @@
     <EmbeddedResource Include="Admin\setting.resx">
       <DependentUpon>setting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="loginView.resx">
+    <EmbeddedResource Include="User\loginView.resx">
       <DependentUpon>loginView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Product_u.resx">
+    <EmbeddedResource Include="User\cuaHang.resx">
+      <DependentUpon>cuaHang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User\danhMuc.resx">
+      <DependentUpon>danhMuc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User\gioHang.resx">
+      <DependentUpon>gioHang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User\taiKhoan.resx">
+      <DependentUpon>taiKhoan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User\thanhToan.resx">
+      <DependentUpon>thanhToan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User\thongBao.resx">
+      <DependentUpon>thongBao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User\Product_u.resx">
       <DependentUpon>Product_u.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Admin\Product_v.resx">
@@ -269,7 +323,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="TrangChu.resx">
+    <EmbeddedResource Include="User\TrangChu.resx">
       <DependentUpon>TrangChu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Admin\voucher.resx">
