@@ -805,7 +805,7 @@ namespace BTL_FN
             try
             {
                 OpenConnection();
-                string query = "SELECT * FROM ttThanhToan";
+                string query = "SELECT * FROM ttThanhToan WHERE trangThai != N'Bị khóa'";
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -837,7 +837,12 @@ namespace BTL_FN
 
         public bool UpdatePaymentMethod(PaymentMethod paymentMethod) => ExecuteNonQuery("UPDATE ttThanhToan SET tenPhuongThuc = @Name, trangThai = @Status, moTa = @Description WHERE id = @Id", new Dictionary<string, object> { { "@Id", paymentMethod.Id }, { "@Name", paymentMethod.Name }, { "@Status", paymentMethod.Status }, { "@Description", paymentMethod.Description } });
 
-        public bool DeletePaymentMethod(int paymentMethodId) => ExecuteNonQuery("UPDATE SET trangThai = N'Bị khóa' FROM ttThanhToan WHERE id = @Id", new Dictionary<string, object> { { "@Id", paymentMethodId } });
+        public bool DeletePaymentMethod(int paymentMethodId) =>
+            ExecuteNonQuery(
+                "UPDATE ttThanhToan SET trangThai = N'Bị khóa' WHERE id = @Id AND trangThai != N'Bị khóa'",
+                new Dictionary<string, object> { { "@Id", paymentMethodId } }
+            );
+
         // quản lý vấn đề liên quan đến nền tảng 
         // thay thế logo
         // thay thế banner 
@@ -902,7 +907,8 @@ namespace BTL_FN
                     tongKhachHang = result != DBNull.Value ? Convert.ToInt32(result) : 0;
                 }
 
-                using(SqlCommand cmd = new SqlCommand("SELECT TOP 10 * FROM phanHoi WHERE [trangThaiXoa] != N'Đã xóa' ORDER BY id DESC", connection))
+                // Xử lý cho bảng phanHoi
+                using (SqlCommand cmd = new SqlCommand("SELECT TOP 10 * FROM phanHoi WHERE [trangThaiXoa] != N'Đã xóa' AND TrangThai = N'Mới'  ORDER BY id DESC", connection))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -910,21 +916,22 @@ namespace BTL_FN
                         {
                             Reprots product = new Reprots()
                             {
-                                Id = Convert.ToInt32(reader["id"]),
-                                IdNguoiDung = Convert.ToInt32(reader["idNguoiDung"]),
-                                IdSanPham = Convert.ToInt32(reader["idSanPham"]),
-                                ChuDe = reader["chuDe"]?.ToString(),
-                                NoiDung = reader["noiDung"].ToString(),
-                                TrangThai = Convert.ToString(reader["TrangThai"]),
-                                TongPhanHoi = Convert.ToInt32(reader["tongPhanHoi"]),
-                                NgayDang = Convert.ToDateTime(reader["ngayDang"]),
-                                IdNguoiGiaiQuyet = Convert.ToInt32(reader["idNguoiGiaiQuyet"])
+                                Id = reader["id"] as int? ?? 0,
+                                IdNguoiDung = reader["idNguoiDung"] as int? ?? 0,
+                                IdSanPham = reader["idSanPham"] as int? ?? 0,
+                                ChuDe = reader["chuDe"] as string ?? string.Empty,
+                                NoiDung = reader["noiDung"] as string ?? string.Empty,
+                                TrangThai = reader["TrangThai"] as string ?? "Chưa xác định",
+                                TongPhanHoi = reader["tongPhanHoi"] as int? ?? 0,
+                                NgayDang = reader["ngayDang"] as DateTime? ?? DateTime.MinValue,
+                                IdNguoiGiaiQuyet = reader["idNguoiGiaiQuyet"] as int? ?? 0
                             };
                             listNewReprots.Add(product);
                         }
                     }
                 }
 
+                // Xử lý cho bảng sp
                 using (SqlCommand cmd = new SqlCommand("SELECT TOP 10 * FROM sp WHERE [trangThaiXoa] != N'Đã xóa' ORDER BY id DESC", connection))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -933,24 +940,24 @@ namespace BTL_FN
                         {
                             Product product = new Product()
                             {
-                                Id = Convert.ToInt32(reader["id"]),
-                                Name = reader["tenSP"].ToString(),
-                                Description = reader["moTa"]?.ToString() ?? string.Empty,
-                                Image = reader["hinh"]?.ToString() ?? string.Empty,
-                                Total = Convert.ToInt32(reader["khoiLuong"] ?? 0),
-                                Status = Convert.ToString(reader["TrangThai"]),
-                                Rating = Convert.ToInt32(reader["danh_gia"]),
-                                dateAdd = Convert.ToDateTime(reader["ngay_tao"]),
-                                Price = Convert.ToDecimal(reader["gia"]),
-                                TotalPay = Convert.ToInt32(reader["da_ban"]),
-                                CategoryId = Convert.ToInt32(reader["dm"])
+                                Id = reader["id"] as int? ?? 0,
+                                Name = reader["tenSP"] as string ?? "Tên mặc định",
+                                Description = reader["moTa"] as string ?? string.Empty,
+                                Image = reader["hinh"] as string ?? "default.jpg",
+                                Total = reader["khoiLuong"] as int? ?? 0,
+                                Status = reader["TrangThai"] as string ?? "Chưa xác định",
+                                Rating = reader["danh_gia"] as int? ?? 0,
+                                dateAdd = reader["ngay_tao"] as DateTime? ?? DateTime.Now,
+                                Price = reader["gia"] as decimal? ?? 0m,
+                                TotalPay = reader["da_ban"] as int? ?? 0,
+                                CategoryId = reader["dm"] as int? ?? 0
                             };
                             listNewProduct.Add(product);
                         }
                     }
                 }
 
-
+                // Xử lý cho view v_tongQuanDonHang
                 using (SqlCommand cmd = new SqlCommand("SELECT TOP 10 * FROM v_tongQuanDonHang ORDER BY MaDonHang DESC", connection))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -959,11 +966,11 @@ namespace BTL_FN
                         {
                             Order product = new Order()
                             {
-                                OrderID = Convert.ToInt32(reader["MaDonHang"]),
-                                tenNguoiDat = Convert.ToString(reader["TenNguoiDat"]),
-                                Status = reader["TrangThaiDonHang"].ToString(),
-                                TotalAmount = Convert.ToInt32(reader["TongTien"]),
-                                OrderDate = Convert.ToDateTime(reader["NgayDatHang"])
+                                OrderID = reader["MaDonHang"] as int? ?? 0,
+                                tenNguoiDat = reader["TenNguoiDat"] as string ?? "Khách vãng lai",
+                                Status = reader["TrangThaiDonHang"] as string ?? "Chờ xử lý",
+                                TotalAmount = reader["TongTien"] as int? ?? 0,
+                                OrderDate = reader["NgayDatHang"] as DateTime? ?? DateTime.Now
                             };
                             listNewOrder.Add(product);
                         }
@@ -978,6 +985,48 @@ namespace BTL_FN
             {
                 CloseConnection();
             }
+        }
+
+
+
+        public List<Reprots> getAllReport()
+        {
+            List<Reprots> reprots = new List<Reprots>();
+            try
+            {
+                OpenConnection();
+                using (SqlCommand cmd = new SqlCommand("SELECT * FROM phanHoi WHERE [trangThaiXoa] != N'Đã xóa'  ORDER BY id DESC", connection))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Reprots product = new Reprots()
+                            {
+                                Id = reader["id"] as int? ?? 0,
+                                IdNguoiDung = reader["idNguoiDung"] as int? ?? 0,
+                                IdSanPham = reader["idSanPham"] as int? ?? 0,
+                                ChuDe = reader["chuDe"] as string ?? string.Empty,
+                                NoiDung = reader["noiDung"] as string ?? string.Empty,
+                                TrangThai = reader["TrangThai"] as string ?? "Chưa xác định",
+                                TongPhanHoi = reader["tongPhanHoi"] as int? ?? 0,
+                                NgayDang = reader["ngayDang"] as DateTime? ?? DateTime.MinValue,
+                                IdNguoiGiaiQuyet = reader["idNguoiGiaiQuyet"] as int? ?? 0
+                            };
+                            reprots.Add(product);
+                        }
+                        
+                    }
+                }
+            }catch(Exception ex)
+            {
+                MessageBox.Show($"Lỗi {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                CloseConnection();
+            }
+            return reprots;
         }
 
         // vấn đề liên quan đến đơn đặt hàng 

@@ -3,6 +3,8 @@ namespace BTL_FN.Admin
 {
     partial class PaymentMethods
     {
+        private const bool V = true;
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -94,7 +96,7 @@ namespace BTL_FN.Admin
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
+            this.label7.AutoSize = V;
             this.label7.Font = new System.Drawing.Font("Arial", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(107, 30);
             this.label7.Name = "label7";

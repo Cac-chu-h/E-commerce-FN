@@ -92,59 +92,81 @@ namespace BTL_FN.Admin
                     ReadOnly = true
                 };
 
-                // Xử lý sự kiện click
                 dgv.CellClick += (sender, e) =>
                 {
                     try
                     {
                         if (e.RowIndex < 0) return;
 
-                        string methodName = dgv.Rows[e.RowIndex].Cells["Phương thức"].Value.ToString();
-                        var method = methods.FirstOrDefault(m => m.Name == methodName);
+                        // Lấy tên phương thức từ dòng được click
+                        string methodName = dgv.Rows[e.RowIndex].Cells["Phương thức"].Value?.ToString();
+                        if (string.IsNullOrEmpty(methodName))
+                        {
+                            MessageBox.Show("Không tìm thấy tên phương thức!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
 
-                        if (method == null) return;
+                        // Tìm phương thức trong danh sách
+                        var method = methods.FirstOrDefault(m => m.Name == methodName);
+                        if (method == null)
+                        {
+                            MessageBox.Show("Không tìm thấy phương thức trong danh sách!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        // Debug: In ra ID và tên nếu cần
+                        // MessageBox.Show($"DEBUG: {method.Name} - ID: {method.Id}");
 
                         // Xử lý nút Chỉnh sửa
                         if (e.ColumnIndex == 5)
                         {
-                            PaymentMethod p = method;
-                            Admin.AddPaymentMethods add = new AddPaymentMethods(p);
-                            if (add.ShowDialog() == DialogResult.Yes)
+                            using (var addForm = new AddPaymentMethods(method))
                             {
-                                p = add.pay;
-                                if (logic.UpdatePayMethod(p))
+                                if (addForm.ShowDialog() == DialogResult.Yes)
                                 {
-                                    MessageBox.Show("Cập nhật thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Cập nhật thất bại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    var updatedMethod = addForm.pay;
+                                    if (logic.UpdatePayMethod(updatedMethod))
+                                    {
+                                        MessageBox.Show("Cập nhật thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Cập nhật thất bại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                    LoadData();
+                                    LoadPaymentData();
                                 }
                             }
                         }
                         // Xử lý nút Xóa
                         else if (e.ColumnIndex == 6)
                         {
-                            DialogResult result = MessageBox.Show("Bạn có chắc chắn muốn xóa phương thức thanh toán này?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                            if (result == DialogResult.Yes)
+                            var confirm = MessageBox.Show("Bạn có chắc chắn muốn xóa phương thức thanh toán này?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                            if (confirm == DialogResult.Yes)
                             {
+                                // Debug xem ID
+                                // MessageBox.Show($"Xóa method: ID = {method.Id}");
+
                                 if (logic.DeletePaymentMethod(method.Id))
                                 {
-                                    MessageBox.Show("Thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    MessageBox.Show("Xóa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 }
                                 else
                                 {
-                                    MessageBox.Show("Thất bại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    MessageBox.Show("Xóa thất bại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
                                 LoadData();
+                                LoadPaymentData();
                                 DisplayData();
                             }
                         }
-                        // Xử lý checkbox
+                        // Xử lý checkbox chọn
                         else if (e.ColumnIndex == 0)
                         {
-                            DataGridViewCheckBoxCell cell = (DataGridViewCheckBoxCell)dgv.Rows[e.RowIndex].Cells[0];
-                            if (cell.Value == null || (bool)cell.Value == false)
+                            var cell = (DataGridViewCheckBoxCell)dgv.Rows[e.RowIndex].Cells[0];
+                            bool isChecked = cell.Value != null && (bool)cell.Value;
+
+                            if (!isChecked)
                             {
                                 cell.Value = true;
                                 selected.Add(method);
@@ -158,9 +180,10 @@ namespace BTL_FN.Admin
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Lỗi xử lý: {ex.Message}");
+                        MessageBox.Show($"Lỗi xử lý: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 };
+
 
                 panel3.Controls.Clear();
                 panel3.Controls.Add(dgv);
@@ -202,6 +225,8 @@ namespace BTL_FN.Admin
                 p = add.pay;
                 if (logic.AddPayMethod(p)){
                     MessageBox.Show("Thêm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadData();
+                    LoadPaymentData();
                 }
                 else
                 {
@@ -230,6 +255,7 @@ namespace BTL_FN.Admin
                 if (isSuccess)
                 {
                     MessageBox.Show("Xóa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 }
                 else
                 {

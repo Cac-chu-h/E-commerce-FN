@@ -56,5 +56,11 @@ namespace BTL_FN.Admin
             panel2.Controls.Clear();
             LoadFormToPanel(new Form5());
         }
+
+        private void setting_Load(object sender, EventArgs e)
+        {
+            panel2.Controls.Clear();
+            LoadFormToPanel(new Form2());
+        }
     }
 }

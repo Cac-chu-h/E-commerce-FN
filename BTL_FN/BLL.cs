@@ -443,8 +443,8 @@ namespace BTL_FN
         // những vấn đề liên quan đến mua hàng 
         public void GetAllOrders(ref List<Order> orders, string query = null)
         {
-            
-            
+
+            orders = dataAccess.GetAllOrders("SELECT * FROM Orders");
         }
 
         
@@ -530,6 +530,13 @@ namespace BTL_FN
                 MessageBox.Show("Bạn không đủ quyền hạn truy cập mục này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+        }
+
+
+        // phản hồi 
+        public void getAllReport(ref List<Reprots> reprots)
+        {
+            reprots = dataAccess.getAllReport();
         }
 
     }

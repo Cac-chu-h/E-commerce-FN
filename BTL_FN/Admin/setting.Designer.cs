@@ -32,12 +32,12 @@ namespace BTL_FN.Admin
             this.logo = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -75,44 +75,15 @@ namespace BTL_FN.Admin
             this.panel1.Size = new System.Drawing.Size(286, 454);
             this.panel1.TabIndex = 98;
             // 
-            // panel2
+            // button5
             // 
-            this.panel2.BackColor = System.Drawing.Color.White;
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Location = new System.Drawing.Point(363, 96);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(803, 681);
-            this.panel2.TabIndex = 99;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(27, 28);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(238, 56);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Cài đặt chung";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(27, 121);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(238, 56);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Bảo mật";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(27, 208);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(238, 56);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Thông báo";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button5.Location = new System.Drawing.Point(27, 371);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(238, 56);
+            this.button5.TabIndex = 4;
+            this.button5.Text = "Quản lý người dùng";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button4
             // 
@@ -124,15 +95,44 @@ namespace BTL_FN.Admin
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // button5
+            // button3
             // 
-            this.button5.Location = new System.Drawing.Point(27, 371);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(238, 56);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "Quản lý người dùng";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.button3.Location = new System.Drawing.Point(27, 208);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(238, 56);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "Thông báo";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(27, 121);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(238, 56);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "Bảo mật";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(27, 26);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(238, 56);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Cài đặt chung";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Location = new System.Drawing.Point(363, 96);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(803, 681);
+            this.panel2.TabIndex = 99;
             // 
             // setting
             // 
@@ -145,6 +145,7 @@ namespace BTL_FN.Admin
             this.Controls.Add(this.label7);
             this.Name = "setting";
             this.Text = "setting";
+            this.Load += new System.EventHandler(this.setting_Load);
             ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
