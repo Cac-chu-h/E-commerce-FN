@@ -220,7 +220,7 @@ namespace BTL_FN.Admin
             displayTable.Columns.Add("Hình ảnh", typeof(Image));
             displayTable.Columns.Add("Tên sản phẩm", typeof(string));
             displayTable.Columns.Add("Danh mục", typeof(string));
-            displayTable.Columns.Add("Trạng thái", typeof(string));
+            displayTable.Columns.Add("Khối lượng", typeof(string));
 
             List<Product> product = products;
             Form preview = null;
@@ -253,7 +253,7 @@ namespace BTL_FN.Admin
                         productImage = new Bitmap(Image.FromFile(@"E:\C#\logo.jpg"), new Size(100, 100));
                     }
 
-                    displayTable.Rows.Add(i + 1, productImage, productss.Name, categoryName, status);
+                    displayTable.Rows.Add(i + 1, productImage, productss.Name, categoryName, productss.Total);
                 }
 
                 DataGridView dgv = new DataGridView

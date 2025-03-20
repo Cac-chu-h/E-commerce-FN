@@ -36,12 +36,10 @@ namespace BTL_FN.Admin
             logo.Image = Image.FromFile(logic.logo);
             logo.SizeMode = PictureBoxSizeMode.Zoom;
             Status.SelectedIndex = 0;
-            Status.Items.Add("Đang chờ"); // duyệt 
-            Status.Items.Add("Đang chuẩn bị"); // hủy 
+            Status.Items.Add("Đang chờ"); // duyệt // hủy 
             Status.Items.Add("Đang giao"); // thất bại
             Status.Items.Add("Đã giao"); // xóa
-            Status.Items.Add("Đơn hủy"); // xóa 
-            Status.Items.Add("Giao Thất bại"); // xóa 
+            Status.Items.Add("Đã hủy"); // xóa 
 
             LoadData();
             LoadAdminData();
@@ -106,7 +104,7 @@ namespace BTL_FN.Admin
                 displayTable.Columns.Add("Trạng thái", typeof(string));
                 displayTable.Columns.Add("Mã vận đơn", typeof(string));
                 displayTable.Columns.Add("Duyệt", typeof(string));
-                displayTable.Columns.Add("Chi tiết", typeof(string));
+                displayTable.Columns.Add("Xóa", typeof(string));
 
                 // Giả định listOrders đã được load từ CSDL
                 List<Order> orders = ListOrders;
@@ -116,19 +114,39 @@ namespace BTL_FN.Admin
                     Order order = orders[i];
 
                    
+                    if(Status.SelectedIndex != 0)
+                    {
+                        if(order.Status == Status.Text)
+                        {
+                            displayTable.Rows.Add(
+                                false,
+                                i + 1,
+                                order.OrderID,
+                                order.OrderDate,
+                                order.TotalAmount,
+                                order.Status,
+                                order.TrackingNumber,
+                                "Duyệt",    // Nút duyệt
+                                "Xóa" // Nút xem chi tiết
+                            );
+                        }
+                    }
+                    else
+                    {
+                        displayTable.Rows.Add(
+                            false,
+                            i + 1,
+                            order.OrderID,
+                            order.OrderDate,
+                            order.TotalAmount,
+                            order.Status,
+                            order.TrackingNumber,
+                            "Duyệt",    // Nút duyệt
+                            "Xóa" // Nút xem chi tiết
+                        );
+                    }
+                    
 
-
-                    displayTable.Rows.Add(
-                        false,
-                        i + 1,
-                        order.OrderID,
-                        order.OrderDate,
-                        order.TotalAmount,
-                        order.Status,
-                        order.TrackingNumber,
-                        "Duyệt",    // Nút duyệt
-                        "Xem chi tiết" // Nút xem chi tiết
-                    );
                 }
 
                 // Tạo và cấu hình DataGridView
@@ -166,7 +184,7 @@ namespace BTL_FN.Admin
 
                             switch (orderss.Status)
                             {
-                                case "Đang chờ":
+                                case "Chờ xử lý":
                                     HandlePendingOrder(OrderIds);
                                     break;
                                 case "Đã duyệt":
@@ -191,14 +209,30 @@ namespace BTL_FN.Admin
                         // Xử lý nút Xem chi tiết
                         else if (e.ColumnIndex == 8)
                         {
-                            renderOrderDetail(OrderId);
+                            if (order.Status == "Đã hủy" || order.Status == "Đã giao")
+                            {
+                                if (logic.DeleteOrders(order.OrderID))
+                                {
+                                    MessageBox.Show("Xóa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Xóa thất bại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Đơn hàng chưa được giao!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+
                         }
                         // Xử lý checkbox
                         else if (e.ColumnIndex == 0)
                         {
-                            DataGridViewCheckBoxCell cell = (DataGridViewCheckBoxCell)dgv.Rows[e.RowIndex].Cells[0];
-                            cell.Value = cell.Value == null ? true : !(bool)cell.Value;
-                            if (cell.Value == null || (bool)cell.Value == false)
+                            var cell = (DataGridViewCheckBoxCell)dgv.Rows[e.RowIndex].Cells[0];
+                            bool isChecked = cell.Value != null && (bool)cell.Value;
+
+                            if (!isChecked)
                             {
                                 cell.Value = true;
                                 selected.Add(order);
@@ -206,6 +240,7 @@ namespace BTL_FN.Admin
                             else
                             {
                                 cell.Value = false;
+                                selected.Remove(order);
                             }
                         }
                     }
@@ -229,7 +264,7 @@ namespace BTL_FN.Admin
             if (MessageBox.Show($"Duyệt đơn hàng #{orderId}?", "Xác nhận",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                if (logic.UpdateOrders(orderId, "Đã duyệt"))
+                if (logic.UpdateOrders(orderId, "Đang giao"))
                 {
                     MessageBox.Show("Đã duyệt đơn!");
                 }
@@ -269,7 +304,7 @@ namespace BTL_FN.Admin
             }
             else if (result == DialogResult.No)
             {
-                if (logic.UpdateOrders(orderId, "Giao thất bại"))
+                if (logic.UpdateOrders(orderId, "Đã hủy"))
                 {
                     MessageBox.Show("Đã cập nhật trạng thái giao thất bại!");
                 }
@@ -323,7 +358,7 @@ namespace BTL_FN.Admin
                 {
                     foreach (Order i in selected)
                     {
-                        if(i.Status == "Đã hủy" || i.Status == "Giao thất bại")
+                        if(i.Status == "Đã hủy" || i.Status == "Đã giao")
                         {
                             if (!logic.DeleteVoucher(i.OrderID))
                             {

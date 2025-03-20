@@ -66,12 +66,14 @@ namespace BTL_FN
                 }
                 else
                 {
-                    ShowForm<admin>(() => new admin());
+                    ShowForm<admin>(() => new admin(this));
                 }
             }else
             {
-                TrangChu tc = new TrangChu(this);
-                tc.MdiParent = this;
+                TrangChu tc = new TrangChu(this)
+                {
+                    MdiParent = this
+                };
                 tc.Show();
             }
 
@@ -80,47 +82,6 @@ namespace BTL_FN
         private void giỏHàngToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowForm<gioHang>(() => new gioHang(), true);
-        }
-
-        private void đơnHàngCủaTôiToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            /*
-             * if (logic.isLogin)
-                {
-                    ShowForm<DonHangForm>(() => new DonHangForm());
-                }
-                else
-                {
-                    MessageBox.Show("Bạn cần đăng nhập để xem mục này!", "Thông báo",
-                                  MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                     */
-        }
-
-        private void tàiKhoảnToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (logic.isLogin)
-            {
-                ShowForm<taiKhoan>(() => new taiKhoan());
-            }
-            else
-            {
-                MessageBox.Show("Bạn cần đăng nhập để xem mục này!", "Thông báo",
-                              MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        private void đăngNhậpĐăngKíToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (logic.isLogin)
-            {
-                ShowForm<thongBao>(() => new thongBao());
-            }
-            else
-            {
-                MessageBox.Show("Bạn cần đăng nhập để xem mục này!", "Thông báo",
-                              MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
         }
 
         private void đăngNhậpĐăngKíToolStripMenuItem1_Click(object sender, EventArgs e)

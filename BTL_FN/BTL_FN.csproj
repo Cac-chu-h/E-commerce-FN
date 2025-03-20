@@ -174,29 +174,11 @@
     <Compile Include="User\gioHang.Designer.cs">
       <DependentUpon>gioHang.cs</DependentUpon>
     </Compile>
-    <Compile Include="User\taiKhoan.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="User\taiKhoan.Designer.cs">
-      <DependentUpon>taiKhoan.cs</DependentUpon>
-    </Compile>
     <Compile Include="User\thanhToan.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="User\thanhToan.Designer.cs">
       <DependentUpon>thanhToan.cs</DependentUpon>
-    </Compile>
-    <Compile Include="User\thongBao.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="User\thongBao.Designer.cs">
-      <DependentUpon>thongBao.cs</DependentUpon>
-    </Compile>
-    <Compile Include="User\Product_u.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="User\Product_u.Designer.cs">
-      <DependentUpon>Product_u.cs</DependentUpon>
     </Compile>
     <Compile Include="Admin\Product_v.cs">
       <SubType>Form</SubType>
@@ -281,17 +263,8 @@
     <EmbeddedResource Include="User\gioHang.resx">
       <DependentUpon>gioHang.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="User\taiKhoan.resx">
-      <DependentUpon>taiKhoan.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="User\thanhToan.resx">
       <DependentUpon>thanhToan.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="User\thongBao.resx">
-      <DependentUpon>thongBao.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="User\Product_u.resx">
-      <DependentUpon>Product_u.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Admin\Product_v.resx">
       <DependentUpon>Product_v.cs</DependentUpon>

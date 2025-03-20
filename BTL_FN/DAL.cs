@@ -21,14 +21,17 @@ namespace BTL_FN
         public string FullAddress { get; set; }
     }
 
-public class OrderDetail
-{
-    public int ProductID { get; set; }
-    public int Quantity { get; set; }
-    public decimal Price { get; set; }
-    public decimal Discount { get; set; }
-    public int VoucherID { get; set; } // Nếu không có voucher, có thể đặt giá trị 0
-}
+    public class OrderDetail
+    {
+        public int OrderDetailID { get; set; }
+        public int OrderID { get; set; }
+        public int ProductID { get; set; }
+        public int Quantity { get; set; }
+        public decimal Price { get; set; }
+        public decimal Discount { get; set; }
+        public decimal Total { get; set; }
+        public int VoucherID { get; set; } // Nếu không có voucher, có thể đặt giá trị 0
+    }
 
     public class Product
     {
@@ -756,11 +759,17 @@ public class OrderDetail
             }
         }
 
-        public bool ApproveOrder(int orderId, string status) => ExecuteNonQuery($"UPDATE Orders SET Status = '{status}' WHERE Id = @OrderId", new Dictionary<string, object> { { "@OrderId", orderId } });
+        public bool ApproveOrder(int orderId, string status) => ExecuteNonQuery($"UPDATE Orders SET trangThai = N'{status}' WHERE OrderID = @OrderId", new Dictionary<string, object> { { "@OrderId", orderId } });
 
-        public bool UpdateOrders(Order va) => ExecuteNonQuery($"UPDATE Orders SET Status = '' WHERE Id = @OrderId", new Dictionary<string, object> { { "@OrderId", va.OrderID } });
 
-        public bool DeleteOrder(int orderId) => ExecuteNonQuery("DELETE FROM Orders WHERE Id = @OrderId", new Dictionary<string, object> { { "@OrderId", orderId } });
+
+        public bool DeleteOrder(int orderId)
+        {
+            bool result = false;
+            result =  ExecuteNonQuery("DELETE FROM OrderDetails WHERE OrderID = @OrderId", new Dictionary<string, object> { { "@OrderId", orderId } });
+            result =  ExecuteNonQuery("DELETE FROM Orders WHERE OrderID = @OrderId", new Dictionary<string, object> { { "@OrderId", orderId } });
+            return result;
+        }
 
         public List<Order> SearchOrders(string customerName = null, string voucherId = null)
         {
@@ -1155,6 +1164,257 @@ public class OrderDetail
 
 
         // load lại giá trị 
+        public int CreateOrder(Account account, Product product, int quantity, int addressId,
+                              int paymentMethodId, int? voucherId = null, string notes = null)
+        {
+            int orderId = 0;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Sử dụng transaction để đảm bảo tính toàn vẹn dữ liệu
+                using (SqlTransaction transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        // 1. Thêm thông tin đơn hàng
+                        decimal totalAmount = product.Price * quantity;
+
+                        // Áp dụng giảm giá từ voucher nếu có
+                        decimal discount = 0;
+                        if (voucherId.HasValue)
+                        {
+                            // Logic tính giảm giá từ voucher có thể được thêm ở đây
+                            // Giả sử lấy được thông tin discount từ voucher
+                            discount = GetVoucherDiscountAmount(voucherId.Value, totalAmount, connection, transaction);
+                            totalAmount -= discount;
+                        }
+
+                        string insertOrderQuery = @"
+                        INSERT INTO [BTL].[dbo].[Orders] 
+                        ([ngayDatHang], [tongTien], [trangThai], [Ghichu], 
+                         [AccountId], [UserID], [PaymentMethodID], [NgayGiaoHangDuKien], 
+                         [donViVanChuyen], [maDonVanChuyen], [VoucherId], [NgayCapNhatCuoi], [AddressId])
+                        VALUES 
+                        (@OrderDate, @TotalAmount, @Status, @Notes, 
+                         @AccountId, @UserID, @PaymentMethodID, @ExpectedDeliveryDate, 
+                         @ShippingProvider, @TrackingNumber, @VoucherId, @LastUpdated, @AddressId);
+                        
+                        SELECT SCOPE_IDENTITY();";
+
+                        using (SqlCommand cmd = new SqlCommand(insertOrderQuery, connection, transaction))
+                        {
+                            // Ngày đặt hàng là hiện tại
+                            DateTime orderDate = DateTime.Now;
+
+                            // Mặc định dự kiến giao hàng sau 3 ngày
+                            DateTime expectedDeliveryDate = orderDate.AddDays(3);
+
+                            cmd.Parameters.AddWithValue("@OrderDate", orderDate);
+                            cmd.Parameters.AddWithValue("@TotalAmount", totalAmount);
+                            cmd.Parameters.AddWithValue("@Status", "Pending"); // Trạng thái mặc định khi tạo đơn hàng
+                            cmd.Parameters.AddWithValue("@Notes", notes ?? (object)DBNull.Value);
+                            cmd.Parameters.AddWithValue("@AccountId", account.Id);
+                            cmd.Parameters.AddWithValue("@UserID", account.Id); // Giả định UserID bằng AccountId, có thể điều chỉnh
+                            cmd.Parameters.AddWithValue("@PaymentMethodID", paymentMethodId);
+                            cmd.Parameters.AddWithValue("@ExpectedDeliveryDate", expectedDeliveryDate);
+                            cmd.Parameters.AddWithValue("@ShippingProvider", "Default"); // Có thể điều chỉnh theo yêu cầu thực tế
+                            cmd.Parameters.AddWithValue("@TrackingNumber", DBNull.Value); // Chưa có mã vận đơn khi tạo
+                            cmd.Parameters.AddWithValue("@VoucherId", voucherId.HasValue ? (object)voucherId.Value : DBNull.Value);
+                            cmd.Parameters.AddWithValue("@LastUpdated", DateTime.Now);
+                            cmd.Parameters.AddWithValue("@AddressId", addressId);
+
+                            // Lấy ID của đơn hàng vừa thêm
+                            orderId = Convert.ToInt32(cmd.ExecuteScalar());
+                        }
+
+                        // 2. Thêm chi tiết đơn hàng
+                        string insertOrderDetailQuery = @"
+                        INSERT INTO [BTL].[dbo].[OrderDetails]
+                        ([OrderID], [ProductID], [Quantity], [Price], [Discount], [Total], [VoucherID], [isDeleted])
+                        VALUES
+                        (@OrderID, @ProductID, @Quantity, @Price, @Discount, @Total, @VoucherID, @isDeleted);";
+
+                        using (SqlCommand cmd = new SqlCommand(insertOrderDetailQuery, connection, transaction))
+                        {
+                            decimal itemTotal = product.Price * quantity - discount;
+
+                            cmd.Parameters.AddWithValue("@OrderID", orderId);
+                            cmd.Parameters.AddWithValue("@ProductID", product.Id);
+                            cmd.Parameters.AddWithValue("@Quantity", quantity);
+                            cmd.Parameters.AddWithValue("@Price", product.Price);
+                            cmd.Parameters.AddWithValue("@Discount", discount);
+                            cmd.Parameters.AddWithValue("@Total", itemTotal);
+                            cmd.Parameters.AddWithValue("@VoucherID", voucherId.HasValue ? (object)voucherId.Value : DBNull.Value);
+                            cmd.Parameters.AddWithValue("@isDeleted", false);
+
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // Cập nhật số lượng sản phẩm trong kho
+                        UpdateProductInventory(product.Id, quantity, connection, transaction);
+
+                        // Commit transaction khi mọi thứ thành công
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback nếu có lỗi
+                        transaction.Rollback();
+                        throw new Exception("Lỗi khi tạo đơn hàng: " + ex.Message);
+                    }
+                }
+            }
+
+            return orderId;
+        }
+
+        private void UpdateProductInventory(int productId, int quantity, SqlConnection connection, SqlTransaction transaction)
+        {
+            string updateQuery = @"
+            UPDATE [BTL].[dbo].[Products]
+            SET [Stock] = [Stock] - @Quantity
+            WHERE [ProductID] = @ProductID AND [Stock] >= @Quantity;";
+
+            using (SqlCommand cmd = new SqlCommand(updateQuery, connection, transaction))
+            {
+                cmd.Parameters.AddWithValue("@ProductID", productId);
+                cmd.Parameters.AddWithValue("@Quantity", quantity);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+
+                if (rowsAffected == 0)
+                {
+                    throw new Exception("Sản phẩm không đủ số lượng trong kho.");
+                }
+            }
+        }
+
+        // Phương thức lấy số tiền giảm giá từ voucher
+        private decimal GetVoucherDiscountAmount(int voucherId, decimal totalAmount, SqlConnection connection, SqlTransaction transaction)
+        {
+            decimal discount = 0;
+
+            string query = @"
+            SELECT [DiscountAmount], [DiscountPercent], [MinOrderValue], [MaxDiscountAmount]
+            FROM [BTL].[dbo].[Vouchers]
+            WHERE [VoucherID] = @VoucherID AND [isValid] = 1 AND [ExpiryDate] > GETDATE();";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection, transaction))
+            {
+                cmd.Parameters.AddWithValue("@VoucherID", voucherId);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        decimal discountAmount = reader.IsDBNull(0) ? 0 : reader.GetDecimal(0);
+                        decimal discountPercent = reader.IsDBNull(1) ? 0 : reader.GetDecimal(1);
+                        decimal minOrderValue = reader.IsDBNull(2) ? 0 : reader.GetDecimal(2);
+                        decimal maxDiscountAmount = reader.IsDBNull(3) ? decimal.MaxValue : reader.GetDecimal(3);
+
+                        // Kiểm tra điều kiện áp dụng voucher
+                        if (totalAmount >= minOrderValue)
+                        {
+                            if (discountAmount > 0)
+                            {
+                                // Giảm giá cố định
+                                discount = discountAmount;
+                            }
+                            else if (discountPercent > 0)
+                            {
+                                // Giảm giá theo phần trăm
+                                discount = totalAmount * (discountPercent / 100);
+
+                                // Giới hạn số tiền giảm giá tối đa
+                                if (discount > maxDiscountAmount)
+                                {
+                                    discount = maxDiscountAmount;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return discount;
+        }
+
+
+
+        public int InsertOrderAndDetail(Order order, OrderDetail orderDetail)
+        {
+            int newOrderId = 0;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlTransaction transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        // 1. Chèn Order và lấy OrderID mới tạo
+                        string insertOrderQuery = @"
+                    INSERT INTO [dbo].[Orders]
+                    ([ngayDatHang], [tongTien], [trangThai], [AccountId], [UserID], [PaymentMethodID], [NgayCapNhatCuoi], [AddressId])
+                    VALUES
+                    (@OrderDate, @TotalAmount, @Status, @AccountId, @UserID, @PaymentMethodID, @LastUpdated, @AddressId);
+                    
+                    SELECT SCOPE_IDENTITY();";
+
+                        using (SqlCommand cmd = new SqlCommand(insertOrderQuery, connection, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@OrderDate", order.OrderDate);
+                            cmd.Parameters.AddWithValue("@TotalAmount", order.TotalAmount);
+                            cmd.Parameters.AddWithValue("@Status", order.Status);
+                            cmd.Parameters.AddWithValue("@AccountId", order.AccountId);
+                            cmd.Parameters.AddWithValue("@UserID", order.UserID);
+                            cmd.Parameters.AddWithValue("@PaymentMethodID", order.PaymentMethodID);
+                            cmd.Parameters.AddWithValue("@LastUpdated", order.LastUpdated);
+                            cmd.Parameters.AddWithValue("@AddressId", order.AddressId);
+
+                            object result = cmd.ExecuteScalar();
+                            if (result != null && int.TryParse(result.ToString(), out newOrderId) && newOrderId > 0)
+                            {
+                                // Order đã được chèn thành công, newOrderId nhận giá trị mới
+                            }
+                            else
+                            {
+                                throw new Exception("Chèn Order thất bại.");
+                            }
+                        }
+
+                        // 2. Chèn OrderDetail sử dụng OrderID vừa chèn
+                        string insertOrderDetailQuery = @"
+                        INSERT INTO [dbo].[OrderDetails]
+                        ([OrderID], [ProductID], [Quantity], [Price], [Discount])
+                        VALUES
+                        (@OrderID, @ProductID, @Quantity, @Price, @Discount);";
+
+                        using (SqlCommand cmd = new SqlCommand(insertOrderDetailQuery, connection, transaction))
+                        {
+                            cmd.Parameters.AddWithValue("@OrderID", newOrderId);
+                            cmd.Parameters.AddWithValue("@ProductID", orderDetail.ProductID);
+                            cmd.Parameters.AddWithValue("@Quantity", orderDetail.Quantity);
+                            cmd.Parameters.AddWithValue("@Price", orderDetail.Price);
+                            cmd.Parameters.AddWithValue("@Discount", orderDetail.Discount);
+                            cmd.Parameters.AddWithValue("@Total", orderDetail.Total);
+
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // Commit nếu mọi thứ thành công
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        throw new Exception("Lỗi khi thêm Order và OrderDetail: " + ex.Message, ex);
+                    }
+                }
+            }
+            return newOrderId;
+        }
 
     }
 }

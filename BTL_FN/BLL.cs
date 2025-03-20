@@ -25,6 +25,7 @@ namespace BTL_FN
             App app = new App();
             logo = app.logo;
             UserActive = "Hoạt động";
+            UserID = 25;
             UserRole = "Người dùng";
         }
         // những vấn đề liên quan đến tài khoản 
@@ -488,19 +489,10 @@ namespace BTL_FN
         
 
         public bool UpdateOrders(int OrdersId, string status)
-            {
-                return dataAccess.ApproveOrder(OrdersId, status);
-           }
+        {
+             return dataAccess.ApproveOrder(OrdersId, status);
+         }
 
-            public bool UpdateOrders(Order value)
-            {
-                if(value.Status == "Đang chờ" || value.Status == "Đã duyệt")
-                {
-                    return dataAccess.UpdateOrders(value);
-                }
-
-                return false;
-            }
         public bool DeleteOrders(int OrdersId)
             {
                 return dataAccess.DeleteOrder(OrdersId);
@@ -592,6 +584,12 @@ namespace BTL_FN
             List<ThongTinDiaChiNguoiDung> l = dataAccess.GetThongTinDiaChiNguoiDung(UserID);
 
             return l;
+        }
+
+
+        public bool addOrders(Order order, OrderDetail orderDetail)
+        {
+            return dataAccess.InsertOrderAndDetail(order, orderDetail) != 0;
         }
     }
 }

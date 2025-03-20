@@ -21,12 +21,15 @@ namespace BTL_FN
         public bool comboBox1Statte = false;
 
 
+        Programs pss = null;
+
 
         public List<Order> Orders = new List<Order>();
         public List<Order> selected = new List<Order>();
 
-        public admin()
+        public admin(Programs pss)
         {
+            this.pss = pss;
             InitializeComponent();
         }
 
@@ -38,6 +41,12 @@ namespace BTL_FN
             this.MaximizeBox = false;
             this.MinimizeBox = false; // Hoặc false nếu muốn tắt luôn nút thu nhỏ
             this.ControlBox = true;
+
+            pss.Height = this.Height + 20;
+            pss.Width = this.Width + 50;
+
+           
+            
 
             comboBox1.Items.Add("Danh mục quản lý");
             comboBox1.SelectedIndex = 0;

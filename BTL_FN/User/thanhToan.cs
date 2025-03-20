@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -33,6 +34,12 @@ namespace BTL_User
         {
             LoadImages();
             LoadProduct();
+
+
+            if (state == 0)
+            {
+                button10.Text = "Thêm";
+            }
         }
 
         private void LoadImages()
@@ -62,14 +69,6 @@ namespace BTL_User
             // Tải danh sách voucher và phương thức thanh toán
             LoadVouchersAndPaymentMethods();
 
-            // Tải thông tin địa chỉ người dùng
-            LoadUserAddresses();
-
-            // Cài đặt giá trị mặc định
-            SetDefaultValues();
-
-            // Cập nhật giao diện dựa trên trạng thái
-            UpdateUIBasedOnState();
         }
 
         private void LoadProductImage()
@@ -109,52 +108,8 @@ namespace BTL_User
                 comboBox3.Items.AddRange(p.Select(pay => pay.Name).ToArray());
             }
 
-            // Thêm các voucher phù hợp với categoryId vào combobox
-            if (v.Count > 0)
-            {
-                var matchingVouchers = v.Where(vou => product.CategoryId == vou.categoryId).ToList();
-                if (matchingVouchers.Any())
-                {
-                    comboBox2.Items.AddRange(matchingVouchers.Select(vou => vou.voucherCode).ToArray());
-                }
-            }
         }
 
-        private void LoadUserAddresses()
-        {
-            d = logic.getTTND();
-
-            if (d.Count > 0)
-            {
-                // Thêm địa chỉ người dùng vào combobox
-                comboBox1.Items.AddRange(d.Select(ds => ds.FullAddress).ToArray());
-
-                // Hiển thị thông tin địa chỉ mặc định
-                label14.Text = d[0].FullName;
-                label15.Text = d[0].Contact;
-                label16.Text = d[0].FullAddress;
-            }
-
-            // Hiển thị thông tin voucher mặc định nếu có
-            if (v.Count > 0)
-            {
-                label17.Text = "#" + v[0].voucherCode;
-                label20.Text = (v[0].ValueOfVoucher * product.Price).ToString();
-            }
-        }
-
-        private void SetDefaultValues()
-        {
-            // Đặt index mặc định cho các combobox
-            comboBox1.SelectedIndex = comboBox1.Items.Count > 0 ? 0 : -1;
-            comboBox2.SelectedIndex = comboBox2.Items.Count > 0 ? 0 : -1;
-            comboBox3.SelectedIndex = comboBox3.Items.Count > 0 ? 0 : -1;
-        }
-
-        private void UpdateUIBasedOnState()
-        {
-            // Hiển thị/ẩn button dựa trên trạng thái
-        }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -166,28 +121,7 @@ namespace BTL_User
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Chỉ xử lý khi có dữ liệu và combobox đã chọn một giá trị khác mặc định
-            if (p.Count <= 0 || v.Count <= 0 || comboBox2.SelectedIndex <= 0)
-                return;
-
-            string selectedVoucherCode = comboBox2.Text;
-
-            // Tìm voucher phù hợp với categoryId và voucherCode
-            Voucher matchingVoucher = v.FirstOrDefault(vou =>
-                product.CategoryId == vou.categoryId &&
-                selectedVoucherCode == vou.voucherCode);
-
-            // Cập nhật UI
-            label17.Text = "#" + selectedVoucherCode;
-
-            if (matchingVoucher != null)
-            {
-                label20.Text = (matchingVoucher.ValueOfVoucher * product.Price).ToString();
-            }
-            else
-            {
-                label20.Text = "0";
-            }
+            
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -231,7 +165,7 @@ namespace BTL_User
         {
             decimal totalPrice = quantity * product.Price;
             label24.Text = quantity.ToString();
-            label23.Text = totalPrice.ToString() + "đ";
+            label23.Text = totalPrice.ToString()+"";
             label29.Text = label23.Text;
         }
 
@@ -249,11 +183,46 @@ namespace BTL_User
                 ResetQuantityDisplay();
                 return;
             }
-            if(state == 0)
-            {
 
+            if(state != 0)
+            {
+                Order od = new Order()
+                {
+                    OrderDate = DateTime.Now,
+                    TotalAmount = Convert.ToDecimal(label23.Text),
+                    Status = "Chờ xử lý",
+                    AccountId = logic.UserID,
+                    UserID = 3028,
+                    PaymentMethodID = 4,
+                    LastUpdated = DateTime.Now,
+                    AddressId = 46
+                };
+
+                OrderDetail orderDetail = new OrderDetail()
+                {
+                    ProductID = product.Id,
+                    Price = product.Price, 
+                    Discount = (decimal)0.15, 
+                    Quantity = Convert.ToInt32(textBox2.Text),
+                    Total = Convert.ToInt32(textBox2.Text) * product.Price,
+                };
+
+                if(logic.addOrders(od, orderDetail))
+                {
+                    MessageBox.Show("Thêm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Thất bại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                if (inHoaDon)
+                {
+
+                }
             }
         }
+
         private void button11_Click(object sender, EventArgs e) { }
         private void button2_Click_1(object sender, EventArgs e) { }
     }

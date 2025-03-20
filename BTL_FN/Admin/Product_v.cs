@@ -75,7 +75,7 @@ namespace BTL_FN
             displayTable.Columns.Add("Hình ảnh", typeof(Image));
             displayTable.Columns.Add("Tên sản phẩm", typeof(string));
             displayTable.Columns.Add("Danh mục", typeof(string));
-            displayTable.Columns.Add("Trạng thái", typeof(string));
+            displayTable.Columns.Add("Khối lượng", typeof(string));
             displayTable.Columns.Add("Sửa", typeof(string));
             displayTable.Columns.Add("Xóa", typeof(string));
 
@@ -110,7 +110,7 @@ namespace BTL_FN
                         productImage = new Bitmap(Image.FromFile(@"E:\C#\logo.jpg"), new Size(100, 100));
                     }
 
-                    displayTable.Rows.Add(false, i + 1, productImage, product.Name, categoryName, status, "Chỉnh sửa", "Xóa");
+                    displayTable.Rows.Add(false, i + 1, productImage, product.Name, categoryName, product.Total, "Chỉnh sửa", "Xóa");
                 }
 
                 DataGridView dgv = new DataGridView

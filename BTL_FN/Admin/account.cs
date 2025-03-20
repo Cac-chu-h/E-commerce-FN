@@ -24,6 +24,9 @@ namespace BTL_FN
 
         public account()
         {
+            this.MaximizeBox = false;
+            this.MinimizeBox = false; // Hoặc false nếu muốn tắt luôn nút thu nhỏ
+            this.ControlBox = true;
             InitializeComponent();
             accountList = new List<Account>(); // Khởi tạo danh sách
         }
@@ -170,279 +173,188 @@ namespace BTL_FN
         }
 
         // Phương thức lọc tài khoản dựa trên vai trò và trạng thái hiện tại
-        private List<Account> FilterAccounts()
-        {
-            // Lọc theo role
-            var filtered = accountList.Where(a => a.Role == roleSelected).ToList();
-
-            // Lọc theo state (trạng thái từ comboBox)
-            switch (state)
-            {
-                case 0: // Tất cả
-                    return filtered;
-                case 1: // Hoạt động
-                    return filtered.Where(a => a.Status == "Hoạt động").ToList();
-                case 2: // Không hoạt động
-                    return filtered.Where(a => a.Status == "Bị chặn").ToList();
-                default:
-                    return filtered;
-            }
-        }
 
         // Phương thức tải và hiển thị dữ liệu tài khoản
         private void LoadAccountData()
         {
             // Lọc tài khoản dựa trên tiêu chí hiện tại
-            List<Account> filteredAccounts = FilterAccounts();
 
             // Hiển thị danh sách đã lọc
-            DisplayAccounts(filteredAccounts);
+            DisplayAccounts();
         }
 
         // Hiển thị danh sách tài khoản
-        private void DisplayAccounts(List<Account> accounts)
+        private void DisplayAccounts()
         {
-            panel3.Controls.Clear();
-            int panelHeight = 140; // Chiều cao của mỗi panel
-            if (this.accountList.Count > 0)
+            try
             {
+                // Tạo DataTable để binding dữ liệu
+                DataTable displayTable = new DataTable();
+                displayTable.Columns.Add("Chọn", typeof(bool));
+                displayTable.Columns.Add("STT", typeof(int));
+                displayTable.Columns.Add("Avatar", typeof(Image));
+                displayTable.Columns.Add("Tên đăng nhập", typeof(string));
+                displayTable.Columns.Add("Vai trò", typeof(string));
+                displayTable.Columns.Add("Trạng thái", typeof(string));
+                displayTable.Columns.Add("Ngày tạo", typeof(string));
+                displayTable.Columns.Add("Thao tác", typeof(string));
+
+                // Load danh sách tài khoản
+                List<Account> accounts = accountList;
+                Form preview = null;
+
                 for (int i = 0; i < accounts.Count; i++)
                 {
-                    Account account = accounts[i];
+                    Account acc = accounts[i];
 
-                    Panel panelAccount = new Panel
-                    {
-                        Size = new Size(840, 130),
-                        Location = new Point(5, (i * panelHeight)),
-                        BorderStyle = BorderStyle.FixedSingle,
-                        Margin = new Padding(10),
-                        Tag = account // Lưu thông tin tài khoản vào Tag
-                    };
+                    // Xử lý avatar
+                    Image productImage = null;
 
-                    CheckBox check = new CheckBox
+                    if (!string.IsNullOrEmpty(acc.Avatar) && System.IO.File.Exists(acc.Avatar))
                     {
-                        AutoSize = true,
-                        Location = new Point(8, 10),
-                        Name = "checkBox" + i,
-                        Text = ""
-                    };
-
-                    // Xử lý đường dẫn hình ảnh an toàn
-                    Image logoImage = null;
-                    try
-                    {
-                        string logoPath = Path.Combine(Application.StartupPath, "Resources", "logo.jpg");
-                        if (File.Exists(logoPath))
+                        try
                         {
-                            logoImage = Image.FromFile(logoPath);
+                            using (Image img = Image.FromFile(acc.Avatar))
+                            {
+                                productImage = new Bitmap(img, new Size(100, 100));
+                            }
                         }
-                        else
+                        catch
                         {
-                            logoImage = Image.FromFile(@"E:\C#\logo.jpg");
+                            productImage = new Bitmap(Image.FromFile(@"E:\C#\logo.jpg"), new Size(100, 100));
                         }
-                    }
-                    catch
-                    {
-                        // Xử lý nếu có lỗi khi tải hình ảnh
-                    }
-
-                    PictureBox pictureBox = new PictureBox
-                    {
-                        Location = new Point(30, 35),
-                        Size = new Size(68, 68),
-                        TabStop = false,
-                        Image = logoImage,
-                        SizeMode = PictureBoxSizeMode.Zoom
-                    };
-
-                    PictureBox pictureBoxRole = new PictureBox
-                    {
-                        Location = new Point(30, 10),
-                        Size = new Size(20, 20),
-                        TabStop = false,
-                        Image = logoImage,
-                        SizeMode = PictureBoxSizeMode.Zoom
-                    };
-
-                    Label labelRole = new Label
-                    {
-                        AutoSize = true,
-                        Location = new Point(50, 13),
-                        Name = "labelRole" + i,
-                        Font = new Font("Arial", 8, FontStyle.Bold),
-                        Text = account.Role
-                    };
-
-                    Label labelUsername = new Label
-                    {
-                        AutoSize = true,
-                        Location = new Point(110, 35),
-                        Name = "labelUsername" + i,
-                        Font = new Font("Arial", 12, FontStyle.Bold),
-                        Text = account.Username
-                    };
-
-                    Label labelEmail = new Label
-                    {
-                        AutoSize = true,
-                        Location = new Point(110, 60),
-                        Name = "labelEmail" + i,
-                        Font = new Font("Arial", 10),
-                        Text = account.Email
-                    };
-
-                    Label labelStatus = new Label
-                    {
-                        AutoSize = true,
-                        Location = new Point(110, 85),
-                        Name = "labelStatus" + i,
-                        Font = new Font("Arial", 10, FontStyle.Bold),
-                        Text = "Trạng thái: " + account.Status,
-                        ForeColor = account.Status == "Hoạt động" ? Color.Green : Color.Red
-                    };
-
-                    Label labelCreatedDate = new Label
-                    {
-                        AutoSize = true,
-                        Location = new Point(110, 110),
-                        Name = "labelCreatedDate" + i,
-                        Font = new Font("Arial", 8, FontStyle.Italic),
-                        Text = "Ngày tạo: " + account.CreatedDate.ToString("dd/MM/yyyy")
-                    };
-
-                    string status;
-                    string value;
-                    if (account.Status == "Hoạt động")
-                    {
-                        status = "Chặn";
-                        value = "Bị chặn";
                     }
                     else
                     {
-                        status = "Bỏ chặn";
-                        value = "Hoạt động";
+                        productImage = new Bitmap(Image.FromFile(@"E:\C#\logo.jpg"), new Size(100, 100));
                     }
 
-                    // Thêm nút chỉnh sửa
-                    Button btnEdit = new Button
-                    {
-                        Size = new Size(80, 30),
-                        Location = new Point(650, 85),
-                        Text = status,
-                        Tag = account,
-                        FlatStyle = FlatStyle.Flat
-                    };
 
-                    btnEdit.Click += (sender, e) =>
-                    {
-                        Button btn = sender as Button;
-                        Account acc = btn.Tag as Account;
-                        // Mở form chỉnh sửa tài khoản
-                        if (MessageBox.Show($"{status} tài khoản: {acc.Username}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information) == DialogResult.OK)
-                        {
-                            if (logic.BanAccount(acc.Id, value, acc.Role))
-                            {
-                                MessageBox.Show("Thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                LoadData();
-                                LoadAccountData();
-                            }
-                        }
-                    };
-
-                    // Thêm nút xóa
-                    Button btnDelete = new Button
-                    {
-                        Size = new Size(80, 30),
-                        Location = new Point(750, 85),
-                        Text = "Xóa",
-                        Tag = account,
-                        FlatStyle = FlatStyle.Flat,
-                        ForeColor = Color.Red
-                    };
-
-                    btnDelete.Click += (sender, e) =>
-                    {
-                        Button btn = sender as Button;
-                        Account acc = btn.Tag as Account;
-                        if (MessageBox.Show($"Bạn có chắc chắn muốn xóa tài khoản {acc.Username}?",
-                                           "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        {
-
-                            if (logic.DeleteAccount(acc.Id, acc.Role))
-                            {
-                                MessageBox.Show("Thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                accountList.Remove(acc);
-                            }
-                            LoadData();
-                            LoadAccountData();
-                        }
-                    };
-
-                    string role;
-                    if (roleSelected == "Quản trị viên")
-                    {
-                        role = "Người dùng";
-                    }
-                    else
-                    {
-                        role = "Quản trị viên";
-                    }
-
-                    Button btnAdmin = new Button
-                    {
-                        Size = new Size(120, 30),
-                        Location = new Point(510, 85),
-                        Text = $"Chỉnh quyền {role}",
-                        Tag = account,
-                        FlatStyle = FlatStyle.Flat,
-                        ForeColor = Color.Red
-                    };
-
-                    btnAdmin.Click += (sender, e) =>
-                    {
-                        Button btn = sender as Button;
-                        Account acc = btn.Tag as Account;
-                        if (MessageBox.Show($"Bạn có chắc chắn muốn xóa tài khoản {acc.Username} thành {role}?",
-                                           "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        {
-
-                            if (logic.SetAdminAccount(acc.Id, role))
-                            {
-                                MessageBox.Show("Thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                acc.Role = role;
-                            }
-                            LoadAccountData();
-                        }
-                    };
-
-                    // Thêm các control vào panel
-                    panelAccount.Controls.Add(check);
-                    panelAccount.Controls.Add(pictureBox);
-                    panelAccount.Controls.Add(pictureBoxRole);
-                    panelAccount.Controls.Add(labelRole);
-                    panelAccount.Controls.Add(labelUsername);
-                    panelAccount.Controls.Add(labelEmail);
-                    panelAccount.Controls.Add(labelStatus);
-                    panelAccount.Controls.Add(labelCreatedDate);
-                    panelAccount.Controls.Add(btnEdit);
-                    panelAccount.Controls.Add(btnDelete);
-                    panelAccount.Controls.Add(btnAdmin);
-
-                    // Thêm panel vào panel3
-                    panel3.Controls.Add(panelAccount);
+                    // Thêm dòng dữ liệu
+                    displayTable.Rows.Add(
+                        false,                              // Checkbox
+                        i + 1,                              // STT
+                        productImage,                        // Avatar
+                        acc.Username,                       // Tên đăng nhập
+                        acc.Role,                           // Vai trò
+                        acc.Status,                         // Trạng thái
+                        acc.CreatedDate.ToString("dd/MM/yyyy"), // Ngày tạo
+                        acc.Status == "Hoạt động" ? "Chặn" : "Bỏ chặn"
+                    );
                 }
-            }
-            else
-            {
-                Label labelRole = new Label
+
+                // Tạo DataGridView
+                DataGridView dgv = new DataGridView
                 {
-                    AutoSize = true,
-                    Location = new Point(300, 200),
-                    Name = "labelRole",
-                    Font = new Font("Arial", 16, FontStyle.Bold),
-                    Text = "Không tồn tại tài khoản"
+                    DataSource = displayTable,
+                    Dock = DockStyle.Fill,
+                    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                    AllowUserToAddRows = false,
+                    SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                    ReadOnly = true,
+                    RowTemplate = { Height = 85 } // Chiều cao hàng lớn hơn để hiển thị ảnh
                 };
-                panel3.Controls.Add(labelRole);
+
+                // Xử lý hiển thị ảnh
+                dgv.CellFormatting += (sender, e) =>
+                {
+                    if (dgv.Columns[e.ColumnIndex].Name == "Avatar" && e.Value is Image)
+                    {
+                        e.FormattingApplied = true;
+                    }
+                };
+
+                // Xử lý hover preview ảnh
+                dgv.MouseMove += (sender, e) =>
+                {
+                    var hitTest = dgv.HitTest(e.X, e.Y);
+                    if (hitTest.ColumnIndex == 2 && hitTest.RowIndex >= 0)
+                    {
+                        if (preview == null || preview.IsDisposed)
+                        {
+                            preview = new Form
+                            {
+                                Size = new Size(200, 200),
+                                FormBorderStyle = FormBorderStyle.None,
+                                StartPosition = FormStartPosition.Manual,
+                                Location = dgv.PointToScreen(new Point(e.X + 20, e.Y + 20))
+                            };
+
+                            PictureBox pb = new PictureBox
+                            {
+                                Image = (Image)dgv.Rows[hitTest.RowIndex].Cells["Avatar"].Value,
+                                SizeMode = PictureBoxSizeMode.Zoom,
+                                Dock = DockStyle.Fill
+                            };
+
+                            preview.Controls.Add(pb);
+                            preview.Show();
+                        }
+                    }
+                    else
+                    {
+                        preview?.Close();
+                    }
+                };
+
+                // Xử lý click các nút
+                dgv.CellClick += (sender, e) =>
+                {
+                    if (e.RowIndex < 0) return;
+
+                    Account acc = accounts[e.RowIndex];
+
+                    // Xử lý checkbox chọn
+                    if (e.ColumnIndex == 0)
+                    {
+                        DataGridViewCheckBoxCell cell = (DataGridViewCheckBoxCell)dgv.Rows[e.RowIndex].Cells[0];
+                        cell.Value = !(cell.Value as bool? ?? false);
+                        return;
+                    }
+
+                    // Xử lý các nút chức năng
+                    switch (dgv.Columns[e.ColumnIndex].Name)
+                    {
+                        case "Thao tác":
+                            string newStatus = acc.Status == "Hoạt động" ? "Bị chặn" : "Hoạt động";
+                            if (logic.BanAccount(acc.Id, newStatus, acc.Role))
+                            {
+                                acc.Status = newStatus;
+                                dgv.InvalidateRow(e.RowIndex);
+                            }
+                            break;
+
+                        case "Xóa":
+                            if (MessageBox.Show($"Xóa tài khoản {acc.Username}?", "Xác nhận",
+                                MessageBoxButtons.YesNo) == DialogResult.Yes)
+                            {
+                                if (logic.DeleteAccount(acc.Id, acc.Role))
+                                {
+                                    accountList.Remove(acc);
+                                    dgv.Rows.RemoveAt(e.RowIndex);
+                                }
+                            }
+                            break;
+
+                        case "Quyền":
+                            string newRole = acc.Role == "Admin" ? "User" : "Admin";
+                            if (logic.SetAdminAccount(acc.Id, newRole))
+                            {
+                                acc.Role = newRole;
+                                dgv.InvalidateRow(e.RowIndex);
+                            }
+                            break;
+                    }
+                };
+
+                // Thêm vào panel
+                panel3.Controls.Clear();
+                panel3.Controls.Add(dgv);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi hiển thị: {ex.Message}", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
