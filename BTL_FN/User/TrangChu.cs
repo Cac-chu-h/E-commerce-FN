@@ -21,10 +21,22 @@ namespace BTL_FN
         List<List<Product>> products = new List<List<Product>>();
         List<Product> listProduct = new List<Product>();
         bool isCategory = true;
-        public TrangChu()
+
+        Programs pss = null;
+        private addAcount addAcount;
+
+        public TrangChu(Programs pss)
         {
+            this.pss = pss;
             InitializeComponent();
         }
+
+        public TrangChu(addAcount addAcount)
+        {
+            this.addAcount = addAcount;
+            InitializeComponent();
+        }
+
         // tài khoản 
         private void button8_Click(object sender, EventArgs e)
         {
@@ -425,21 +437,21 @@ namespace BTL_FN
         // Method to handle adding product to cart
         private void AddToCart(Product productId)
         {
-            thanhToan dh = new thanhToan(productId, 0);
-            dh.ShowDialog();
+            thanhToan dh = new thanhToan(productId, 0, pss);
+            dh.Show();
         }
 
         // Method to handle adding product to cart
         private void buyNow(Product productId)
         {
-            thanhToan dh = new thanhToan(productId, 1);
-            dh.ShowDialog();
+            thanhToan dh = new thanhToan(productId, 1, pss);
+            dh.Show();
         }
         // Method to show product details
         private void ShowProductDetails(Product pa)
         {
-            Product_u p = new Product_u(pa);
-            p.ShowDialog();
+            Product_u p = new Product_u(pa, pss);
+            p.Show();
         }
 
         private void DisplayNoDataMessage()

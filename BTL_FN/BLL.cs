@@ -585,5 +585,13 @@ namespace BTL_FN
 
         }
 
+
+
+        public List<ThongTinDiaChiNguoiDung> getTTND()
+        {
+            List<ThongTinDiaChiNguoiDung> l = dataAccess.GetThongTinDiaChiNguoiDung(UserID);
+
+            return l;
+        }
     }
 }

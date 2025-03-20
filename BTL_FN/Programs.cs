@@ -62,7 +62,7 @@ namespace BTL_FN
             {
                 if ( logic.UserRole == "Người dùng")
                 {
-                    ShowForm<TrangChu>(() => new TrangChu());
+                    ShowForm<TrangChu>(() => new TrangChu(this));
                 }
                 else
                 {
@@ -70,7 +70,7 @@ namespace BTL_FN
                 }
             }else
             {
-                TrangChu tc = new TrangChu();
+                TrangChu tc = new TrangChu(this);
                 tc.MdiParent = this;
                 tc.Show();
             }

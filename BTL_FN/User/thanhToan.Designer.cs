@@ -73,7 +73,6 @@ namespace BTL_User
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -182,18 +181,18 @@ namespace BTL_User
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(181, 126);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(60, 17);
+            this.label22.Size = new System.Drawing.Size(92, 17);
             this.label22.TabIndex = 10;
-            this.label22.Text = "20.000đ";
+            this.label22.Text = "110.000đ/Km";
             // 
             // label23
             // 
             this.label23.AutoSize = true;
             this.label23.Location = new System.Drawing.Point(181, 93);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(60, 17);
+            this.label23.Size = new System.Drawing.Size(24, 17);
             this.label23.TabIndex = 9;
-            this.label23.Text = "80.000đ";
+            this.label23.Text = "0đ";
             // 
             // label24
             // 
@@ -202,7 +201,7 @@ namespace BTL_User
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(16, 17);
             this.label24.TabIndex = 8;
-            this.label24.Text = "1";
+            this.label24.Text = "0";
             // 
             // label25
             // 
@@ -247,7 +246,7 @@ namespace BTL_User
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.Color.LightGray;
-            this.panel5.Location = new System.Drawing.Point(894, 82);
+            this.panel5.Location = new System.Drawing.Point(887, 84);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(200, 2);
             this.panel5.TabIndex = 3;
@@ -255,17 +254,17 @@ namespace BTL_User
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(1021, 44);
+            this.label29.Location = new System.Drawing.Point(1014, 46);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(68, 17);
+            this.label29.Size = new System.Drawing.Size(24, 17);
             this.label29.TabIndex = 2;
-            this.label29.Text = "100.000đ";
+            this.label29.Text = "0đ";
             // 
             // label30
             // 
             this.label30.AutoSize = true;
             this.label30.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
-            this.label30.Location = new System.Drawing.Point(897, 43);
+            this.label30.Location = new System.Drawing.Point(890, 45);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(89, 19);
             this.label30.TabIndex = 1;
@@ -276,9 +275,9 @@ namespace BTL_User
             this.button10.BackColor = System.Drawing.Color.OrangeRed;
             this.button10.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
             this.button10.ForeColor = System.Drawing.Color.White;
-            this.button10.Location = new System.Drawing.Point(900, 93);
+            this.button10.Location = new System.Drawing.Point(867, 90);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(196, 52);
+            this.button10.Size = new System.Drawing.Size(233, 52);
             this.button10.TabIndex = 0;
             this.button10.Text = "Đặt hàng";
             this.button10.UseVisualStyleBackColor = false;
@@ -304,9 +303,9 @@ namespace BTL_User
             this.label20.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.Location = new System.Drawing.Point(335, 53);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(78, 19);
+            this.label20.Size = new System.Drawing.Size(28, 19);
             this.label20.TabIndex = 46;
-            this.label20.Text = "500.000đ";
+            this.label20.Text = "0đ";
             // 
             // label21
             // 
@@ -324,9 +323,9 @@ namespace BTL_User
             this.label17.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label17.Location = new System.Drawing.Point(134, 53);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(79, 19);
+            this.label17.Size = new System.Drawing.Size(18, 19);
             this.label17.TabIndex = 44;
-            this.label17.Text = "No.00009";
+            this.label17.Text = "#";
             // 
             // label18
             // 
@@ -412,9 +411,9 @@ namespace BTL_User
             this.label12.Font = new System.Drawing.Font("Arial Narrow", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.Location = new System.Drawing.Point(42, 79);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(111, 22);
+            this.label12.Size = new System.Drawing.Size(52, 22);
             this.label12.TabIndex = 38;
-            this.label12.Text = "Số điện thoại:";
+            this.label12.Text = "Email:";
             // 
             // label11
             // 
@@ -500,6 +499,7 @@ namespace BTL_User
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(153, 22);
             this.textBox2.TabIndex = 39;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // label3
             // 
@@ -529,6 +529,7 @@ namespace BTL_User
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(147, 24);
             this.comboBox2.TabIndex = 47;
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // comboBox3
             // 
@@ -539,23 +540,13 @@ namespace BTL_User
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(147, 24);
             this.comboBox3.TabIndex = 48;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(1084, 31);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(130, 30);
-            this.button2.TabIndex = 28;
-            this.button2.Text = "In hóa đơn";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
             // thanhToan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1231, 874);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.pictureBox2);
@@ -624,6 +615,5 @@ namespace BTL_User
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Button button2;
     }
 }

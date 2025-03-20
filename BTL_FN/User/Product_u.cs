@@ -18,10 +18,14 @@ namespace BTL_FN
 
         public List<Product> sameProduct = new List<Product>();
         public List<Reprots> reprots = new List<Reprots>();
-        public Product_u(Product p)
+
+        Programs pss = null;
+        public Product_u(Product p, Programs ss)
         {
+            this.pss = ss;
             this.p = p;
             InitializeComponent();
+            this.MdiParent = pss;
         }
 
         private void Product_u_Load(object sender, EventArgs e)

@@ -14,6 +14,21 @@ namespace BTL_FN
         public string logo = @"E:\C#\logo.jpg";
     }
 
+    public class ThongTinDiaChiNguoiDung
+    {
+        public string FullName { get; set; }
+        public string Contact { get; set; }
+        public string FullAddress { get; set; }
+    }
+
+public class OrderDetail
+{
+    public int ProductID { get; set; }
+    public int Quantity { get; set; }
+    public decimal Price { get; set; }
+    public decimal Discount { get; set; }
+    public int VoucherID { get; set; } // Nếu không có voucher, có thể đặt giá trị 0
+}
 
     public class Product
     {
@@ -1089,6 +1104,52 @@ namespace BTL_FN
         // vần đề liên quan đến bình luận về sản phẩm 
 
 
+        public List<ThongTinDiaChiNguoiDung> GetThongTinDiaChiNguoiDung(int accountId)
+        {
+            List<ThongTinDiaChiNguoiDung> list = new List<ThongTinDiaChiNguoiDung>();
+
+            string query = @"
+        SELECT 
+            COALESCE(ttnd.hoVaTen, tk.ten_dn) AS FullName,
+            CASE 
+                WHEN ttnd.soDienThoai IS NULL THEN ttnd.Email
+                WHEN ttnd.Email IS NULL THEN ttnd.soDienThoai
+                ELSE ttnd.soDienThoai
+            END AS Contact,
+            RTRIM(
+                COALESCE(d.soNha + ', ', '') +
+                COALESCE(d.pho + ', ', '') +
+                COALESCE(d.quan + ', ', '') +
+                COALESCE(d.huyen + ', ', '') +
+                COALESCE(d.thanhPho, '')
+            ) AS FullAddress
+        FROM [BTL].[dbo].[tk] tk
+        INNER JOIN [BTL].[dbo].[ttnd] ttnd ON tk.id = ttnd.idTaiKhoan
+        LEFT JOIN [BTL].[dbo].[diaChi] d ON d.idNguoiDung = tk.id
+        WHERE tk.id = @AccountId";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@AccountId", accountId);
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var info = new ThongTinDiaChiNguoiDung
+                        {
+                            FullName = reader["FullName"].ToString(),
+                            Contact = reader["Contact"].ToString(),
+                            FullAddress = reader["FullAddress"].ToString()
+                        };
+                        list.Add(info);
+                    }
+                }
+            }
+
+            return list;
+        }
 
 
 

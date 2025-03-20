@@ -45,7 +45,7 @@ namespace BTL_FN
                 if (logic.AddAccount(a))
                 {
                     logic.isLogin = true;
-                    TrangChu t = new TrangChu();
+                    TrangChu t = new TrangChu(this);
                     this.Hide();
                     t.ShowDialog();
                     if (t.DialogResult == DialogResult.OK)
