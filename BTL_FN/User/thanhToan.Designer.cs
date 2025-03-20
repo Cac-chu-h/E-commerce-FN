@@ -35,7 +35,6 @@ namespace BTL_User
             this.label7 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.button11 = new System.Windows.Forms.Button();
             this.label33 = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
@@ -55,7 +54,6 @@ namespace BTL_User
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -72,6 +70,10 @@ namespace BTL_User
             this.label2 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -136,7 +138,7 @@ namespace BTL_User
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.White;
-            this.panel4.Controls.Add(this.button11);
+            this.panel4.Controls.Add(this.comboBox3);
             this.panel4.Controls.Add(this.label33);
             this.panel4.Controls.Add(this.label34);
             this.panel4.Controls.Add(this.label22);
@@ -154,20 +156,6 @@ namespace BTL_User
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1121, 168);
             this.panel4.TabIndex = 37;
-            // 
-            // button11
-            // 
-            this.button11.BackColor = System.Drawing.Color.OrangeRed;
-            this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button11.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button11.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button11.Location = new System.Drawing.Point(599, 53);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(149, 32);
-            this.button11.TabIndex = 13;
-            this.button11.Text = "Đổi phương thức";
-            this.button11.UseVisualStyleBackColor = false;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
             // 
             // label33
             // 
@@ -288,7 +276,7 @@ namespace BTL_User
             this.button10.BackColor = System.Drawing.Color.OrangeRed;
             this.button10.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
             this.button10.ForeColor = System.Drawing.Color.White;
-            this.button10.Location = new System.Drawing.Point(904, 93);
+            this.button10.Location = new System.Drawing.Point(900, 93);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(196, 52);
             this.button10.TabIndex = 0;
@@ -299,12 +287,12 @@ namespace BTL_User
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
+            this.panel3.Controls.Add(this.comboBox2);
             this.panel3.Controls.Add(this.label20);
             this.panel3.Controls.Add(this.label21);
             this.panel3.Controls.Add(this.label17);
             this.panel3.Controls.Add(this.label18);
             this.panel3.Controls.Add(this.label19);
-            this.panel3.Controls.Add(this.button2);
             this.panel3.Location = new System.Drawing.Point(42, 466);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1121, 86);
@@ -357,25 +345,14 @@ namespace BTL_User
             this.label19.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label19.Location = new System.Drawing.Point(19, 12);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(193, 24);
+            this.label19.Size = new System.Drawing.Size(178, 24);
             this.label19.TabIndex = 42;
-            this.label19.Text = "Địa chỉ nhận hàng: ";
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.OrangeRed;
-            this.button2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button2.Location = new System.Drawing.Point(953, 24);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(147, 33);
-            this.button2.TabIndex = 41;
-            this.button2.Text = "Thay đổi voucher";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.label19.Text = "Voucher áp dụng:";
             // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.comboBox1);
             this.panel2.Controls.Add(this.label16);
             this.panel2.Controls.Add(this.label15);
             this.panel2.Controls.Add(this.label14);
@@ -467,7 +444,7 @@ namespace BTL_User
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(147, 33);
             this.button1.TabIndex = 35;
-            this.button1.Text = "Thay đổi địa chỉ";
+            this.button1.Text = "Thêm địa chỉ";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -533,11 +510,52 @@ namespace BTL_User
             this.label3.TabIndex = 40;
             this.label3.Text = "(Nhỏ hơn:)";
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Thay đổi địa chỉ"});
+            this.comboBox1.Location = new System.Drawing.Point(953, 56);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(147, 24);
+            this.comboBox1.TabIndex = 43;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "Thay đổi voucher"});
+            this.comboBox2.Location = new System.Drawing.Point(953, 33);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(147, 24);
+            this.comboBox2.TabIndex = 47;
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Items.AddRange(new object[] {
+            "Thay đổi voucher"});
+            this.comboBox3.Location = new System.Drawing.Point(575, 48);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(147, 24);
+            this.comboBox3.TabIndex = 48;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(1084, 31);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(130, 30);
+            this.button2.TabIndex = 28;
+            this.button2.Text = "In hóa đơn";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
             // thanhToan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1231, 874);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.pictureBox2);
@@ -584,11 +602,9 @@ namespace BTL_User
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.Label label22;
@@ -605,5 +621,9 @@ namespace BTL_User
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button button2;
     }
 }

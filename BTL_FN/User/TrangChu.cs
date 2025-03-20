@@ -393,14 +393,14 @@ namespace BTL_FN
             buyButton.Click += (sender, e) =>
             {
                 Button btn = sender as Button;
-                buyNow(product.Id);
+                buyNow(product);
             };
             // Event handlers
             addToCartButton.Click += (sender, e) =>
             {
                 Button btn = sender as Button;
                 int productId = (int)btn.Tag;
-                AddToCart(productId);
+                AddToCart(product);
             };
             productCard.Click += (sender, e) =>
             {
@@ -423,20 +423,18 @@ namespace BTL_FN
         }
 
         // Method to handle adding product to cart
-        private void AddToCart(int productId)
+        private void AddToCart(Product productId)
         {
-            thanhToan dh = new thanhToan();
+            thanhToan dh = new thanhToan(productId, 0);
             dh.ShowDialog();
         }
 
         // Method to handle adding product to cart
-        private void buyNow(int productId)
+        private void buyNow(Product productId)
         {
-            // Find product by id
-            thanhToan dh = new thanhToan();
+            thanhToan dh = new thanhToan(productId, 1);
             dh.ShowDialog();
         }
-
         // Method to show product details
         private void ShowProductDetails(Product pa)
         {

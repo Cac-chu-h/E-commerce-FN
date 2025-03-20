@@ -369,11 +369,11 @@ namespace BTL_FN
         {
             try
             {
-                return File.Exists(path) ? Image.FromFile(path) : Image.FromFile("default_product.png");
+                return File.Exists(path) ? Image.FromFile(path) : Image.FromFile(@"E:\C#\logo.jpg");
             }
             catch
             {
-                return Image.FromFile("default_product.png");
+                return Image.FromFile(@"E:\C#\logo.jpg");
             }
         }
 
