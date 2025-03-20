@@ -1,4 +1,5 @@
-﻿using BTL_FN.User;
+﻿using BTL_FN;
+using BTL_User;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -424,7 +425,7 @@ namespace BTL_FN
         // Method to handle adding product to cart
         private void AddToCart(int productId)
         {
-            datHang dh = new datHang();
+            thanhToan dh = new thanhToan();
             dh.ShowDialog();
         }
 
@@ -432,7 +433,7 @@ namespace BTL_FN
         private void buyNow(int productId)
         {
             // Find product by id
-            datHang dh = new datHang();
+            thanhToan dh = new thanhToan();
             dh.ShowDialog();
         }
 

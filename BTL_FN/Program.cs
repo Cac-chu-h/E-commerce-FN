@@ -16,7 +16,7 @@ namespace BTL_FN
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new TrangChu());
+            Application.Run(new Programs());
         }
     }
 }

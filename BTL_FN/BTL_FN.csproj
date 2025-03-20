@@ -168,12 +168,6 @@
     <Compile Include="Programs.Designer.cs">
       <DependentUpon>Programs.cs</DependentUpon>
     </Compile>
-    <Compile Include="User\datHang.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="User\datHang.Designer.cs">
-      <DependentUpon>datHang.cs</DependentUpon>
-    </Compile>
     <Compile Include="User\gioHang.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -283,9 +277,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Programs.resx">
       <DependentUpon>Programs.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="User\datHang.resx">
-      <DependentUpon>datHang.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="User\gioHang.resx">
       <DependentUpon>gioHang.cs</DependentUpon>

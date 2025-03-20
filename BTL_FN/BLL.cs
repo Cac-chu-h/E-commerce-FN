@@ -13,7 +13,7 @@ namespace BTL_FN
     public class BLL
     {
         private DAL dataAccess = new DAL();
-        public bool isLogin = false;
+        public bool isLogin = true;
         public string logo;
         public int UserID { get; set; }
         public  string UserActive { get; set; }
@@ -25,7 +25,7 @@ namespace BTL_FN
             App app = new App();
             logo = app.logo;
             UserActive = "Hoạt động";
-            UserRole = "Quản trị viên";
+            UserRole = "Người dùng";
         }
         // những vấn đề liên quan đến tài khoản 
 

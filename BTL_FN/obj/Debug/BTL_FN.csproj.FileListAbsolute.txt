@@ -35,4 +35,3 @@ E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_User.taiKhoan.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_User.thanhToan.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_User.thongBao.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Programs.resources
-E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.User.datHang.resources

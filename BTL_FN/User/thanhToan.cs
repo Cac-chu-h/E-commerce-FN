@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BTL_FN;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,7 @@ namespace BTL_User
 {
     public partial class thanhToan : Form
     {
+        public Product product = new Product();
         public thanhToan()
         {
             InitializeComponent();
@@ -31,6 +33,26 @@ namespace BTL_User
         }
 
         private void label18_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button11_Click(object sender, EventArgs e)
         {
 
         }
