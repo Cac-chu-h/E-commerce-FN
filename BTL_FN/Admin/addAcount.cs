@@ -70,13 +70,7 @@ namespace BTL_FN
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            loginView add = new loginView();
-            add.ShowDialog();
-            if (add.DialogResult == DialogResult.Cancel)
-            {
-                this.Close();
-            }
+
         }
     }
 }

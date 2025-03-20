@@ -1,8 +1,10 @@
-﻿using System;
+﻿using BTL_FN.User;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -298,15 +300,9 @@ namespace BTL_FN
             // Load image from file or set placeholder
             try
             {
-                if (!string.IsNullOrEmpty(product.Image) && System.IO.File.Exists(product.Image))
-                {
-                    productImage.Image = Image.FromFile(product.Image);
-                }
-                else
-                {
-                    // Set placeholder image
-                    productImage.Image = Image.FromFile(logic.logo);
-                }
+                productImage.Image = !string.IsNullOrEmpty(product.Image) && File.Exists(product.Image)
+                    ? Image.FromFile(product.Image)
+                    : Image.FromFile(logic.logo);
             }
             catch
             {
@@ -321,73 +317,71 @@ namespace BTL_FN
                 Location = new Point(5, 170),
                 Width = 200,
                 Height = 35,
-                TextAlign = ContentAlignment.MiddleCenter, // Căn giữa cả ngang và dọc
+                TextAlign = ContentAlignment.MiddleCenter
             };
-            // Product price label
-            Label priceLabel = new Label
+
+            // Weight label
+            Label weightLabel = new Label
             {
-                Text = "Giá bán: " + string.Format("{0:N0} đ", product.Price),
-                Font = new Font("Arial", 9, FontStyle.Regular),
-                ForeColor = Color.Red,
-                Location = new Point(20, 230),
-                AutoSize = false,
-                Width = 100,
-                Height = 20,
-                TextAlign = ContentAlignment.MiddleLeft
-            };
-            Label oldpriceLabel = new Label
-            {
-                Text = string.Format("{0:N0} đ", product.Price),
-                Font = new Font("Arial", 7, FontStyle.Regular | FontStyle.Strikeout),
+                Text = $"Khối lượng: {product.Total}kg",
+                Font = new Font("Arial", 9),
                 ForeColor = Color.Black,
-                Location = new Point(120, 230),
-                AutoSize = false,
-                Width = 80,
+                Location = new Point(5, 210),
+                Width = 200,
                 Height = 20,
                 TextAlign = ContentAlignment.MiddleLeft
             };
 
-            Label ratting = new Label
+            // Price per kg label
+            Label pricePerKgLabel = new Label
+            {
+                Text = $"Giá 1kg: {product.Price:N0} đ",
+                Font = new Font("Arial", 9),
+                ForeColor = Color.Red,
+                Location = new Point(5, 230),
+                Width = 200,
+                Height = 20,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            // Rating label
+            Label ratingLabel = new Label
             {
                 Text = $"Đánh giá {product.Rating}/5",
-                Font = new Font("Arial", 9, FontStyle.Regular),
-                ForeColor = Color.Black,
-                Location = new Point(20, 210),
-                AutoSize = false,
+                Font = new Font("Arial", 9),
+                Location = new Point(20, 250),
                 Width = 80,
-                Height = 20,
-                TextAlign = ContentAlignment.MiddleLeft
+                Height = 20
             };
-            Label total = new Label
-            {
-                Text = $"Đã bán {product.Total}",
-                Font = new Font("Arial", 9, FontStyle.Regular),
-                ForeColor = Color.Black,
-                Location = new Point(100, 210),
-                AutoSize = false,
-                Width = 80,
-                Height = 20,
-                TextAlign = ContentAlignment.MiddleLeft
-            };
-            // Product rating display
 
+            // Total sold label
+            Label totalSoldLabel = new Label
+            {
+                Text = $"Đã bán {product.TotalPay}",
+                Font = new Font("Arial", 9),
+                Location = new Point(100, 250),
+                Width = 80,
+                Height = 20
+            };
 
             // Add to cart button
             Button addToCartButton = new Button
             {
                 Text = "Thêm vào giỏ",
-                Location = new Point(20, 270),
+                Location = new Point(20, 275),
                 Width = 170,
                 Height = 25,
                 BackColor = Color.DodgerBlue,
                 ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat
+                FlatStyle = FlatStyle.Flat,
+                Tag = product.Id
             };
 
-            Button Buy = new Button
+            // Buy button
+            Button buyButton = new Button
             {
                 Text = "Mua ngay",
-                Location = new Point(20, 300),
+                Location = new Point(20, 305),
                 Width = 170,
                 Height = 25,
                 BackColor = Color.DodgerBlue,
@@ -395,36 +389,34 @@ namespace BTL_FN
                 FlatStyle = FlatStyle.Flat
             };
 
-            // Set button event
-            addToCartButton.Tag = product.Id;
+            buyButton.Click += (sender, e) =>
+            {
+                Button btn = sender as Button;
+                buyNow(product.Id);
+            };
+            // Event handlers
             addToCartButton.Click += (sender, e) =>
             {
                 Button btn = sender as Button;
                 int productId = (int)btn.Tag;
                 AddToCart(productId);
             };
-
-            // Add all controls to product card
-            productCard.Controls.Add(productImage);
-            productCard.Controls.Add(nameLabel);
-            productCard.Controls.Add(priceLabel);
-            productCard.Controls.Add(oldpriceLabel);
-            productCard.Controls.Add(addToCartButton);
-            productCard.Controls.Add(total);
-            productCard.Controls.Add(ratting);
-            productCard.Controls.Add(Buy);
-
-            // Add click event to the card for product details
-            productCard.Tag = product.Id;
             productCard.Click += (sender, e) =>
             {
-                if (e.GetType() != typeof(MouseEventArgs))
-                    return;
-
-                Panel panel = sender as Panel;
-                int productId = (int)panel.Tag;
-                ShowProductDetails(productId);
+                ShowProductDetails(product);
             };
+
+            // Add controls to panel
+            productCard.Controls.AddRange(new Control[] {
+            productImage,
+            nameLabel,
+            weightLabel,
+            pricePerKgLabel,
+            ratingLabel,
+            totalSoldLabel,
+            addToCartButton,
+            buyButton
+        });
 
             return productCard;
         }
@@ -432,28 +424,23 @@ namespace BTL_FN
         // Method to handle adding product to cart
         private void AddToCart(int productId)
         {
-            // Find product by id
-            Product productToAdd = null;
-            foreach (Product p in listProduct)
-            {
-                if (p.Id == productId)
-                {
-                    productToAdd = p;
-                    break;
-                }
-            }
+            datHang dh = new datHang();
+            dh.ShowDialog();
+        }
 
-            if (productToAdd != null)
-            {
-                // TODO: Implement your cart logic here
-                MessageBox.Show($"Đã thêm sản phẩm {productToAdd.Name} vào giỏ hàng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+        // Method to handle adding product to cart
+        private void buyNow(int productId)
+        {
+            // Find product by id
+            datHang dh = new datHang();
+            dh.ShowDialog();
         }
 
         // Method to show product details
-        private void ShowProductDetails(int productId)
+        private void ShowProductDetails(Product pa)
         {
-            
+            Product_u p = new Product_u(pa);
+            p.ShowDialog();
         }
 
         private void DisplayNoDataMessage()

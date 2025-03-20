@@ -31,17 +31,13 @@ namespace BTL_User
         private void InitializeComponent()
         {
             this.button9 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label7 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.button2 = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
@@ -59,9 +55,7 @@ namespace BTL_User
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -71,49 +65,13 @@ namespace BTL_User
             // 
             // button9
             // 
-            this.button9.Font = new System.Drawing.Font("Arial", 13F, System.Drawing.FontStyle.Bold);
-            this.button9.Location = new System.Drawing.Point(10, 15);
+            this.button9.Font = new System.Drawing.Font("Arial Narrow", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button9.Location = new System.Drawing.Point(1117, 14);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(44, 36);
+            this.button9.Size = new System.Drawing.Size(102, 36);
             this.button9.TabIndex = 33;
-            this.button9.Text = "⇦";
+            this.button9.Text = "Trở lại";
             this.button9.UseVisualStyleBackColor = true;
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(12, 383);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(88, 65);
-            this.button8.TabIndex = 32;
-            this.button8.Text = "Tài khoản";
-            this.button8.UseVisualStyleBackColor = true;
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(12, 309);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(88, 65);
-            this.button7.TabIndex = 31;
-            this.button7.Text = "Thông báo";
-            this.button7.UseVisualStyleBackColor = true;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(12, 160);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(88, 65);
-            this.button5.TabIndex = 29;
-            this.button5.Text = "Danh mục";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(12, 79);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(88, 65);
-            this.button4.TabIndex = 28;
-            this.button4.Text = "Trang chủ";
-            this.button4.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
@@ -134,26 +92,17 @@ namespace BTL_User
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(70, 13);
+            this.pictureBox2.Location = new System.Drawing.Point(10, 12);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(52, 42);
             this.pictureBox2.TabIndex = 25;
             this.pictureBox2.TabStop = false;
             // 
-            // progressBar1
-            // 
-            this.progressBar1.BackColor = System.Drawing.Color.Gray;
-            this.progressBar1.ForeColor = System.Drawing.Color.Gray;
-            this.progressBar1.Location = new System.Drawing.Point(8, 68);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(98, 766);
-            this.progressBar1.TabIndex = 24;
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
-            this.label7.Location = new System.Drawing.Point(133, 25);
+            this.label7.Location = new System.Drawing.Point(73, 24);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(89, 19);
             this.label7.TabIndex = 23;
@@ -165,9 +114,9 @@ namespace BTL_User
             this.panel1.BackColor = System.Drawing.SystemColors.InactiveBorder;
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.panel2);
-            this.panel1.Location = new System.Drawing.Point(119, 65);
+            this.panel1.Location = new System.Drawing.Point(10, 65);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1100, 769);
+            this.panel1.Size = new System.Drawing.Size(1209, 769);
             this.panel1.TabIndex = 22;
             // 
             // panel3
@@ -182,8 +131,18 @@ namespace BTL_User
             this.panel3.Location = new System.Drawing.Point(22, 16);
             this.panel3.Name = "panel3";
             this.panel3.Padding = new System.Windows.Forms.Padding(5);
-            this.panel3.Size = new System.Drawing.Size(797, 729);
+            this.panel3.Size = new System.Drawing.Size(910, 729);
             this.panel3.TabIndex = 1;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(15, 52);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(102, 21);
+            this.checkBox1.TabIndex = 13;
+            this.checkBox1.Text = "Chọn tất cả";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
@@ -210,7 +169,7 @@ namespace BTL_User
             this.panel8.AutoScroll = true;
             this.panel8.Location = new System.Drawing.Point(8, 80);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(781, 636);
+            this.panel8.Size = new System.Drawing.Size(880, 636);
             this.panel8.TabIndex = 0;
             // 
             // panel2
@@ -227,7 +186,7 @@ namespace BTL_User
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.button1);
-            this.panel2.Location = new System.Drawing.Point(840, 16);
+            this.panel2.Location = new System.Drawing.Point(938, 16);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(240, 271);
             this.panel2.TabIndex = 0;
@@ -354,18 +313,6 @@ namespace BTL_User
             this.button1.Text = "Thanh toán";
             this.button1.UseVisualStyleBackColor = false;
             // 
-            // button6
-            // 
-            this.button6.BackColor = System.Drawing.Color.OrangeRed;
-            this.button6.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
-            this.button6.ForeColor = System.Drawing.Color.White;
-            this.button6.Location = new System.Drawing.Point(12, 236);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(88, 63);
-            this.button6.TabIndex = 34;
-            this.button6.Text = "Giỏ hàng";
-            this.button6.UseVisualStyleBackColor = false;
-            // 
             // panel7
             // 
             this.panel7.BackColor = System.Drawing.Color.LightGray;
@@ -374,34 +321,18 @@ namespace BTL_User
             this.panel7.Size = new System.Drawing.Size(200, 2);
             this.panel7.TabIndex = 4;
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(15, 52);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(102, 21);
-            this.checkBox1.TabIndex = 13;
-            this.checkBox1.Text = "Chọn tất cả";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // Form2
+            // gioHang
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1231, 874);
-            this.Controls.Add(this.button6);
             this.Controls.Add(this.button9);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.panel1);
-            this.Name = "Form2";
+            this.Name = "gioHang";
             this.Text = "Form2";
             this.Load += new System.EventHandler(this.Form2_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
@@ -419,17 +350,11 @@ namespace BTL_User
         #endregion
 
         private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel4;

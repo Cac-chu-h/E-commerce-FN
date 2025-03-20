@@ -202,6 +202,7 @@ namespace BTL_User
             this.Controls.Add(this.panel1);
             this.Name = "thongBao";
             this.Text = "thongBao";
+            this.Load += new System.EventHandler(this.thongBao_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

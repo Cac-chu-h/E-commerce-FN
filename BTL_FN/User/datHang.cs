@@ -8,18 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BTL_User
+namespace BTL_FN.User
 {
-    public partial class thongBao : Form
+    public partial class datHang : Form
     {
-        public thongBao()
+        public datHang()
         {
             InitializeComponent();
-        }
-
-        private void thongBao_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

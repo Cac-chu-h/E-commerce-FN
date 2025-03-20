@@ -16,7 +16,6 @@ E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.add_p.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.voucher.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.add_v.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.addAcount.resources
-E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.loginView.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Product_u.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.OrdersDetail.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.AddPaymentMethods.resources
@@ -31,3 +30,9 @@ E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.Form3.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.Form4.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.Form5.resources
 E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Admin.setting.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_User.gioHang.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_User.taiKhoan.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_User.thanhToan.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_User.thongBao.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.Programs.resources
+E:\C#\SRC\BTL_FN\BTL_FN\obj\Debug\BTL_FN.User.datHang.resources

@@ -458,12 +458,20 @@ namespace BTL_FN
             );
 
 
-        public DataTable GetAllProducts()
+        public DataTable GetAllProducts(string db = null)
         {
             try
             {
                 OpenConnection();
-                string query = "SELECT * FROM sp WHERE trangThaiXoa != N'Đã xóa' ORDER BY id DESC";
+                string query = "";
+                if (db == null)
+                {
+                    query = "SELECT * FROM sp WHERE trangThaiXoa != N'Đã xóa' ORDER BY id DESC";
+                }
+                else
+                {
+                    query = db;
+                }
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                 {
@@ -989,33 +997,62 @@ namespace BTL_FN
 
 
 
-        public List<Reprots> getAllReport()
+        public List<Reprots> getAllReport(string query = null)
         {
             List<Reprots> reprots = new List<Reprots>();
             try
             {
                 OpenConnection();
-                using (SqlCommand cmd = new SqlCommand("SELECT * FROM phanHoi WHERE [trangThaiXoa] != N'Đã xóa'  ORDER BY id DESC", connection))
+                if (query == null)
                 {
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlCommand cmd = new SqlCommand("SELECT * FROM phanHoi WHERE [trangThaiXoa] != N'Đã xóa'  ORDER BY id DESC", connection))
                     {
-                        while (reader.Read())
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            Reprots product = new Reprots()
+                            while (reader.Read())
                             {
-                                Id = reader["id"] as int? ?? 0,
-                                IdNguoiDung = reader["idNguoiDung"] as int? ?? 0,
-                                IdSanPham = reader["idSanPham"] as int? ?? 0,
-                                ChuDe = reader["chuDe"] as string ?? string.Empty,
-                                NoiDung = reader["noiDung"] as string ?? string.Empty,
-                                TrangThai = reader["TrangThai"] as string ?? "Chưa xác định",
-                                TongPhanHoi = reader["tongPhanHoi"] as int? ?? 0,
-                                NgayDang = reader["ngayDang"] as DateTime? ?? DateTime.MinValue,
-                                IdNguoiGiaiQuyet = reader["idNguoiGiaiQuyet"] as int? ?? 0
-                            };
-                            reprots.Add(product);
+                                Reprots product = new Reprots()
+                                {
+                                    Id = reader["id"] as int? ?? 0,
+                                    IdNguoiDung = reader["idNguoiDung"] as int? ?? 0,
+                                    IdSanPham = reader["idSanPham"] as int? ?? 0,
+                                    ChuDe = reader["chuDe"] as string ?? string.Empty,
+                                    NoiDung = reader["noiDung"] as string ?? string.Empty,
+                                    TrangThai = reader["TrangThai"] as string ?? "Chưa xác định",
+                                    TongPhanHoi = reader["tongPhanHoi"] as int? ?? 0,
+                                    NgayDang = reader["ngayDang"] as DateTime? ?? DateTime.MinValue,
+                                    IdNguoiGiaiQuyet = reader["idNguoiGiaiQuyet"] as int? ?? 0
+                                };
+                                reprots.Add(product);
+                            }
+
                         }
-                        
+                    }
+                }
+                else
+                {
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Reprots product = new Reprots()
+                                {
+                                    Id = reader["id"] as int? ?? 0,
+                                    IdNguoiDung = reader["idNguoiDung"] as int? ?? 0,
+                                    IdSanPham = reader["idSanPham"] as int? ?? 0,
+                                    ChuDe = reader["chuDe"] as string ?? string.Empty,
+                                    NoiDung = reader["noiDung"] as string ?? string.Empty,
+                                    TrangThai = reader["TrangThai"] as string ?? "Chưa xác định",
+                                    TongPhanHoi = reader["tongPhanHoi"] as int? ?? 0,
+                                    NgayDang = reader["ngayDang"] as DateTime? ?? DateTime.MinValue,
+                                    IdNguoiGiaiQuyet = reader["idNguoiGiaiQuyet"] as int? ?? 0
+                                };
+                                reprots.Add(product);
+                            }
+
+                        }
                     }
                 }
             }catch(Exception ex)

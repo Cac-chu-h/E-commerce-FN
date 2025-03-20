@@ -162,17 +162,17 @@
     <Compile Include="Admin\category.Designer.cs">
       <DependentUpon>category.cs</DependentUpon>
     </Compile>
-    <Compile Include="User\cuaHang.cs">
+    <Compile Include="Programs.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="User\cuaHang.Designer.cs">
-      <DependentUpon>cuaHang.cs</DependentUpon>
+    <Compile Include="Programs.Designer.cs">
+      <DependentUpon>Programs.cs</DependentUpon>
     </Compile>
-    <Compile Include="User\danhMuc.cs">
+    <Compile Include="User\datHang.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="User\danhMuc.Designer.cs">
-      <DependentUpon>danhMuc.cs</DependentUpon>
+    <Compile Include="User\datHang.Designer.cs">
+      <DependentUpon>datHang.cs</DependentUpon>
     </Compile>
     <Compile Include="User\gioHang.cs">
       <SubType>Form</SubType>
@@ -203,12 +203,6 @@
     </Compile>
     <Compile Include="User\Product_u.Designer.cs">
       <DependentUpon>Product_u.cs</DependentUpon>
-    </Compile>
-    <Compile Include="User\loginView.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="User\loginView.Designer.cs">
-      <DependentUpon>loginView.cs</DependentUpon>
     </Compile>
     <Compile Include="Admin\Product_v.cs">
       <SubType>Form</SubType>
@@ -287,14 +281,11 @@
     <EmbeddedResource Include="Admin\setting.resx">
       <DependentUpon>setting.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="User\loginView.resx">
-      <DependentUpon>loginView.cs</DependentUpon>
+    <EmbeddedResource Include="Programs.resx">
+      <DependentUpon>Programs.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="User\cuaHang.resx">
-      <DependentUpon>cuaHang.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="User\danhMuc.resx">
-      <DependentUpon>danhMuc.cs</DependentUpon>
+    <EmbeddedResource Include="User\datHang.resx">
+      <DependentUpon>datHang.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="User\gioHang.resx">
       <DependentUpon>gioHang.cs</DependentUpon>

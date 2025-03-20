@@ -222,36 +222,74 @@ namespace BTL_FN
             }
         }
         // những vấn đề liên quan đến hàng hóa 
-        public Dictionary<int, object> ListProducts()
+        public Dictionary<int, object> ListProducts(string query = null)
         {
+
             List<Product> products = new List<Product>();
-            DataTable dt = dataAccess.GetAllProducts();
-            foreach (DataRow row in dt.Rows)
+            DataTable dt = new DataTable(); 
+            if (query == null)
             {
-                try
+                dt = dataAccess.GetAllProducts();
+                foreach (DataRow row in dt.Rows)
                 {
-                    Product product = new Product()
+
+                    try
                     {
-                        Id = Convert.ToInt32(row["id"]),
-                        Name = row["tenSP"].ToString(),
-                        Description = row["moTa"]?.ToString() ?? string.Empty,
-                        Image = row["hinh"]?.ToString() ?? string.Empty,
-                        Total = Convert.ToInt32(row["khoiLuong"] ?? 0),
-                        Status = Convert.ToString(row["TrangThai"]),
-                        Rating = Convert.ToInt32(row["danh_gia"]),
-                        dateAdd = Convert.ToDateTime(row["ngay_tao"]),
-                        Price = Convert.ToDecimal(row["gia"]),
-                        TotalPay = Convert.ToInt32(row["da_ban"]),
-                        CategoryId = Convert.ToInt32(row["dm"])
-                    };
-                    products.Add(product);
-                }
-                catch (Exception ex)
-                {
-                    // Ghi log hoặc xử lý lỗi chuyển đổi từng dòng
-                    MessageBox.Show($"Lỗi chuyển đổi dòng: {ex.Message}");
+                        Product product = new Product()
+                        {
+                            Id = Convert.ToInt32(row["id"]),
+                            Name = row["tenSP"].ToString(),
+                            Description = row["moTa"]?.ToString() ?? string.Empty,
+                            Image = row["hinh"]?.ToString() ?? string.Empty,
+                            Total = Convert.ToInt32(row["khoiLuong"] ?? 0),
+                            Status = Convert.ToString(row["TrangThai"]),
+                            Rating = Convert.ToInt32(row["danh_gia"]),
+                            dateAdd = Convert.ToDateTime(row["ngay_tao"]),
+                            Price = Convert.ToDecimal(row["gia"]),
+                            TotalPay = Convert.ToInt32(row["da_ban"]),
+                            CategoryId = Convert.ToInt32(row["dm"])
+                        };
+                        products.Add(product);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Ghi log hoặc xử lý lỗi chuyển đổi từng dòng
+                        MessageBox.Show($"Lỗi chuyển đổi dòng: {ex.Message}");
+                    }
                 }
             }
+            else
+            {
+                dt = dataAccess.GetAllProducts(query);
+                foreach (DataRow row in dt.Rows)
+                {
+
+                    try
+                    {
+                        Product product = new Product()
+                        {
+                            Id = Convert.ToInt32(row["id"]),
+                            Name = row["tenSP"].ToString(),
+                            Description = row["moTa"]?.ToString() ?? string.Empty,
+                            Image = row["hinh"]?.ToString() ?? string.Empty,
+                            Total = Convert.ToInt32(row["khoiLuong"] ?? 0),
+                            Status = Convert.ToString(row["TrangThai"]),
+                            Rating = Convert.ToInt32(row["danh_gia"]),
+                            dateAdd = Convert.ToDateTime(row["ngay_tao"]),
+                            Price = Convert.ToDecimal(row["gia"]),
+                            TotalPay = Convert.ToInt32(row["da_ban"]),
+                            CategoryId = Convert.ToInt32(row["dm"])
+                        };
+                        products.Add(product);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Ghi log hoặc xử lý lỗi chuyển đổi từng dòng
+                        MessageBox.Show($"Lỗi chuyển đổi dòng: {ex.Message}");
+                    }
+                }
+            }
+            
 
             Dictionary<int, object> result = new Dictionary<int, object>();
 
@@ -534,9 +572,17 @@ namespace BTL_FN
 
 
         // phản hồi 
-        public void getAllReport(ref List<Reprots> reprots)
+        public void getAllReport(ref List<Reprots> reprots, string query = null)
         {
-            reprots = dataAccess.getAllReport();
+            if(query != null)
+            {
+                reprots = dataAccess.getAllReport(query);
+            }
+            else
+            {
+                reprots = dataAccess.getAllReport();
+            }
+
         }
 
     }

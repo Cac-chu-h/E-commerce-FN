@@ -8,16 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BTL_User
+namespace BTL_FN
 {
-    public partial class thongBao : Form
+    public partial class Programs : Form
     {
-        public thongBao()
+        public Programs()
         {
             InitializeComponent();
         }
 
-        private void thongBao_Load(object sender, EventArgs e)
+        private void Programs_Load(object sender, EventArgs e)
+        {
+                
+        }
+
+        private void trangChủToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
