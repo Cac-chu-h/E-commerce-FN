@@ -16,12 +16,15 @@ namespace BTL_FN
     public partial class TrangChu : Form
     {
 
-        BLL logic = new BLL();
+        public BLL logic => BLL.Instance;
         List<Category> categories = new List<Category>();
         List<Product> listProduct = new List<Product>();
 
         DataTable dt = new DataTable();
         Programs pss = null;
+
+
+
 
         public TrangChu(Programs pss)
         {
@@ -36,7 +39,7 @@ namespace BTL_FN
             LoadProdcutData();
             this.MaximizeBox = false;
             this.MinimizeBox = false; // Hoặc false nếu muốn tắt luôn nút thu nhỏ
-            this.ControlBox = false;
+            this.ControlBox = true;
 
             pss.Width = this.Width + 30;
             pss.Height = this.Height + 20;
@@ -44,7 +47,7 @@ namespace BTL_FN
 
         private void Product_v_Load(object sender, EventArgs e)
         {
-            logic = new BLL();
+            
             pictureBox2.Image = Image.FromFile(logic.logo);
             pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
 
@@ -235,8 +238,16 @@ namespace BTL_FN
         // Method to handle adding product to cart
         private void buyNow(Product productId)
         {
-            thanhToan dh = new thanhToan(productId, 1, pss);
-            dh.Show();
+            if (logic.isLogin)
+            {
+                thanhToan dh = new thanhToan(productId, 1, pss);
+                dh.Show();
+            }
+            else
+            {
+                MessageBox.Show("Bạn cần đăng nhập để mua hàng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
 
         

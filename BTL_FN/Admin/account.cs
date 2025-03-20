@@ -16,7 +16,7 @@ namespace BTL_FN
     public partial class account : Form
     {
         // Giá trị mặc định 
-        public BLL logic;
+        public BLL logic => BLL.Instance;
         public string roleSelected = "Quản trị viên";
         public int state = 0;
         private List<Account> accountList; // Danh sách tài khoản
@@ -101,7 +101,6 @@ namespace BTL_FN
 
         private void account_Load(object sender, EventArgs e)
         {
-            logic = new BLL();
             logo.Image = Image.FromFile(logic.logo);
             logo.SizeMode = PictureBoxSizeMode.Zoom;
             comboBox1.SelectedIndex = 0;

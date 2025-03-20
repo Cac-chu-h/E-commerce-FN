@@ -19,7 +19,7 @@ namespace BTL_User
         public List<Voucher> v = new List<Voucher>();
         public List<PaymentMethod> p = new List<PaymentMethod>();
         public List<ThongTinDiaChiNguoiDung> d = new List<ThongTinDiaChiNguoiDung>();
-        public BLL logic = new BLL();
+        public BLL logic => BLL.Instance;
         public int state = 0;
 
         public thanhToan(Product p, int state, Programs pss)

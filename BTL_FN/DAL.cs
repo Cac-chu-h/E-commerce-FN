@@ -182,7 +182,72 @@ namespace BTL_FN
 
         // quản lý vấn đề tài khoản
 
-        public List<Account> GetAllUsers()
+        public bool DangKyTaiKhoan(string tenDN, string matKhau, string email)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    // Kiểm tra tên đăng nhập tồn tại
+                    string checkQuery = "SELECT COUNT(*) FROM [BTL].[dbo].[tk] WHERE [ten_dn] = @ten_dn";
+                    using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
+                    {
+                        checkCmd.Parameters.AddWithValue("@ten_dn", tenDN);
+                        int existingUser = (int)checkCmd.ExecuteScalar();
+                        if (existingUser > 0)
+                        {
+                            MessageBox.Show("Tên đăng nhập đã tồn tại!");
+                            return false;
+                        }
+                    }
+
+
+                    // Câu truy vấn INSERT
+                    string insertQuery = @"
+                    INSERT INTO [BTL].[dbo].[tk] 
+                    (
+                        [ten_dn], 
+                        [mk], 
+                        [email], 
+                        [hinh], 
+                        [vaiTro], 
+                        [ngayTao], 
+                        [ngayCapNhatCuoi], 
+                        [trangThai]
+                    )
+                    VALUES 
+                    (
+                        @ten_dn, 
+                        @mk, 
+                        @email, 
+                        N'E:\C#\logo.jpg', 
+                        N'Người dùng', 
+                        GETDATE(), 
+                        GETDATE(), 
+                        N'Hoạt động'
+                    )";
+
+                    using (SqlCommand cmd = new SqlCommand(insertQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ten_dn", tenDN);
+                        cmd.Parameters.AddWithValue("@mk", matKhau); // Lưu password đã hash
+                        cmd.Parameters.AddWithValue("@email", email);
+
+                        int result = cmd.ExecuteNonQuery();
+                        return result > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi đăng ký: {ex.Message}");
+                return false;
+            }
+        }
+
+         public List<Account> GetAllUsers()
         {
             List<Account> userList = new List<Account>();
             try

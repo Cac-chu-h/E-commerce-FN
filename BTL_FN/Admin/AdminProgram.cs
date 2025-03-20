@@ -32,7 +32,7 @@ namespace BTL_FN.Admin
         List<Product> products = new List<Product>();
 
 
-        BLL logic = new BLL();
+        public BLL logic => BLL.Instance;
 
         public AdminProgram()
         {

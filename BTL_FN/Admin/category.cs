@@ -10,7 +10,7 @@ namespace BTL_FN
 
     public partial class category : Form
     {
-        BLL logic;
+        public BLL logic => BLL.Instance;
         private List<Category> categoryList;
         
         private List<Category> select = new List<Category>();
@@ -24,7 +24,7 @@ namespace BTL_FN
 
         private void category_Load(object sender, EventArgs e)
         {
-            logic = new BLL();
+            
             logo.Image = Image.FromFile(logic.logo);
             logo.SizeMode = PictureBoxSizeMode.Zoom;
 

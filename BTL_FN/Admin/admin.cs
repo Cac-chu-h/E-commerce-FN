@@ -15,9 +15,8 @@ namespace BTL_FN
 
     public partial class admin : Form
     {
-        
 
-        public BLL logic = new BLL();
+        public BLL logic => BLL.Instance;
         public bool comboBox1Statte = false;
 
 

@@ -1,4 +1,5 @@
-﻿using BTL_User;
+﻿using BTL_FN.User;
+using BTL_User;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +14,15 @@ namespace BTL_FN
 {
     public partial class Programs : Form
     {
-        public BLL logic = new BLL();
+        public BLL logic => BLL.Instance;
+
+        public bool isLogin = false;
+        public string logo;
+        public int UserID { get; set; }
+        public string UserActive { get; set; }
+        public string UserRole { get; set; }
+
+        bool isState = true;
 
         private Dictionary<Type, Form> _openForms = new Dictionary<Type, Form>();
         public Programs()
@@ -24,7 +33,7 @@ namespace BTL_FN
 
         private void Programs_Load(object sender, EventArgs e)
         {
-                
+            load();
         }
 
         private void ShowForm<T>(Func<T> createForm, bool requireLogin = false) where T : Form
@@ -49,14 +58,24 @@ namespace BTL_FN
                     return;
                 }
             }
-
+            
             T newForm = createForm();
             newForm.MdiParent = this;
             newForm.FormClosed += (s, e) => _openForms.Remove(formType);
             _openForms.Add(formType, newForm);
-            newForm.Show();
+            if (isState)
+            {
+                newForm.Show();
+                isState = false;
+            }
+            else
+            {
+                newForm.Close();
+                isState = true;
+            }
+
         }
-        private void trangChủToolStripMenuItem_Click(object sender, EventArgs e)
+        public void trangChủToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (logic.isLogin)
             {
@@ -79,14 +98,40 @@ namespace BTL_FN
 
         }
 
+        public void load()
+        {
+
+            if (logic.isLogin)
+            {
+
+                if (logic.UserRole == "Người dùng")
+                {
+                    ShowForm<TrangChu>(() => new TrangChu(this));
+                }
+                else
+                {
+                    ShowForm<admin>(() => new admin(this));
+                }
+            }
+            else
+            {
+                TrangChu tc = new TrangChu(this)
+                {
+                    MdiParent = this
+                };
+                tc.Show();
+            }
+        }
+
+
         private void giỏHàngToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowForm<gioHang>(() => new gioHang(), true);
+           if(!logic.isLogin) ShowForm<gioHang>(() => new gioHang(), true);
         }
 
         private void đăngNhậpĐăngKíToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            // ShowForm<DangNhapDangKy>(() => new DangNhapDangKy());
+            ShowForm<Form1>(() => new Form1(this));
         }
     }
 }

@@ -14,7 +14,7 @@ namespace BTL_FN
 
     public partial class Product_v : Form
     {
-        public BLL logic;
+        public BLL logic => BLL.Instance;
         List<Product> listProduct = new List<Product>();
         DataTable dt = new DataTable();
         List<int> selected = new List<int>();
@@ -22,7 +22,6 @@ namespace BTL_FN
         int total = 0;
         public Product_v()
         {
-            logic = new BLL();
             InitializeComponent();
         }
 
@@ -33,7 +32,6 @@ namespace BTL_FN
 
         private void Product_v_Load(object sender, EventArgs e)
         {
-            logic = new BLL();
             logo.Image = Image.FromFile(logic.logo);
             logo.SizeMode = PictureBoxSizeMode.Zoom;
 

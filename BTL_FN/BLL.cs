@@ -13,20 +13,18 @@ namespace BTL_FN
     public class BLL
     {
         private DAL dataAccess = new DAL();
-        public bool isLogin = true;
+        public bool isLogin = false;
         public string logo;
         public int UserID { get; set; }
         public  string UserActive { get; set; }
         public string UserRole { get; set; }
 
-
+        private static BLL _instance;
+        public static BLL Instance => _instance ?? (_instance = new BLL());
         public BLL()
         {
             App app = new App();
             logo = app.logo;
-            UserActive = "Hoạt động";
-            UserID = 25;
-            UserRole = "Người dùng";
         }
         // những vấn đề liên quan đến tài khoản 
 
@@ -34,7 +32,11 @@ namespace BTL_FN
 
         public bool Login(string username, string password)
         {
-            DataTable userTable = dataAccess.GetDataTable("SELECT * FROM tk WHERE ten_dn = @Username AND mk = @Password", new Dictionary<string, object>
+            string query = @"
+                SELECT TOP 1 * FROM tk 
+                WHERE ten_dn = @Username AND mk = @Password"; // Chỉ cho đăng nhập nếu trạng thái = 1 (nếu muốn)
+
+                    DataTable userTable = dataAccess.GetDataTable(query, new Dictionary<string, object>
             {
                 {"@Username", username},
                 {"@Password", password}
@@ -43,12 +45,19 @@ namespace BTL_FN
             if (userTable.Rows.Count > 0)
             {
                 DataRow userRow = userTable.Rows[0];
-                UserID = Convert.ToInt32(userRow["id"]);
-                UserActive = userRow["TrangThai"].ToString();
-                UserRole = userRow["vaiTro"].ToString();
+                this.UserID = Convert.ToInt32(userRow["id"]);
+                this.UserActive = userRow["trangThai"].ToString();
+                this.UserRole = userRow["vaiTro"].ToString();
+                this.isLogin = true;
                 return true;
             }
             return false;
+        }
+
+
+        public bool dki(string tk, string mk, string email)
+        {
+            return dataAccess.DangKyTaiKhoan(tk, mk, email);
         }
 
         public bool AddAccount(Account a)

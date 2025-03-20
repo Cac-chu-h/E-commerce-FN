@@ -14,7 +14,7 @@ namespace BTL_FN.Admin
 
     public partial class Orders : Form
     {
-        public BLL logic = new BLL();
+        public BLL logic => BLL.Instance;
 
         public List<Order> ListOrders = new List<Order>();
         public List<Order> selected = new List<Order>();

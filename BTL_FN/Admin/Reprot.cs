@@ -25,7 +25,7 @@ namespace BTL_FN.Admin
         List<Reprots> reprots = new List<Reprots>();
 
 
-        BLL logic = new BLL();
+        public BLL logic => BLL.Instance;
         public Reprot()
         {
             InitializeComponent();

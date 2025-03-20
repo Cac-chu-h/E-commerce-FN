@@ -12,7 +12,7 @@ namespace BTL_FN
 {
     public partial class addAcount : Form
     {
-        public BLL logic = new BLL();
+        public BLL logic => BLL.Instance;
         public Account value = new Account();
         public addAcount()
         {

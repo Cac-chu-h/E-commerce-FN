@@ -13,7 +13,7 @@ namespace BTL_FN.Admin
 
     public partial class PaymentMethods : Form
     {
-        public BLL logic = new BLL();
+        public BLL logic => BLL.Instance;
 
         public List<PaymentMethod> pay = new List<PaymentMethod>();
         public List<PaymentMethod> selected = new List<PaymentMethod>();
