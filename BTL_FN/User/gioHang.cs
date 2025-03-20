@@ -26,7 +26,7 @@ namespace BTL_User
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            pictureBox2.Image = Image.FromFile(@"E:\C#\logo.jpg");
+            pictureBox2.Image = Image.FromFile(@"G:\C#\logo.jpg");
             pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
             setPicture(@"E:\C#\a.jpg");
 
@@ -55,7 +55,7 @@ namespace BTL_User
                     Location = new Point(30, 35),
                     Size = new Size(68, 68),
                     TabStop = false,
-                    Image = Image.FromFile(@"E:\C#\logo.jpg"),
+                    Image = Image.FromFile(@"G:\C#\logo.jpg"),
                     SizeMode = PictureBoxSizeMode.Zoom
                 };
 

@@ -1,0 +1,214 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|c:\\users\\admin\\source\\repos\\e-commerce-fn\\btl_fn\\programs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|solutionrelative:btl_fn\\programs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\btl_fn\\programs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|solutionrelative:btl_fn\\programs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\btl_fn\\frmdangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|solutionrelative:btl_fn\\frmdangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\btl_fn\\programs.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|solutionrelative:btl_fn\\programs.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\btl_fn\\user\\taikhoan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|solutionrelative:btl_fn\\user\\taikhoan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\btl_fn\\user\\giohang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|solutionrelative:btl_fn\\user\\giohang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\btl_fn\\frmdangnhap.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|solutionrelative:btl_fn\\frmdangnhap.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\btl_fn\\frmdangky.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|solutionrelative:btl_fn\\frmdangky.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\btl_fn\\dal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|solutionrelative:btl_fn\\dal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\btl_fn\\frmdangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|solutionrelative:btl_fn\\frmdangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\btl_fn\\frmdangky.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|solutionrelative:btl_fn\\frmdangky.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\btl_fn\\frmdangky.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{934D1903-B10F-4728-8F44-98C9D90225F4}|BTL_FN\\BTL_FN.csproj|solutionrelative:btl_fn\\frmdangky.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "gioHang.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\User\\gioHang.cs",
+              "RelativeDocumentMoniker": "BTL_FN\\User\\gioHang.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\User\\gioHang.cs",
+              "RelativeToolTip": "BTL_FN\\User\\gioHang.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAUwDMAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T03:45:27.991Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Programs.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\Programs.cs",
+              "RelativeDocumentMoniker": "BTL_FN\\Programs.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\Programs.cs",
+              "RelativeToolTip": "BTL_FN\\Programs.cs",
+              "ViewState": "AgIAAHEAAAAAAAAAAAAuwH8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T03:38:20.404Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "taiKhoan.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\User\\taiKhoan.cs",
+              "RelativeDocumentMoniker": "BTL_FN\\User\\taiKhoan.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\User\\taiKhoan.cs",
+              "RelativeToolTip": "BTL_FN\\User\\taiKhoan.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAAAmwEAAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T03:46:42.011Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Programs.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\Programs.cs",
+              "RelativeDocumentMoniker": "BTL_FN\\Programs.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\Programs.cs [Design]",
+              "RelativeToolTip": "BTL_FN\\Programs.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T03:38:06.579Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Programs.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\Programs.Designer.cs",
+              "RelativeDocumentMoniker": "BTL_FN\\Programs.Designer.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\Programs.Designer.cs",
+              "RelativeToolTip": "BTL_FN\\Programs.Designer.cs",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAkwFgAAAByAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T03:38:00.493Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "DAL.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\DAL.cs",
+              "RelativeDocumentMoniker": "BTL_FN\\DAL.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\DAL.cs",
+              "RelativeToolTip": "BTL_FN\\DAL.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAuwHYAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T03:35:54.855Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "frmDangKy.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\frmDangKy.Designer.cs",
+              "RelativeDocumentMoniker": "BTL_FN\\frmDangKy.Designer.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\frmDangKy.Designer.cs",
+              "RelativeToolTip": "BTL_FN\\frmDangKy.Designer.cs",
+              "ViewState": "AgIAANgAAAAAAAAAAAAvwAAAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T03:32:50.653Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "frmDangKy.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\frmDangKy.cs",
+              "RelativeDocumentMoniker": "BTL_FN\\frmDangKy.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\frmDangKy.cs",
+              "RelativeToolTip": "BTL_FN\\frmDangKy.cs",
+              "ViewState": "AgIAAGwAAAAAAAAAAAAiwHoAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T03:32:49.675Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "frmDangNhap.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\frmDangNhap.Designer.cs",
+              "RelativeDocumentMoniker": "BTL_FN\\frmDangNhap.Designer.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\frmDangNhap.Designer.cs",
+              "RelativeToolTip": "BTL_FN\\frmDangNhap.Designer.cs",
+              "ViewState": "AgIAAGsAAAAAAAAAAAAmwHYAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T03:32:47.354Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "frmDangNhap.cs",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\frmDangNhap.cs",
+              "RelativeDocumentMoniker": "BTL_FN\\frmDangNhap.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\frmDangNhap.cs",
+              "RelativeToolTip": "BTL_FN\\frmDangNhap.cs",
+              "ViewState": "AgIAADsAAAAAAAAAAAAAAEYAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T03:32:43.253Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "frmDangKy.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\frmDangKy.cs",
+              "RelativeDocumentMoniker": "BTL_FN\\frmDangKy.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\frmDangKy.cs [Design]",
+              "RelativeToolTip": "BTL_FN\\frmDangKy.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T03:32:33.689Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "frmDangNhap.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\frmDangNhap.cs",
+              "RelativeDocumentMoniker": "BTL_FN\\frmDangNhap.cs",
+              "ToolTip": "C:\\Users\\ADMIN\\source\\repos\\E-commerce-FN\\BTL_FN\\frmDangNhap.cs [Design]",
+              "RelativeToolTip": "BTL_FN\\frmDangNhap.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T03:32:13.345Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -11,7 +11,7 @@ namespace BTL_FN
 {
     class App
     {
-        public string logo = @"E:\C#\logo.jpg";
+        public string logo = @"G:\C#\logo.jpg";
     }
 
 
@@ -118,7 +118,7 @@ namespace BTL_FN
 
     class DAL
     {
-        private static readonly string connectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=BTL;Integrated Security=True";
+        private static readonly string connectionString = @"Data Source=DESKTOP-S7RSO8B;Initial Catalog=trainBTL;Integrated Security=True";
         private SqlConnection connection;
 
         public DAL()

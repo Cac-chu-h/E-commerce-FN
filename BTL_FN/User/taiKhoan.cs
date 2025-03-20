@@ -19,9 +19,9 @@ namespace BTL_User
 
         private void taiKhoan_Load(object sender, EventArgs e)
         {
-            pictureBox2.Image = Image.FromFile(@"E:\C#\logo.jpg");
+            pictureBox2.Image = Image.FromFile(@"G:\C#\logo.jpg");
             pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.Image = Image.FromFile(@"E:\C#\logo.jpg");
+            pictureBox1.Image = Image.FromFile(@"G:\C#\logo.jpg");
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
 
 
@@ -53,7 +53,7 @@ namespace BTL_User
                     Location = new Point(30, 35),
                     Size = new Size(68, 68),
                     TabStop = false,
-                    Image = Image.FromFile(@"E:\C#\logo.jpg"),
+                    Image = Image.FromFile(@"G:\C#\logo.jpg"),
                     SizeMode = PictureBoxSizeMode.Zoom
                 };
 
@@ -62,7 +62,7 @@ namespace BTL_User
                     Location = new Point(30, 10),
                     Size = new Size(20, 20),
                     TabStop = false,
-                    Image = Image.FromFile(@"E:\C#\logo.jpg"),
+                    Image = Image.FromFile(@"G:\C#\logo.jpg"),
                     SizeMode = PictureBoxSizeMode.Zoom
                 };
 

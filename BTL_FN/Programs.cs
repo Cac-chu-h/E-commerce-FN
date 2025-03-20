@@ -110,22 +110,18 @@ namespace BTL_FN
             }
         }
 
-        private void đăngNhậpĐăngKíToolStripMenuItem_Click(object sender, EventArgs e)
+        private void đăngNhậpToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (logic.isLogin)
-            {
-                ShowForm<thongBao>(() => new thongBao());
-            }
-            else
-            {
-                MessageBox.Show("Bạn cần đăng nhập để xem mục này!", "Thông báo",
-                              MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            frmDangNhap frm = new frmDangNhap();
+            frm.Show();
+            this.Hide();
         }
 
-        private void đăngNhậpĐăngKíToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void đăngKýToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // ShowForm<DangNhapDangKy>(() => new DangNhapDangKy());
+            frmDangKy frm = new frmDangKy();
+            frm.Show();
+            this.Hide();
         }
     }
 }
