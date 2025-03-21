@@ -600,9 +600,18 @@ namespace BTL_FN
         }
 
 
-        public bool addOrders(Order order, OrderDetail orderDetail)
+        public int addOrders(Order order, OrderDetail orderDetail)
         {
-            return dataAccess.InsertOrderAndDetail(order, orderDetail) != 0;
+            return dataAccess.InsertOrderAndDetail(order, orderDetail) ;
+        }
+
+        public DataTable GetOrderDetailsForHoaDon(int orderId)
+        {
+            string query = "EXEC [dbo].[GetProductOrderDetails] @OrderID = @OrderId";
+            return dataAccess.GetDataTable(query, new Dictionary<string, object>
+    {
+        { "@OrderId", orderId }
+    });
         }
     }
 }

@@ -11,7 +11,7 @@ namespace BTL_FN
 {
     class App
     {
-        public string logo = @"E:\C#\logo.jpg";
+        public string logo = @"E:\Anhwdf\logo2.jpg";
     }
 
     public class ThongTinDiaChiNguoiDung
@@ -136,7 +136,7 @@ namespace BTL_FN
 
     class DAL
     {
-        private static readonly string connectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=BTL;Integrated Security=True";
+        private static readonly string connectionString = @"Data Source=DESKTOP-LN6KH37;Initial Catalog=btltest;Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
         private SqlConnection connection;
 
         public DAL()
@@ -222,7 +222,7 @@ namespace BTL_FN
                         @ten_dn, 
                         @mk, 
                         @email, 
-                        N'E:\C#\logo.jpg', 
+                        N'E:\Anhwdf\logo2.jpg', 
                         N'Người dùng', 
                         GETDATE(), 
                         GETDATE(), 
@@ -262,12 +262,12 @@ namespace BTL_FN
                         {
                             Account user = new Account()
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("id")),
-                                Username = reader.GetString(reader.GetOrdinal("ten_dn")),
-                                Email = reader.GetString(reader.GetOrdinal("email")),
-                                Role = reader.GetString(reader.GetOrdinal("vaiTro")),
-                                Status = reader.GetString(reader.GetOrdinal("trangThai")),
-                                CreatedDate = reader.GetDateTime(reader.GetOrdinal("ngayTao"))
+                                Id = reader.IsDBNull(reader.GetOrdinal("id")) ? 0 : reader.GetInt32(reader.GetOrdinal("id")),
+                                Username = reader.IsDBNull(reader.GetOrdinal("ten_dn")) ? string.Empty : reader.GetString(reader.GetOrdinal("ten_dn")),
+                                Email = reader.IsDBNull(reader.GetOrdinal("email")) ? string.Empty : reader.GetString(reader.GetOrdinal("email")),
+                                Role = reader.IsDBNull(reader.GetOrdinal("vaiTro")) ? string.Empty : reader.GetString(reader.GetOrdinal("vaiTro")),
+                                Status = reader.IsDBNull(reader.GetOrdinal("trangThai")) ? string.Empty : reader.GetString(reader.GetOrdinal("trangThai")),
+                                CreatedDate = reader.IsDBNull(reader.GetOrdinal("ngayTao")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("ngayTao"))
                             };
                             userList.Add(user);
                         }
@@ -329,8 +329,8 @@ namespace BTL_FN
                     { "@Password", a.Password },
                     { "@Email", a.Email },
                     { "@image", new BLL().logo },
-                    { "@Role", "User" },
-                    { "@Status", "Active" },
+                    { "@Role", "Người dùng" },
+                    { "@Status", "Hoạt động" },
                     { "@CreatedDate", DateTime.Now }
                 };
 
@@ -474,10 +474,10 @@ namespace BTL_FN
                     {
                         categories.Add(new Category
                         {
-                            Id = reader.GetInt32(0),
-                            Name = reader.GetString(1),
-                            Description = reader.GetString(2),
-                            ParentId = reader.GetInt32(3)
+                            Id = reader.IsDBNull(0) ? 0 : reader.GetInt32(0),
+                            Name = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
+                            Description = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+                            ParentId = reader.IsDBNull(3) ? 0 : reader.GetInt32(3)
                         });
                     }
                 }

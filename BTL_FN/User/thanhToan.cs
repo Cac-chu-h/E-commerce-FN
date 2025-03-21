@@ -1,4 +1,5 @@
 ﻿using BTL_FN;
+using CrystalDecisions.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -44,7 +45,7 @@ namespace BTL_User
 
         private void LoadImages()
         {
-            string logoPath = @"E:\C#\logo.jpg";
+            string logoPath = @"E:\Anhwdf\logo2.jpg";
             try
             {
                 pictureBox2.Image = Image.FromFile(logoPath);
@@ -77,11 +78,11 @@ namespace BTL_User
             {
                 pictureBox1.Image = File.Exists(product.Image)
                     ? Image.FromFile(product.Image)
-                    : Image.FromFile(@"E:\C#\logo.jpg");
+                    : Image.FromFile(@"E:\Anhwdf\logo2.jpg");
             }
             catch
             {
-                pictureBox1.Image = Image.FromFile(@"E:\C#\logo.jpg");
+                pictureBox1.Image = Image.FromFile(@"E:\Anhwdf\logo2.jpg");
             }
         }
 
@@ -192,7 +193,7 @@ namespace BTL_User
                     TotalAmount = Convert.ToDecimal(label23.Text),
                     Status = "Chờ xử lý",
                     AccountId = logic.UserID,
-                    UserID = 3028,
+                    UserID = 1,
                     PaymentMethodID = 4,
                     LastUpdated = DateTime.Now,
                     AddressId = 46
@@ -206,8 +207,8 @@ namespace BTL_User
                     Quantity = Convert.ToInt32(textBox2.Text),
                     Total = Convert.ToInt32(textBox2.Text) * product.Price,
                 };
-
-                if(logic.addOrders(od, orderDetail))
+                int newOrderID = logic.addOrders(od, orderDetail);
+                if (newOrderID !=0)
                 {
                     MessageBox.Show("Thêm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -218,10 +219,13 @@ namespace BTL_User
 
                 if (inHoaDon)
                 {
-
+                    frmHoaDon inhoadon = new frmHoaDon(newOrderID);
+                    inhoadon.ShowDialog();
                 }
             }
         }
+
+       
 
         private void button11_Click(object sender, EventArgs e) { }
         private void button2_Click_1(object sender, EventArgs e) { }

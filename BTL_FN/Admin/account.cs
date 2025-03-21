@@ -220,12 +220,12 @@ namespace BTL_FN
                         }
                         catch
                         {
-                            productImage = new Bitmap(Image.FromFile(@"E:\C#\logo.jpg"), new Size(100, 100));
+                            productImage = new Bitmap(Image.FromFile(@"E:\Anhwdf\logo2.jpg"), new Size(100, 100));
                         }
                     }
                     else
                     {
-                        productImage = new Bitmap(Image.FromFile(@"E:\C#\logo.jpg"), new Size(100, 100));
+                        productImage = new Bitmap(Image.FromFile(@"E:\Anhwdf\logo2.jpg"), new Size(100, 100));
                     }
 
 

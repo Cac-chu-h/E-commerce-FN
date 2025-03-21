@@ -49,7 +49,7 @@ namespace BTL_FN
 
             comboBox1.Items.Add("Danh mục quản lý");
             comboBox1.SelectedIndex = 0;
-            pictureBox2.Image = Image.FromFile(@"E:\C#\logo.jpg");
+            pictureBox2.Image = Image.FromFile(@"E:\Anhwdf\logo2.jpg");
             pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
 
 
