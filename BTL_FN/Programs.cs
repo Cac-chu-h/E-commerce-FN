@@ -131,7 +131,7 @@ namespace BTL_FN
 
         private void đăngNhậpĐăngKíToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            ShowForm<Form1>(() => new Form1(this));
+            if (!logic.isLogin)  ShowForm<Form1>(() => new Form1(this));
         }
     }
 }

@@ -181,11 +181,11 @@ namespace BTL_FN
                     if (e.RowIndex >= 0)
                     {
                         Product product = products[e.RowIndex];
-                        if (e.ColumnIndex == 5)
+                        if (e.ColumnIndex == 90)
                         {
                             AddToCart(product);
                         }
-                        else if (e.ColumnIndex == 6)
+                        else if (e.ColumnIndex == 5)
                         {
                             buyNow(product);
                         }

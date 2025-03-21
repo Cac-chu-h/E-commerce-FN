@@ -794,23 +794,25 @@ namespace BTL_FN
                         {
                             while (reader.Read())
                             {
-                                orders.Add(new Order
+                                Order order = new Order
                                 {
-                                    OrderID = reader.GetInt32(0),
-                                    OrderDate = reader.GetDateTime(1),
-                                    TotalAmount = reader.GetDecimal(2),
-                                    Status = reader.GetString(3),
+                                    OrderID = reader.IsDBNull(0) ? 0 : reader.GetInt32(0),
+                                    OrderDate = reader.IsDBNull(1) ? DateTime.MinValue : reader.GetDateTime(1),
+                                    TotalAmount = reader.IsDBNull(2) ? 0 : reader.GetDecimal(2),
+                                    Status = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
                                     Notes = reader.IsDBNull(4) ? null : reader.GetString(4),
-                                    AccountId = reader.GetInt32(5),
-                                    UserID = reader.GetInt32(6),
-                                    PaymentMethodID = reader.GetInt32(7),
-                                    ExpectedDeliveryDate = reader.GetDateTime(8),
-                                    ShippingProvider = reader.GetString(9),
-                                    TrackingNumber = reader.GetString(10),
+                                    AccountId = reader.IsDBNull(5) ? 0 : reader.GetInt32(5),
+                                    UserID = reader.IsDBNull(6) ? 0 : reader.GetInt32(6),
+                                    PaymentMethodID = reader.IsDBNull(7) ? 0 : reader.GetInt32(7),
+                                    ExpectedDeliveryDate = reader.IsDBNull(8) ? DateTime.MinValue : reader.GetDateTime(8),
+                                    ShippingProvider = reader.IsDBNull(9) ? null : reader.GetString(9),
+                                    TrackingNumber = reader.IsDBNull(10) ? null : reader.GetString(10),
                                     VoucherId = reader.IsDBNull(11) ? (int?)null : reader.GetInt32(11),
-                                    LastUpdated = reader.GetDateTime(12),
-                                    AddressId = reader.GetInt32(13)
-                                });
+                                    LastUpdated = reader.IsDBNull(12) ? DateTime.MinValue : reader.GetDateTime(12),
+                                    AddressId = reader.IsDBNull(13) ? 0 : reader.GetInt32(13)
+                                };
+
+                                orders.Add(order);
                             }
                         }
                     }
@@ -823,6 +825,7 @@ namespace BTL_FN
                 return null;
             }
         }
+
 
         public bool ApproveOrder(int orderId, string status) => ExecuteNonQuery($"UPDATE Orders SET trangThai = N'{status}' WHERE OrderID = @OrderId", new Dictionary<string, object> { { "@OrderId", orderId } });
 

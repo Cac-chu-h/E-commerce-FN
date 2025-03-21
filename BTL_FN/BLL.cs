@@ -57,7 +57,11 @@ namespace BTL_FN
 
         public bool dki(string tk, string mk, string email)
         {
-            return dataAccess.DangKyTaiKhoan(tk, mk, email);
+
+            bool result = dataAccess.DangKyTaiKhoan(tk, mk, email);
+            if(result) this.Login(tk, mk);
+
+            return result;
         }
 
         public bool AddAccount(Account a)
